@@ -15,9 +15,9 @@ class QueryHandler implements HttpHandler {
   private static String plainResponse =
       "Request received, but I am not smart enough to echo yet!\n";
 
-  private Ranker _ranker;
+  private Ranker_Example _ranker;
 
-  public QueryHandler(Ranker ranker){
+  public QueryHandler(Ranker_Example ranker){
     _ranker = ranker;
   }
 
