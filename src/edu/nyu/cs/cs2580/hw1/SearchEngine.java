@@ -23,10 +23,10 @@ public class SearchEngine {
     InetSocketAddress addr = new InetSocketAddress(port);
     HttpServer server = HttpServer.create(addr, -1);
 
-    Ranker_Example ranker = new Ranker_Example(index_path);
+    RankerFactory rf = RankerFactory.getInstance(index_path);
     
     // Attach specific paths to their handlers.
-    server.createContext("/", new QueryHandler(ranker));
+    server.createContext("/", new QueryHandler(rf));
     server.setExecutor(Executors.newCachedThreadPool());
     server.start();
     System.out.println("Listening on port: " + Integer.toString(port));
