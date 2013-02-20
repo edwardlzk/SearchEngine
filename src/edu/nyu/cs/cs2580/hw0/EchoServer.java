@@ -24,7 +24,7 @@ public class EchoServer {
 
 	// @CS2580: please use a port number 258XX, where XX corresponds
 	// to your group number.
-	private static int port = 25815;
+	private static int port = 25812;
 
 	public static void main(String[] args) throws IOException {
 		// Create the server.
@@ -53,7 +53,6 @@ class EchoHandler implements HttpHandler {
 
 		URI requestedUri = exchange.getRequestURI();
 		String query = requestedUri.getRawQuery();
-
 		Map<String, String> param = parseQuery(query);
 		if (param.containsKey("query")) {
 			response = param.get("query");

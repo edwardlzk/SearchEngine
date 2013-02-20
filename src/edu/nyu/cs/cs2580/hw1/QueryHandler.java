@@ -25,6 +25,7 @@ class QueryHandler implements HttpHandler {
     String[] params = query.split("&");  
     Map<String, String> map = new HashMap<String, String>();  
     for (String param : params){  
+    System.out.println(param);
       String name = param.split("=")[0];  
       String value = param.split("=")[1];  
       map.put(name, value);  
@@ -47,13 +48,16 @@ class QueryHandler implements HttpHandler {
     System.out.println();
     String queryResponse = "";  
     String uriQuery = exchange.getRequestURI().getQuery();
+    System.out.println(uriQuery);
     String uriPath = exchange.getRequestURI().getPath();
 
     if ((uriPath != null) && (uriQuery != null)){
       if (uriPath.equals("/search")){
         Map<String,String> query_map = getQueryMap(uriQuery);
         Set<String> keys = query_map.keySet();
+        
         if (keys.contains("query")){
+        	System.out.println(query_map.get("query"));
           if (keys.contains("ranker")){
             String ranker_type = query_map.get("ranker");
             // @CS2580: Invoke different ranking functions inside your
