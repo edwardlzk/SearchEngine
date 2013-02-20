@@ -22,7 +22,8 @@ class Evaluator {
     // first read the relevance judgments into the HashMap
     readRelevanceJudgments(p,relevance_judgments);
     // now evaluate the results from stdin
-    evaluateStdin(relevance_judgments);
+   // evaluateStdin(relevance_judgments);
+    reciprocalRand(relevance_judgments);
   }
 
   public static void readRelevanceJudgments(
@@ -58,10 +59,56 @@ class Evaluator {
       System.err.println("Oops " + ioe.getMessage());
     }
   }
+  
+ /* public static double average(HashMap < String , HashMap < Integer , Double > > relevance_judgments)
+  {
+	  
+  }
+  
+  public static double ndgg()
+  {
+	  
+  }*/
+  public static double reciprocalRand(HashMap < String , HashMap < Integer , Double > > relevance_judgments)
+  {
+	  try {
+	      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	      
+	      String line = null;
+	      double RR = 0.0;
+	      int i=0;
+	      while ((line = reader.readLine()) != null){
+	        Scanner s = new Scanner(line).useDelimiter("\t");
+	        String query = s.next();
+	        i++;
+	        int did = Integer.parseInt(s.next());
+	      	if (relevance_judgments.containsKey(query) == false){
+	      	  throw new IOException("query not found");
+	      	}
+	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
+	      	if (qr.containsKey(did) != false)
+	      	{
+	      		if(qr.get(did).equals(1.0))
+	      			{
+	      			 	double val=1/(double)i;
+	      				System.out.println(val);
+	      				return (val);
+	      			}
+	      	}
+	      }
+	    } catch (Exception e){
+	      System.err.println("Error:" + e.getMessage());
+	    }
+	  System.out.println("Came Here: ");
+	   return 0;
+	  
+ }
+  
 
   public static void evaluateStdin(
     HashMap < String , HashMap < Integer , Double > > relevance_judgments){
-    // only consider one query per call    
+    // only consider one query per call     
+	 //----------------- 
     try {
       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
       
@@ -88,4 +135,7 @@ class Evaluator {
       System.err.println("Error:" + e.getMessage());
     }
   }
+  
 }
+
+
