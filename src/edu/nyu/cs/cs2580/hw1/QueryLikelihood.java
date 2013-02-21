@@ -37,7 +37,7 @@ public class QueryLikelihood implements Ranker {
 	 // Get the document vector.
 	    Document d = _index.getDoc(did);
 	    
-	    double score = qv.size() == 0? 0.0 : 1.0;
+	    double score = 0.0;
 	    
 	    //Iterate through the query, building smoothing score
 	    for(int i = 0; i<qv.size(); i++){
