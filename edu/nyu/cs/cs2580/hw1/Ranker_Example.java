@@ -6,8 +6,8 @@ import java.util.Scanner;
 class Ranker_Example implements Ranker {
   private Index _index;
 
-  public Ranker_Example(Index index){
-    _index = index;
+  public Ranker_Example(String index_source){
+    _index = new Index(index_source);
   }
 
   public Vector < ScoredDocument > runquery(String query){

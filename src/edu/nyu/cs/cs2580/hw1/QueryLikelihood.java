@@ -9,8 +9,8 @@ public class QueryLikelihood implements Ranker {
 	private Index _index;
 	private double _lambda = 0.5;
 	
-	public QueryLikelihood(String index_source){
-		_index = new Index(index_source);
+	public QueryLikelihood(Index index){
+		_index = index;
 	}
 	
 	
@@ -36,11 +36,24 @@ public class QueryLikelihood implements Ranker {
 	    
 	 // Get the document vector.
 	    Document d = _index.getDoc(did);
-	    Vector < String > dv = d.get_title_vector();
+	    
+	    double score = qv.size() == 0? 0.0 : 1.0;
+	    
+	    //Iterate through the query, building smoothing score
+	    for(int i = 0; i<qv.size(); i++){
+	    	
+	    	String currentTerm = qv.get(i);
+	    	double globleLikelihood = (double)Document.termFrequency(currentTerm) / (double)Document.termFrequency();
+	    	double documentLikelihood = (double)d.getLocalTermFrequency(currentTerm) / (double)d.getTotalTerms();
+	    	
+//	    	System.out.println("INFO: "+d.getLocalTermFrequency(currentTerm) + " "+d.getTotalTerms()+" "+Document.termFrequency(currentTerm) + " "+Document.termFrequency());
+	    	
+	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
+	    }
 	    
 	    
-	    
-		return null;
+//	    System.out.println(did + " "+score);
+		return new ScoredDocument(did, d.get_title_string(), score);
 	}
 
 }

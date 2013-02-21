@@ -20,9 +20,6 @@ public class SearchEngine {
     }
     int port = Integer.parseInt(args[0]);
     String index_path = args[1];
-    
-    System.out.print(index_path);
-    
     InetSocketAddress addr = new InetSocketAddress(port);
     HttpServer server = HttpServer.create(addr, -1);
 

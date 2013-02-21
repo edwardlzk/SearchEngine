@@ -4,10 +4,10 @@ public class RankerFactory {
 
 	private static RankerFactory instance = null;
 	
-	private Index index;
+	private String indexPath;
 	
 	private RankerFactory(String indexPath){
-		index = new Index(indexPath);
+		this.indexPath = indexPath;
 	}
 	
 	public static synchronized RankerFactory getInstance(String indexPath){
@@ -23,10 +23,10 @@ public class RankerFactory {
 	public Ranker getRanker(String type){
 		Ranker ranker;
 		if(type.equals("QL")){
-			ranker = new QueryLikelihood(index);
+			ranker = new QueryLikelihood(indexPath);
 		}
 		else{
-			ranker = new Ranker_Example(index);
+			ranker = new Ranker_Example(indexPath);
 		}
 		
 		return ranker;
