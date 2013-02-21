@@ -27,29 +27,11 @@ public class NumViews implements Ranker {
 	
 	public ScoredDocument runquery(String query, int did){
 		
-		// Build query vector
-	    Scanner s = new Scanner(query);
-	    Vector < String > qv = new Vector < String > ();
-	    while (s.hasNext()){
-	      String term = s.next();
-	      qv.add(term);
-	    }
 	    
 	 // Get the document vector.
 	    Document d = _index.getDoc(did);
-	    
-	    double score = qv.size() == 0? 0.0 : 1.0;
-	    
-	    //Iterate through the query, building smoothing score
-	    for(int i = 0; i<qv.size(); i++){
-	    	
-	    	String currentTerm = qv.get(i);
-	    	double globleLikelihood = (double)Document.termFrequency(currentTerm) / (double)Document.termFrequency();
-	    	double documentLikelihood = (double)d.getLocalTermFrequency(currentTerm) / (double)d.getTotalTerms();
-	    	
-	    }
-	    
-		return new ScoredDocument(did, d.get_title_string(), score);
+
+		return new ScoredDocument(did, d.get_title_string(), d.get_numviews());
 	}
 	
 	

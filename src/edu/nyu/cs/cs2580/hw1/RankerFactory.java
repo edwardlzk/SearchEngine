@@ -25,6 +25,9 @@ public class RankerFactory {
 		if(type.equals("QL")){
 			ranker = new QueryLikelihood(index);
 		}
+		else if(type.equals("view")){
+			ranker = new NumViews(index);
+		}
 		else{
 			ranker = new Ranker_Example(index);
 		}

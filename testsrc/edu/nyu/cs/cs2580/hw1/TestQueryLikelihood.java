@@ -14,7 +14,7 @@ public class TestQueryLikelihood {
 		
 		
 		Index index = new Index(indexPath);
-		Ranker ranker = new QueryLikelihood(index);
+		Ranker ranker = new NumViews(index);
 		
 		System.out.println(ranker.runquery(testQuery));
 		
