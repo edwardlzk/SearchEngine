@@ -22,7 +22,10 @@ public class RankerFactory {
 	
 	public Ranker getRanker(String type){
 		Ranker ranker;
-		if(type.equals("QL")){
+		if(type.equals("cosine")){
+			ranker = new VectorSpace(index);
+		}
+		else if(type.equals("QL")){
 			ranker = new QueryLikelihood(index);
 		}
 		else if(type.equals("phrase")){
