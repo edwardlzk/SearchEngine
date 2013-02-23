@@ -1,5 +1,7 @@
 package edu.nyu.cs.cs2580.hw1;
 
+import java.util.Vector;
+
 
 public class TestQueryLikelihood {
 
@@ -10,13 +12,19 @@ public class TestQueryLikelihood {
 		// TODO Auto-generated method stub
 
 		String indexPath = "/home/edwardlzk/Dropbox/workspace/SearchEngine/data/hw1/corpus.tsv";
-		String testQuery = "the";
+		String testQuery = "united states";
 		
 		
 		Index index = new Index(indexPath);
-		Ranker ranker = new NumViews(index);
+		Ranker ranker = new Phrase(index);
 		
-		System.out.println(ranker.runquery(testQuery));
+		
+		Vector<ScoredDocument> result = ranker.runquery(testQuery);
+		for(ScoredDocument s : result){
+			System.out.println(s.asString());
+		}
+		
+		
 		
 	}
 
