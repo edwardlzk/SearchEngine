@@ -12,11 +12,11 @@ public class TestQueryLikelihood {
 		// TODO Auto-generated method stub
 
 		String indexPath = "/home/edwardlzk/Dropbox/workspace/SearchEngine/data/hw1/corpus.tsv";
-		String testQuery = "united states";
+		String testQuery = "census";
 		
 		
 		Index index = new Index(indexPath);
-		Ranker ranker = new Phrase(index);
+		Ranker ranker = new VectorSpace(index);
 		
 		
 		Vector<ScoredDocument> result = ranker.runquery(testQuery);

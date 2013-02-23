@@ -33,6 +33,7 @@ class Document {
   
   private Vector < Integer > _body;
   private Vector < Integer > _title;
+  private Vector < Double > tfIdf;
   private String _titleString;
   private int _numviews;
   
@@ -108,6 +109,9 @@ class Document {
   public Vector < String > get_body_vector(){
     return getTermVector(_body);
   }
+  
+  
+  
   
   /**
    * Get term frequency in this document

@@ -48,7 +48,7 @@ public class QueryLikelihood implements Ranker {
 	    	
 //	    	System.out.println("INFO: "+d.getLocalTermFrequency(currentTerm) + " "+d.getTotalTerms()+" "+Document.termFrequency(currentTerm) + " "+Document.termFrequency());
 	    	
-	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
+	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood) / Math.log(2);
 	    }
 	    
 	    
