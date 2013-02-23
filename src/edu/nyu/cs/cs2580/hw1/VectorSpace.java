@@ -17,6 +17,8 @@ public class VectorSpace implements Ranker{
 	    for (int i = 0; i < _index.numDocs(); ++i){
 	      retrieval_results.add(runquery(query, i));
 	    }
+	    
+	    Collections.sort(retrieval_results, new ScoredDocumentComparator());
 	    return retrieval_results;
 	}
 	
@@ -74,7 +76,11 @@ public class VectorSpace implements Ranker{
 		    	}
 		    }
 		    
-		    double score = sumMatrix / (Math.sqrt(sumSquareQuery)*Math.sqrt(sumSquaryDoc));
+		    double score = 0;
+		    
+		    if(sumSquareQuery > 0 && sumSquaryDoc > 0){
+		    	score = sumMatrix / (Math.sqrt(sumSquareQuery)*Math.sqrt(sumSquaryDoc));
+		    } 
 		    
 		    
 

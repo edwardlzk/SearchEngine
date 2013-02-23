@@ -12,7 +12,7 @@ public class TestQueryLikelihood {
 		// TODO Auto-generated method stub
 
 		String indexPath = "/home/edwardlzk/Dropbox/workspace/SearchEngine/data/hw1/corpus.tsv";
-		String testQuery = "census";
+		String testQuery = "aol";
 		
 		
 		Index index = new Index(indexPath);

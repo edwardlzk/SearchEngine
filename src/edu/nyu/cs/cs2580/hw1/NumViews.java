@@ -1,5 +1,6 @@
 package edu.nyu.cs.cs2580.hw1;
 
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -21,6 +22,8 @@ public class NumViews implements Ranker {
 	    for (int i = 0; i < _index.numDocs(); ++i){
 	      retrieval_results.add(runquery(query, i));
 	    }
+	    
+	    Collections.sort(retrieval_results, new ScoredDocumentComparator());
 	    return retrieval_results;
 	}
 	

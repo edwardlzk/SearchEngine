@@ -1,5 +1,6 @@
 package edu.nyu.cs.cs2580.hw1;
 
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -20,6 +21,7 @@ public class QueryLikelihood implements Ranker {
 	    for (int i = 0; i < _index.numDocs(); ++i){
 	      retrieval_results.add(runquery(query, i));
 	    }
+	    Collections.sort(retrieval_results, new ScoredDocumentComparator());
 	    return retrieval_results;
 	}
 	
@@ -48,12 +50,12 @@ public class QueryLikelihood implements Ranker {
 	    	
 //	    	System.out.println("INFO: "+d.getLocalTermFrequency(currentTerm) + " "+d.getTotalTerms()+" "+Document.termFrequency(currentTerm) + " "+Document.termFrequency());
 	    	
-	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood) / Math.log(2);
+	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
 	    }
 	    
 	    
 //	    System.out.println(did + " "+score);
-		return new ScoredDocument(did, d.get_title_string(), score);
+		return new ScoredDocument(did, d.get_title_string(), Math.pow(Math.E, score));
 	}
 
 }
