@@ -107,7 +107,7 @@ class QueryHandler implements HttpHandler {
 
 		// Construct a simple response.
 		
-		String sysout = query_map.get("query")+"\t"+query_map.get("ranker")+System.getProperty("line.separator");
+		String sysout = query_map.get("query")+"\t"+query_map.get("ranker")+"\r\n";
 		sysout += queryResponse;
 		Headers responseHeaders = exchange.getResponseHeaders();
 		responseHeaders.set("Content-Type", "text/plain");
