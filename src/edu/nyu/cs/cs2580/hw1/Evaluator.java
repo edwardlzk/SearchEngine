@@ -1,28 +1,77 @@
 package edu.nyu.cs.cs2580.hw1;
 
+<<<<<<< HEAD
+import java.io.*;
+import java.util.Arrays;
+=======
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
 
 class Evaluator {
+  private static String queryType=null;
+  private static String rankerType=null;
 
-  public static void main(String[] args) throws IOException {
+
+public static void main(String[] args) throws IOException {
     HashMap < String , HashMap < Integer , Double > > relevance_judgments =
       new HashMap < String , HashMap < Integer , Double > >();
     if (args.length < 1){
       System.out.println("need to provide relevance_judgments");
       return;
     }
+    readOutputFile();
     String p = args[0];
     // first read the relevance judgments into the HashMap
     readRelevanceJudgments(p,relevance_judgments);
     // now evaluate the results from stdin
     evaluateStdin(relevance_judgments);
+  }
+
+  public static void readOutputFile()
+  {
+	  try {
+		  File dir = new File("/temp");
+			if (!dir.exists()) {
+				if (dir.mkdir()) {
+					System.out.println("Directory is created!");
+				} else {
+					System.out.println("Failed to create directory!");
+				}
+			}
+	      File file =new File("/temp/result.tsv");
+	      if (!file.exists()) {
+				file.createNewFile();
+			}
+	      FileWriter fw = new FileWriter(file.getAbsoluteFile());
+	      BufferedWriter bw = new BufferedWriter(fw);
+	      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	      String line = null;
+	      boolean firstLine=true;
+	      while ((line = reader.readLine()) != null){
+	    	  if(firstLine)
+	    	  {
+	    		  Scanner s = new Scanner(line).useDelimiter("\t");
+	    		  queryType = s.next();
+	    		  rankerType = s.next();
+	    		  firstLine=false;
+	    	  }
+	    	   bw.write(line);
+	    	   bw.newLine();
+		     }
+	  	  bw.close();
+		  System.out.println("Done");
+	 
+	    } catch (Exception e){
+	      System.err.println("Error:" + e.getMessage());
+	    }
+	  
   }
 
   public static void readRelevanceJudgments(
@@ -81,10 +130,17 @@ class Evaluator {
 	      	//String title = s.next();
 	      	//double rel = Double.parseDouble(s.next());
 	      	if (relevance_judgments.containsKey(query) == false){
+<<<<<<< HEAD
+	      		throw new IOException("query not found");
+	      	}
+	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
+	      	if ((qr.containsKey(did) != false)&&(qr.get(did)>=2.0)){
+=======
 	      	 System.out.println("query not found");
 	      	}
 	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
 	      	if ((qr.containsKey(did) != false)&&(qr.get(did)>1.0)){
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	  RR++;
 	      	}
 	      	i++;
@@ -121,16 +177,27 @@ class Evaluator {
 	      	//String title = s.next();
 	      	//double rel = Double.parseDouble(s.next());
 	      	if (relevance_judgments.containsKey(query) == false){
+<<<<<<< HEAD
+	      		throw new IOException("query not found");
+=======
 	      	  System.out.println("query not found");
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	}
 	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
 	      	Set<Integer> keys=qr.keySet();
 	      	R=0;
 	      	for(int key:keys){
+<<<<<<< HEAD
+	      		if(qr.get(key)>=2.0)
+	      			R++;
+	      	}
+	      	if (qr.containsKey(did) != false&&(qr.get(did)>=2.0)){
+=======
 	      		if(qr.get(key)>1.0)
 	      			R++;
 	      	}
 	      	if (qr.containsKey(did) != false&&(qr.get(did)>1.0)){
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	  RR++;
 	      	}
 	      	i++;
@@ -158,14 +225,23 @@ class Evaluator {
 	
  public static  HashMap<Double,Double> PR_Graph(HashMap < String , HashMap < Integer , Double > > relevance_judgments,String path){
 	 HashMap<Double,Double> PR=new HashMap<Double,Double>();
+<<<<<<< HEAD
+	 HashMap<Double,Double> pr=new HashMap<Double,Double>();
+	 pr.put(0.0, 1.0);
+=======
 	 PR.put(0.0, 1.0);
 	 int r_point=1;
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	 try{
 		 FileReader fin=new FileReader(path);
 		 BufferedReader reader = new BufferedReader(fin);
 	 try {
+<<<<<<< HEAD
+	         
+=======
 	      
 	      
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      String line = null;
 	      int RR = 0;
 	      int R=0;//relevant docs
@@ -173,29 +249,49 @@ class Evaluator {
 	      double r;
 	      double p;
 	      
+<<<<<<< HEAD
+	      while((line=reader.readLine())!=null){
+=======
 	      while((line=reader.readLine())!=null&&r_point<=10){
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	        Scanner s = new Scanner(line).useDelimiter("\t");
 	        String query = s.next();
 	        int did = Integer.parseInt(s.next());
 	      	//String title = s.next();
 	      	//double rel = Double.parseDouble(s.next());
 	      	if (relevance_judgments.containsKey(query) == false){
+<<<<<<< HEAD
+	      		throw new IOException("query not found");
+=======
 	      	  System.out.println("query not found");
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	}
 	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
 	      	Set<Integer> keys=qr.keySet();
 	      	R=0;
 	      	for(int key:keys){
+<<<<<<< HEAD
+	      		if(qr.get(key)>=2.0)
+	      			R++;
+	      	}
+	      	if (qr.containsKey(did) != false&&(qr.get(did)>=2.0)){
+=======
 	      		if(qr.get(key)>1.0)
 	      			R++;
 	      	}
 	      	if (qr.containsKey(did) != false&&(qr.get(did)>1.0)){
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	  RR++;
 	      	}
 	      	r=(double)RR/R;
 	      	p=(double)RR/N;
 	        //get recall point
 	      	if(!PR.containsKey(r)){
+<<<<<<< HEAD
+	      		PR.put(r, p);
+	      		if(r==1.0){
+	      			break;
+=======
 	      	if(r==0.1||r==0.2||r==0.3||r==0.4||r==0.5||r==0.6||r==0.7||r==0.8||r==0.9){
 	      		PR.put(r, p);
 	      		r_point++;
@@ -203,18 +299,38 @@ class Evaluator {
 	      	if(r==1.0){
 	      		PR.put(r, p);
 	      		r_point=11;
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      		}
 	      	} 	
 	      	N++;
 	      }
+<<<<<<< HEAD
+	      Set<Double> keys=PR.keySet();
+	      for(double j=0.1;j<=1.0;j+=0.1){
+	    	    double max=0.0;
+	    	  	for(double key:keys){
+	    	  		if((key>=j)&&(PR.get(key)>max)){
+	    	  			max=PR.get(key);
+	    	  		}	
+	  
+	    	  	}
+	    	  	pr.put(j,max);
+	      }
+	      return pr;
+=======
 	      
 	      return PR;
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	 }finally{
 		 reader.close();
 	 }
 	    }catch (Exception e){
 	      System.err.println("Error:" + e.getMessage());
+<<<<<<< HEAD
+	      return pr;
+=======
 	      return PR;
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	    }
  }
  
@@ -236,12 +352,20 @@ class Evaluator {
 	        i++;
 	        int did = Integer.parseInt(s.next());
 	      	if (relevance_judgments.containsKey(query) == false){
+<<<<<<< HEAD
+	      		throw new IOException("query not found");
+=======
 	      	  System.out.println("query not found");
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      	}
 	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
 	      	if (qr.containsKey(did) != false)
 	      	{
+<<<<<<< HEAD
+	      		if(qr.get(did)>=2.0)
+=======
 	      		if(qr.get(did)>1.0)
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 	      			{
 	      			 	RR+=1;
 	      			 	AP+=RR/i;
@@ -255,13 +379,139 @@ class Evaluator {
 	  }catch (Exception e){
 	      System.err.println("Error:" + e.getMessage());
 	      return 0.0;
+<<<<<<< HEAD
+	    }     
+ }
+ 
+ public static double NDCG(HashMap < String , HashMap < Integer , Double > > relevance_judgments,int K, String path)
+ {
+	 try{
+			FileReader fin=new FileReader(path);
+			 BufferedReader reader = new BufferedReader(fin);
+	  try {
+	      
+	      String line = null;
+	      double DCG = 0.0;
+	      double IDCG = 0.0;
+	      int i=0;
+	      double[] score=new double[K];
+	      while (i<K && (line = reader.readLine()) != null ){
+	    	i++;
+	        Scanner s = new Scanner(line).useDelimiter("\t");
+	        String query = s.next();
+	        int did = Integer.parseInt(s.next());
+	      	if (relevance_judgments.containsKey(query) == false){
+	      	  throw new IOException("query not found");
+	      	}
+	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
+	      	if (qr.containsKey(did) != false)
+	      	{
+	      		score[i-1]=qr.get(did);
+	      		DCG+=qr.get(did)/(Math.log(i+1)/Math.log(2)); // calculate log of base 
+	      	}
+	      }
+	      if(score.length>0)
+	      {
+	    	  Arrays.sort(score);
+	    	  int len=score.length;
+	    	  for(int j=len-1;j>=0;j--)
+	    	  {
+	    		  IDCG+=score[j]/(Math.log(len-j+1)/Math.log(2));
+	    	  }
+	      }
+	      if(IDCG!=0.0)
+	    	  return DCG/IDCG;
+	      else
+	    	  return 0.0;
+	  }finally{
+		  reader.close();
+	  }
+	    } catch (Exception e){
+	      System.err.println("Error:" + e.getMessage());
+	      return 0.0;
+	    }
+
+ }
+ 
+ public static double ReciprocalRank(HashMap < String , HashMap < Integer , Double > > relevance_judgments, String path)
+ {
+	 try{
+		 FileReader fin=new FileReader(path);
+		 BufferedReader reader = new BufferedReader(fin);
+	  try {
+	      
+	      String line = null;
+	      //double RR = 0.0;
+	      int i=0;
+	      while ((line = reader.readLine()) != null){
+	        Scanner s = new Scanner(line).useDelimiter("\t");
+	        String query = s.next();
+	        i++;
+	        int did = Integer.parseInt(s.next());
+	      	if (relevance_judgments.containsKey(query) == false){
+	      	  throw new IOException("query not found");
+	      	}
+	      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
+	      	if (qr.containsKey(did) != false)
+	      	{
+	      		if(qr.get(did)>=2.0)
+	      			{
+	      			 	double val=1/(double)i;
+	      			 	return (val);
+	      			}
+	      	}
+	      }
+	  }finally{
+		  reader.close();
+	  }
+	    } catch (Exception e){
+	      System.err.println("Error:" + e.getMessage()); 
+	    }	
+	 return 0.0;
+} 
+=======
 	    }
 	     
  }
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
 
   public static void evaluateStdin(
     HashMap < String , HashMap < Integer , Double > > relevance_judgments){
     // only consider one query per call    
+<<<<<<< HEAD
+      String path="/temp/result.tsv";// input
+      try{
+      String output_path="./results/hw1.3-"+rankerType+".tsv";
+      FileWriter fw = new FileWriter(output_path,true);
+      BufferedWriter writer = new BufferedWriter(fw); 
+      writer.append(queryType+"\t");
+	  writer.append(Precision(relevance_judgments,1,path)+"\t"+
+	  Precision(relevance_judgments,4,path)+"\t"+
+	  Precision(relevance_judgments,10,path)+"\t"+
+	  Recall(relevance_judgments,1,path)+"\t"+
+	  Recall(relevance_judgments,4,path)+"\t"+
+	  Recall(relevance_judgments,10,path)+"\t"+
+	  F_Measure(relevance_judgments,1,path)+"\t"+
+	  F_Measure(relevance_judgments,4,path)+"\t"+
+	  F_Measure(relevance_judgments,10,path)+"\t"
+	  );
+	  HashMap<Double,Double> pr=PR_Graph(relevance_judgments,path);
+      for(double key=0.0;key<=1.0;key+=0.1){
+			 writer.append(pr.get(key)+"\t");
+	  }
+	  writer.append(Average(relevance_judgments,path)+"\t"+
+	  NDCG(relevance_judgments,1,path)+"\t"+
+	  NDCG(relevance_judgments,4,path)+"\t"+
+	  NDCG(relevance_judgments,10,path)+"\t"+
+	  ReciprocalRank(relevance_judgments,path)+"\n");
+	  
+      writer.close();
+      
+      }catch(Exception e){
+    	  System.err.println(e.getMessage());
+      }
+      
+=======
       String path="/Users/banduo/Documents/workspace/SearchEngine/testdata/test1.tsv";
 	  //System.out.println(Precision(relevance_judgments,1,path));
 	  //System.out.println(Precision(relevance_judgments,4,path));
@@ -279,5 +529,6 @@ class Evaluator {
 		 }
 	  }*/
 	  System.out.println(Average(relevance_judgments,path));
+>>>>>>> 874350d594cb5f5feb36779facd6bfb3fa6f8f79
   }
 }
