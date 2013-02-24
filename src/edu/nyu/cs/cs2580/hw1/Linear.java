@@ -43,7 +43,14 @@ public class Linear implements Ranker {
 	
 	@Override
 	public ScoredDocument runquery(String query, int did) {
-		return null;
+		double score = 0;
+		
+		Document d = _index.getDoc(did);
+		
+		for(int i = 0; i<rankers.length; i++){
+			score += rankers[i].runquery(query, did)._score * prams[i];
+		}
+		return new ScoredDocument(did, d.get_title_string(), score);
 	}
 
 	@Override
