@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 class Ranker_Example implements Ranker {
   private Index _index;
+  private String logName = "example";
+  
 
-  public Ranker_Example(String index_source){
-    _index = new Index(index_source);
+  public Ranker_Example(Index index){
+    _index = index;
   }
 
   public Vector < ScoredDocument > runquery(String query){
@@ -47,4 +49,9 @@ class Ranker_Example implements Ranker {
 
     return new ScoredDocument(did, d.get_title_string(), score);
   }
+
+  @Override
+	public String getLogName() {
+		return logName;
+	}
 }

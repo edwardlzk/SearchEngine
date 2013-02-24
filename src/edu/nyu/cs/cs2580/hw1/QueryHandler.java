@@ -2,6 +2,9 @@ package edu.nyu.cs.cs2580.hw1;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -20,12 +23,24 @@ class QueryHandler implements HttpHandler {
 		this.rankerFactory = rankerFactory;
 	}
 
+
+
 	public static Map<String, String> getQueryMap(String query) {
 		String[] params = query.split("&");
 		Map<String, String> map = new HashMap<String, String>();
 		for (String param : params) {
 			String name = param.split("=")[0];
 			String value = param.split("=")[1];
+			
+			try {
+				name = URLDecoder.decode(name,
+						System.getProperty("file.encoding"));
+				value = URLDecoder.decode(value,
+						System.getProperty("file.encoding"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			map.put(name, value);
 		}
 		return map;
@@ -57,20 +72,7 @@ class QueryHandler implements HttpHandler {
 				if (keys.contains("query")) {
 					if (keys.contains("ranker")) {
 						String ranker_type = query_map.get("ranker");
-						// @CS2580: Invoke different ranking functions inside
-						// your
-						// implementation of the Ranker class.
-						// if (ranker_type.equals("cosine")){
-						// queryResponse = (ranker_type + " not implemented.");
-						// } else if (ranker_type.equals("QL")){
-						// queryResponse = (ranker_type + " not implemented.");
-						// } else if (ranker_type.equals("phrase")){
-						// queryResponse = (ranker_type + " not implemented.");
-						// } else if (ranker_type.equals("linear")){
-						// queryResponse = (ranker_type + " not implemented.");
-						// } else {
-						// queryResponse = (ranker_type+" not implemented.");
-						// }
+
 
 						ranker = rankerFactory.getRanker(ranker_type);
 					}
@@ -95,6 +97,12 @@ class QueryHandler implements HttpHandler {
 				}
 			}
 		}
+		
+		//Write response to file
+		Logger logger = Logger.getInstance();
+		
+		logger.logWriter(ranker.getLogName(), queryResponse, false);
+		
 
 		// Construct a simple response.
 		Headers responseHeaders = exchange.getResponseHeaders();
