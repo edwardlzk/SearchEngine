@@ -5,6 +5,7 @@ import java.util.*;
 public class VectorSpace implements Ranker{
 
 	private Index _index;
+	private String logName = "hw1.1-vsm";
 	
 	public VectorSpace(Index index){
 		this._index = index;
@@ -22,7 +23,7 @@ public class VectorSpace implements Ranker{
 	    return retrieval_results;
 	}
 	
-	
+	@Override
 	public ScoredDocument runquery(String query, int did){
 		
 		// Build query vector
@@ -85,6 +86,11 @@ public class VectorSpace implements Ranker{
 		    
 
 			return new ScoredDocument(did, d.get_title_string(), score);
+	}
+
+	@Override
+	public String getLogName() {
+		return logName;
 	}
 	
 

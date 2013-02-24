@@ -7,6 +7,7 @@ import java.util.Vector;
 public class Phrase implements Ranker {
 
 	Index _index;
+	private String logName = "hw1.1-phrase";
 
 	public Phrase(Index index) {
 		this._index = index;
@@ -24,6 +25,7 @@ public class Phrase implements Ranker {
 		return retrieval_results;
 	}
 
+	@Override
 	public ScoredDocument runquery(String query, int did) {
 
 		// Build query vector
@@ -57,6 +59,12 @@ public class Phrase implements Ranker {
 		
 
 		return new ScoredDocument(did, d.get_title_string(), score);
+	}
+
+	@Override
+	public String getLogName() {
+		// TODO Auto-generated method stub
+		return logName;
 	}
 
 }

@@ -9,6 +9,7 @@ public class QueryLikelihood implements Ranker {
 	
 	private Index _index;
 	private double _lambda = 0.5;
+	private String logName = "hw1.1-ql";
 	
 	public QueryLikelihood(Index index){
 		_index = index;
@@ -25,7 +26,7 @@ public class QueryLikelihood implements Ranker {
 	    return retrieval_results;
 	}
 	
-	
+	@Override
 	public ScoredDocument runquery(String query, int did){
 		
 		// Build query vector
@@ -56,6 +57,13 @@ public class QueryLikelihood implements Ranker {
 	    
 //	    System.out.println(did + " "+score);
 		return new ScoredDocument(did, d.get_title_string(), Math.pow(Math.E, score));
+	}
+
+
+	@Override
+	public String getLogName() {
+		// TODO Auto-generated method stub
+		return logName;
 	}
 
 }

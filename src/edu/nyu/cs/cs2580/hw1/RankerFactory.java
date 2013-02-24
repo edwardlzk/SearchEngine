@@ -19,6 +19,10 @@ public class RankerFactory {
 		return instance;
 	}
 	
+	public static RankerFactory getInstance(){
+		return instance;
+	}
+	
 	
 	public Ranker getRanker(String type){
 		Ranker ranker;

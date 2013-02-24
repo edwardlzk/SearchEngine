@@ -6,4 +6,7 @@ public interface Ranker {
 
 	 public Vector < ScoredDocument > runquery(String query);
 	 
+	 public String getLogName();
+	 
+	 public ScoredDocument runquery(String query, int did);
 }
