@@ -15,7 +15,16 @@ public class Logger {
 	
 	private Logger(){}
 	
+	private Logger(String loc){
+		this.container = loc;
+	}
+	
 	public static Logger getInstance(){
+		return instance;
+	}
+	
+	public static Logger getInstance(String loc){
+		instance = new Logger(loc);
 		return instance;
 	}
 
@@ -48,8 +57,6 @@ public class Logger {
 		StringBuilder content = new StringBuilder();
 
 		try {
-			// use buffering, reading one line at a time
-			// FileReader always assumes default encoding is OK!
 			BufferedReader input = new BufferedReader(new FileReader(fileName));
 			try {
 				String line = null; // not declared within while loop

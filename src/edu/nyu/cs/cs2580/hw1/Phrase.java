@@ -25,6 +25,7 @@ public class Phrase implements Ranker {
 		return retrieval_results;
 	}
 
+	@Override
 	public ScoredDocument runquery(String query, int did) {
 
 		// Build query vector
