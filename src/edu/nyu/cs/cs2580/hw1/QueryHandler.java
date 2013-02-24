@@ -64,10 +64,11 @@ class QueryHandler implements HttpHandler {
 		String uriPath = exchange.getRequestURI().getPath();
 
 		Ranker ranker = rankerFactory.getRanker("");
+		Map<String, String> query_map = null;
 
 		if ((uriPath != null) && (uriQuery != null)) {
 			if (uriPath.equals("/search")) {
-				Map<String, String> query_map = getQueryMap(uriQuery);
+				query_map = getQueryMap(uriQuery);
 				Set<String> keys = query_map.keySet();
 				if (keys.contains("query")) {
 					if (keys.contains("ranker")) {
@@ -105,11 +106,14 @@ class QueryHandler implements HttpHandler {
 		
 
 		// Construct a simple response.
+		
+		String sysout = query_map.get("query")+"\t"+query_map.get("ranker")+System.getProperty("line.separator");
+		sysout += queryResponse;
 		Headers responseHeaders = exchange.getResponseHeaders();
 		responseHeaders.set("Content-Type", "text/plain");
 		exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
 		OutputStream responseBody = exchange.getResponseBody();
-		responseBody.write(queryResponse.getBytes());
+		responseBody.write(sysout.getBytes());
 		responseBody.close();
 	}
 }
