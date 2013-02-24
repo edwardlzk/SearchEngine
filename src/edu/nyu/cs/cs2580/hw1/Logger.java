@@ -13,20 +13,19 @@ public class Logger {
 
 	private static Logger instance = new Logger();
 	
-	private Logger(){}
-	
-	private Logger(String loc){
-		this.container = loc;
+	private Logger(){
+		
+		File file = new File(container);
+		if(!file.exists()){
+			file.mkdirs();
+		}
 	}
+	
 	
 	public static Logger getInstance(){
 		return instance;
 	}
 	
-	public static Logger getInstance(String loc){
-		instance = new Logger(loc);
-		return instance;
-	}
 
 	public void logWriter(String name, String content, boolean append) {
 		String fileName = container + name + ".tsv";
