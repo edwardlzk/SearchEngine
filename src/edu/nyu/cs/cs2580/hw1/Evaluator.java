@@ -57,8 +57,11 @@ public static void main(String[] args) throws IOException {
 	    		  rankerType = s.next();
 	    		  firstLine=false;
 	    	  }
+	    	  else
+	    	  {
 	    	   bw.write(line);
 	    	   bw.newLine();
+	    	  }
 		     }
 	  	  bw.close();
 		  System.out.println("Done");
