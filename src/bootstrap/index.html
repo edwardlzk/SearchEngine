@@ -1,0 +1,19 @@
+<html>
+<LINK href="./css/bootstrap.css" rel="stylesheet" type="text/css">
+<body>
+<div class="page-header">
+<h1>Welcome <small>web search engine</small></h1>
+</div>
+<form class="form-search" action="/search" method="get">
+  <input type="text" class="input-xlarge search-query" name="query">
+  <input type="submit" class="btn" value="Search">
+  <br><br>
+<p class="text-info">Please choose a ranker type:</p>
+<input type="radio" name="ranker" value="cosine" checked>cosine
+<input type="radio" name="ranker" value="QL">QL
+<input type="radio" name="ranker" value="phrase">phrase
+<input type="radio" name="ranker" value="view">view
+<input type="radio" name="ranker" value="linear">linear
+</form>
+</body>
+</html>
