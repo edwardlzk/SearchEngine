@@ -8,6 +8,8 @@ import java.net.URLDecoder;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -97,6 +99,38 @@ class QueryHandler implements HttpHandler {
 
 				}
 			}
+				else if(uriPath.equals("/log")) {
+					query_map = getQueryMap(uriQuery);
+					Set<String> logkeys = query_map.keySet();
+					String sid=null;
+					String did=null;
+					String action="render";
+					String query=null;
+					if (logkeys.contains("sid")) 
+						sid=query_map.get("sid");				
+					if (logkeys.contains("did"))
+						did=query_map.get("did");
+					if(logkeys.contains("action"))
+						action=query_map.get("action");
+					if(logkeys.contains("query"))
+						query=URLDecoder.decode(query_map.get("query"),
+								System.getProperty("file.encoding"));
+					// write loging information to hw1.4-log.tsv
+					System.out.println("Come to log...");
+					Logger searchLogger=Logger.getInstance();
+					Date time=new Date();
+					String loginfo=sid+"\t"+query+"\t"+did+"\t"+action+"\t"+time+"\n";
+					searchLogger.logWriter("hw1.4-log", loginfo, true);
+					// write the output
+					Headers responseHeaders = exchange.getResponseHeaders();
+					responseHeaders.set("Content-Type", "text/plain");
+					exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
+					OutputStream responseBody = exchange.getResponseBody();
+					responseBody.write(loginfo.getBytes());
+					responseBody.close();
+					return;
+					}
+			
 		}
 		
 		//Write response to file
@@ -116,4 +150,5 @@ class QueryHandler implements HttpHandler {
 		responseBody.write(sysout.getBytes());
 		responseBody.close();
 	}
+	
 }

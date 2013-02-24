@@ -410,16 +410,7 @@ public static void main(String[] args) throws IOException {
 
       String path="./temp/result.tsv";// input
       try{
-    /*
-     * 	  
-     */
-    	  double d = 2.34568;
-          DecimalFormat f = new DecimalFormat("##.00");  // this will helps you to always keeps in two decimal places
-          System.out.println(f.format(d)); 
-          
-          
-        //  
-      String output_path="../results/hw1.3-"+rankerType+".tsv";
+       String output_path="../results/hw1.3-"+rankerType+".tsv";
       System.out.println("RankerType is "+rankerType);
       FileWriter fw = new FileWriter(output_path,true);
       BufferedWriter writer = new BufferedWriter(fw); 
