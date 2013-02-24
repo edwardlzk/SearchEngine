@@ -43,6 +43,14 @@ class Index {
   public int numDocs(){
     return _documents.size();
   }
+  
+  public double IDF(String term){
+	  double score = 0;
+	  score = 1+ Math.log(numDocs() / documentFrequency(term)) / Math.log(2);
+	  
+	  return score;
+  }
+   
 
   public Document getDoc(int did){
     return (did >= _documents.size() || did < 0) ? null : _documents.get(did);
