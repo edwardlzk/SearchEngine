@@ -13,14 +13,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class QueryHandler implements HttpHandler {
 	private static String plainResponse = "Request received, but I am not smart enough to echo yet!\n";
 
 	private RankerFactory rankerFactory;
+	private AtomicInteger session;
 
 	public QueryHandler(RankerFactory rankerFactory) {
 		this.rankerFactory = rankerFactory;
+		this.session = new AtomicInteger(0);
 	}
 
 
@@ -62,10 +65,12 @@ class QueryHandler implements HttpHandler {
 		String queryResponse = "";
 		String uriQuery = exchange.getRequestURI().getQuery();
 		String uriPath = exchange.getRequestURI().getPath();
+		boolean isHTML = false;
 
 		Ranker ranker = rankerFactory.getRanker("");
 		Map<String, String> query_map = null;
-
+		int currentSession = session.get();
+		
 		if ((uriPath != null) && (uriQuery != null)) {
 			if (uriPath.equals("/search")) {
 				query_map = getQueryMap(uriQuery);
@@ -76,10 +81,14 @@ class QueryHandler implements HttpHandler {
 
 
 						ranker = rankerFactory.getRanker(ranker_type);
+						
+						if(keys.contains("format")){
+							if(query_map.get("format").equals("HTML")){
+								isHTML = true;
+								session.incrementAndGet();
+							}
+						}
 					}
-					// @CS2580: The following is instructor's simple ranker that
-					// does not
-					// use the Ranker class.
 					Vector<ScoredDocument> sds = ranker.runquery(query_map
 							.get("query"));
 					Iterator<ScoredDocument> itr = sds.iterator();
@@ -88,32 +97,48 @@ class QueryHandler implements HttpHandler {
 						if (queryResponse.length() > 0) {
 							queryResponse = queryResponse + "\n";
 						}
-						queryResponse = queryResponse + query_map.get("query")
-								+ "\t" + sd.asString();
+						if(isHTML){
+							queryResponse += sd.asHTML(currentSession, query_map
+									.get("query"));
+						}
+						else{
+							queryResponse = queryResponse + query_map.get("query")
+									+ "\t" + sd.asString();
+						}
 					}
 					if (queryResponse.length() > 0) {
 						queryResponse = queryResponse + "\n";
 					}
 
 				}
+				if (!isHTML) {
+					// Write response to file
+					Logger logger = Logger.getInstance();
+
+					logger.logWriter(ranker.getLogName(), queryResponse, false);
+					// Construct a simple response.
+					String first = query_map.get("query") + "\t"
+							+ query_map.get("ranker") + "\r\n";
+					queryResponse = first + queryResponse;
+				}
 			}
+			
 		}
 		
-		//Write response to file
-		Logger logger = Logger.getInstance();
 		
-		logger.logWriter(ranker.getLogName(), queryResponse, false);
 		
 
-		// Construct a simple response.
 		
-		String sysout = query_map.get("query")+"\t"+query_map.get("ranker")+"\r\n";
-		sysout += queryResponse;
 		Headers responseHeaders = exchange.getResponseHeaders();
-		responseHeaders.set("Content-Type", "text/plain");
+		if(isHTML){
+			responseHeaders.set("Content-Type", "text/html");
+		}
+		else{
+			responseHeaders.set("Content-Type", "text/plain");
+		}
 		exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
 		OutputStream responseBody = exchange.getResponseBody();
-		responseBody.write(sysout.getBytes());
+		responseBody.write(queryResponse.getBytes());
 		responseBody.close();
 	}
 }
