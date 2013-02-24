@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Logger {
 
-	private String container = "../result/";
+	private String container = "../results/";
 
 	private static Logger instance = new Logger();
 	
