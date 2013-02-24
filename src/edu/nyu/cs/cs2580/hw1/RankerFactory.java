@@ -38,6 +38,9 @@ public class RankerFactory {
 		else if(type.equals("view")){
 			ranker = new NumViews(index);
 		}
+		else if(type.equals("linear")){
+			ranker = new Linear(index);
+		}
 		else{
 			ranker = new Ranker_Example(index);
 		}
