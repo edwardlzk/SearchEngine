@@ -150,10 +150,8 @@ class QueryHandler implements HttpHandler {
 					Headers responseHeaders = exchange.getResponseHeaders();
 					responseHeaders.set("Content-Type", "text/plain");
 					exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
-					OutputStream responseBody = exchange.getResponseBody();
-					responseBody.write(loginfo.getBytes());
-					responseBody.close();
-					return;
+					String back = "<script>history.go(-1); </script>";
+					queryResponse += back;
 					}
 
 			
