@@ -11,8 +11,8 @@ public class TestQueryLikelihood {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		String indexPath = "/Users/Wen/Documents/workspace2/SearchEngine/data/hw1/corpus.tsv";
-		String testQuery = "google";
+		String indexPath = "/home/edwardlzk/Dropbox/workspace/SearchEngine/data/hw1/corpus.tsv";
+		String testQuery = "data mining";
 		
 		
 		Index index = new Index(indexPath);

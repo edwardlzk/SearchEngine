@@ -1,5 +1,7 @@
 package edu.nyu.cs.cs2580.hw1;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -28,15 +30,13 @@ class QueryHandler implements HttpHandler {
 		this.session = new AtomicInteger(0);
 	}
 
-
-
 	public static Map<String, String> getQueryMap(String query) {
 		String[] params = query.split("&");
 		Map<String, String> map = new HashMap<String, String>();
 		for (String param : params) {
 			String name = param.split("=")[0];
 			String value = param.split("=")[1];
-			
+
 			try {
 				name = URLDecoder.decode(name,
 						System.getProperty("file.encoding"));
@@ -73,6 +73,37 @@ class QueryHandler implements HttpHandler {
 		Map<String, String> query_map = null;
 		int currentSession = session.get();
 		
+		
+		if(uriPath.equals("/")){
+			//display index
+			isHTML = true;
+
+			System.out.println("test");
+			
+			String fileName = "bootstrap/index.html";
+
+			StringBuilder content = new StringBuilder();
+
+			try {
+				BufferedReader input = new BufferedReader(new FileReader(
+						fileName));
+				try {
+					String line = null; // not declared within while loop
+					while ((line = input.readLine()) != null) {
+						content.append(line);
+						content.append(System.getProperty("line.separator"));
+					}
+				} finally {
+					input.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			
+			
+			queryResponse += content.toString();
+		}
+
 		if ((uriPath != null) && (uriQuery != null)) {
 			if (uriPath.equals("/search")) {
 				query_map = getQueryMap(uriQuery);
@@ -81,11 +112,10 @@ class QueryHandler implements HttpHandler {
 					if (keys.contains("ranker")) {
 						String ranker_type = query_map.get("ranker");
 
-
 						ranker = rankerFactory.getRanker(ranker_type);
-						
-						if(keys.contains("format")){
-							if(query_map.get("format").equals("HTML")){
+
+						if (keys.contains("format")) {
+							if (query_map.get("format").equals("HTML")) {
 								isHTML = true;
 								session.incrementAndGet();
 							}
@@ -99,13 +129,13 @@ class QueryHandler implements HttpHandler {
 						if (queryResponse.length() > 0) {
 							queryResponse = queryResponse + "\n";
 						}
-						if(isHTML){
-							queryResponse += sd.asHTML(currentSession, query_map
-									.get("query"));
-						}
-						else{
-							queryResponse = queryResponse + query_map.get("query")
-									+ "\t" + sd.asString();
+						if (isHTML) {
+							queryResponse += sd.asHTML(currentSession,
+									query_map.get("query"));
+						} else {
+							queryResponse = queryResponse
+									+ query_map.get("query") + "\t"
+									+ sd.asString();
 						}
 					}
 					if (queryResponse.length() > 0) {
@@ -113,59 +143,58 @@ class QueryHandler implements HttpHandler {
 					}
 
 				}
+				else{
+					
+				}
 				if (!isHTML) {
 					// Write response to file
 					Logger logger = Logger.getInstance();
 
-					logger.logWriter(ranker.getLogName(), queryResponse, false);
+					logger.logWriter(ranker.getLogName(), queryResponse, true);
 					// Construct a simple response.
 					String first = query_map.get("query") + "\t"
 							+ query_map.get("ranker") + "\r\n";
 					queryResponse = first + queryResponse;
 				}
+			} else if (uriPath.equals("/log")) {
+				isHTML = true;
+				query_map = getQueryMap(uriQuery);
+				Set<String> logkeys = query_map.keySet();
+				String sid = null;
+				String did = null;
+				String action = "render";
+				String query = null;
+				if (logkeys.contains("sid"))
+					sid = query_map.get("sid");
+				if (logkeys.contains("did"))
+					did = query_map.get("did");
+				if (logkeys.contains("action"))
+					action = query_map.get("action");
+				if (logkeys.contains("query"))
+					query = URLDecoder.decode(query_map.get("query"),
+							System.getProperty("file.encoding"));
+				// write loging information to hw1.4-log.tsv
+				System.out.println("Come to log...|");
+				Logger searchLogger = Logger.getInstance();
+				Date time = new Date();
+				String loginfo = sid + "\t" + query + "\t" + did + "\t"
+						+ action + "\t" + time + "\n";
+				searchLogger.logWriter("hw1.4-log", loginfo, true);
+				String back = "<script>history.go(-1); </script>";
+				queryResponse += back;
 			}
-				else if(uriPath.equals("/log")) {
-					query_map = getQueryMap(uriQuery);
-					Set<String> logkeys = query_map.keySet();
-					String sid=null;
-					String did=null;
-					String action="render";
-					String query=null;
-					if (logkeys.contains("sid")) 
-						sid=query_map.get("sid");				
-					if (logkeys.contains("did"))
-						did=query_map.get("did");
-					if(logkeys.contains("action"))
-						action=query_map.get("action");
-					if(logkeys.contains("query"))
-						query=URLDecoder.decode(query_map.get("query"),
-								System.getProperty("file.encoding"));
-					// write loging information to hw1.4-log.tsv
-					System.out.println("Come to log...");
-					Logger searchLogger=Logger.getInstance();
-					Date time=new Date();
-					String loginfo=sid+"\t"+query+"\t"+did+"\t"+action+"\t"+time+"\n";
-					searchLogger.logWriter("hw1.4-log", loginfo, true);
-					// write the output
-					Headers responseHeaders = exchange.getResponseHeaders();
-					responseHeaders.set("Content-Type", "text/plain");
-					exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
-					String back = "<script>history.go(-1); </script>";
-					queryResponse += back;
-					}
 
-			
+			else if (uriPath.equals("/index")) {
+				
+
+			}
+
 		}
-		
-		
-		
 
-		
 		Headers responseHeaders = exchange.getResponseHeaders();
-		if(isHTML){
+		if (isHTML) {
 			responseHeaders.set("Content-Type", "text/html");
-		}
-		else{
+		} else {
 			responseHeaders.set("Content-Type", "text/plain");
 		}
 		exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
@@ -173,5 +202,5 @@ class QueryHandler implements HttpHandler {
 		responseBody.write(queryResponse.getBytes());
 		responseBody.close();
 	}
-	
+
 }

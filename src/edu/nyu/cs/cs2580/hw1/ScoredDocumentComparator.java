@@ -6,7 +6,9 @@ public class ScoredDocumentComparator implements Comparator<ScoredDocument> {
 
 	@Override
 	public int compare(ScoredDocument arg0, ScoredDocument arg1) {
-		return (arg0._score < arg1._score)?1:-1;
+		Double s1 = new Double(arg0._score);
+		Double s2 = new Double(arg1._score);
+		return s2.compareTo(s1);
 	}
 
 }

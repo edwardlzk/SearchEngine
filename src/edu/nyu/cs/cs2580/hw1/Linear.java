@@ -20,13 +20,13 @@ public class Linear implements Ranker {
 		prams[0] = 0.5;
 		
 		rankers[1] = rf.getRanker("QL");
-		prams[1] = 0.45;
+		prams[1] = 2;
 		
 		rankers[2] = rf.getRanker("phrase");
-		prams[2] = 0.04995;
+		prams[2] = 0.05;
 		
 		rankers[3] = rf.getRanker("view");
-		prams[3] = 0.000005;
+		prams[3] = 0.000002;
 	}
 	
 	@Override
