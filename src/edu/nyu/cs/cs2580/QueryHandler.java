@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -72,7 +72,7 @@ class QueryHandler implements HttpHandler {
 		Ranker ranker = rankerFactory.getRanker("");
 		Map<String, String> query_map = null;
 		int currentSession = session.get();
-		
+		Logger searchLogger = Logger.getInstance();
 		
 		if(uriPath.equals("/")){
 			//display index
@@ -111,7 +111,7 @@ class QueryHandler implements HttpHandler {
 				if (keys.contains("query")) {
 					if (keys.contains("ranker")) {
 						String ranker_type = query_map.get("ranker");
-
+						
 						ranker = rankerFactory.getRanker(ranker_type);
 
 						if (keys.contains("format")) {
@@ -132,6 +132,14 @@ class QueryHandler implements HttpHandler {
 						if (isHTML) {
 							queryResponse += sd.asHTML(currentSession,
 									query_map.get("query"));
+							
+							//Log Render
+							Date time = new Date();
+							String loginfo = currentSession + "\t" + query_map
+									.get("query") + "\t" + sd._did + "\t"
+									+ "render" + "\t" + time + "\n";
+							searchLogger.logWriter("hw1.4-log", loginfo, true);
+							
 						} else {
 							queryResponse = queryResponse
 									+ query_map.get("query") + "\t"
@@ -142,9 +150,6 @@ class QueryHandler implements HttpHandler {
 						queryResponse = queryResponse + "\n";
 					}
 
-				}
-				else{
-					
 				}
 				if (!isHTML) {
 					// Write response to file
@@ -175,7 +180,7 @@ class QueryHandler implements HttpHandler {
 							System.getProperty("file.encoding"));
 				// write loging information to hw1.4-log.tsv
 				System.out.println("Come to log...|");
-				Logger searchLogger = Logger.getInstance();
+				
 				Date time = new Date();
 				String loginfo = sid + "\t" + query + "\t" + did + "\t"
 						+ action + "\t" + time + "\n";

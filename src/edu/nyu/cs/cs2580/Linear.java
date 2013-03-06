@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.util.Collections;
 import java.util.Vector;

@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

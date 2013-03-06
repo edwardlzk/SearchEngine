@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.util.Collections;
 import java.util.Scanner;
@@ -45,7 +45,7 @@ public class Phrase implements Ranker {
 		}
 		else{
 			Vector<String> dv = d.get_body_vector();
-			double count = 0;
+			int count = 0;
 			for(int i = 0; i<qv.size()-1; i++){
 				for(int j = 0; j<dv.size()-1; j++){
 					if(dv.get(j).equals(qv.get(i)) && 

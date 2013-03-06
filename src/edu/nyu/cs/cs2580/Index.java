@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.io.IOException;
 import java.io.File;
@@ -46,7 +46,7 @@ class Index {
   
   public double IDF(String term){
 	  double score = 0;
-	  score = 1+ Math.log(numDocs() / documentFrequency(term)) / Math.log(2);
+	  score = 1+ Math.log(numDocs() *1.0 / documentFrequency(term)*1.0) / Math.log(2);
 	  
 	  return score;
   }

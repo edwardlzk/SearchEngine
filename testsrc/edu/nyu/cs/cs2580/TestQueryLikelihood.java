@@ -1,6 +1,11 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.util.Vector;
+
+import edu.nyu.cs.cs2580.Index;
+import edu.nyu.cs.cs2580.Phrase;
+import edu.nyu.cs.cs2580.Ranker;
+import edu.nyu.cs.cs2580.ScoredDocument;
 
 
 public class TestQueryLikelihood {

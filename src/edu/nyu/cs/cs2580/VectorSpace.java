@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.hw1;
+package edu.nyu.cs.cs2580;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class VectorSpace implements Ranker{
 				Map<String, Integer> queryTerms = new HashMap<String, Integer>();
 				while (s.hasNext()) {
 					String term = s.next();
-					//Count terms that appears at the doc
+					//Count terms that appears at the query
 					if(_index.termFrequency(term) > 0){
 						qv.add(term);
 						if(!queryTerms.containsKey(term)){
@@ -80,7 +80,7 @@ public class VectorSpace implements Ranker{
 		    double score = 0;
 		    
 		    if(sumSquareQuery > 0 && sumSquaryDoc > 0){
-		    	score = sumMatrix / (Math.sqrt(sumSquareQuery)*Math.sqrt(sumSquaryDoc));
+		    	score = sumMatrix / (Math.sqrt(sumSquareQuery*sumSquaryDoc));
 		    } 
 		    
 		    
