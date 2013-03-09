@@ -367,16 +367,34 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   }
 
   // the next occurrence of the term in docid after pos 
-//  private int next_pos(String word,int docid,int pos){
-//	  if()
-//		 Vector<Integer> docIDs=_index.get(word).get(docid);
-//		 for(int i:docIDs){
-//			 if(i>pos){
-//				 return i;
-//			 }
-//		 }
-//		  return Integer.MAX_VALUE;
-//	  }
+  private int next_pos(String word,int docid,int pos) throws Exception{
+	  if(!_index.containsKey(word))
+		  return -1;
+	  Vector<Integer> docIDs=extractAlldids(word);
+	  int offset=-1;
+	  for(int i=0;i<docIDs.size();i++)
+	  {
+		 // find the offset of the docid in the list
+		  if(docIDs.get(i)==docid)
+		  {
+			offset=i;
+			break;
+		  }
+	  }
+	  if(offset==-1)
+			 throw new Exception("This docid doesn't contain this term");
+	  Vector<Byte> poslist = _index.get(word).get(offset);
+	  // extract the id and all the positions in that id that the term occurs
+	  Vector<Integer> enlist = extractNumbers(poslist);
+	  if(enlist.lastElement()<=pos)
+		  return -1;
+	  for(int j=1;j<enlist.size();j++)
+	  {
+		  if(enlist.get(j)>pos)
+			  return enlist.get(j);
+	  }
+		 return -1;
+}
   @Override
   public int corpusDocFrequencyByTerm(String term) {
     return 0;
@@ -394,7 +412,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   public int documentTermFrequency(String term, String url) {
     return 0;
   }
-  public static void main(String[] args) throws IOException
+  public static void main(String[] args) throws Exception
   {
 	  
 	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngineHW2/conf/engine.conf");
@@ -410,7 +428,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 			System.out.println(nextdoc._docid);
 		else
 			System.out.println("Null");
-		
+		int x = index.next_pos("Summer", 3, 30);
+		System.out.println("The next position is "+x);
 		
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
