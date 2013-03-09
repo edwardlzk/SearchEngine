@@ -233,14 +233,14 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
   }
  
   public static void main(String[] args) throws IOException {
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngineHW2/conf/engine.conf");
+	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
-   	 // index.constructIndex();
-	  Query query = new Query("Writer Summer Format");
+   	  index.constructIndex();
+	  Query query = new Query("the free");
 	  query.processQuery();
 	  try {
 		index.loadIndex();
-		Document nextdoc = index.nextDoc(query, 3);
+		Document nextdoc = index.nextDoc(query, 8);
 		
 		if(nextdoc!=null)
 			System.out.println(nextdoc._docid);

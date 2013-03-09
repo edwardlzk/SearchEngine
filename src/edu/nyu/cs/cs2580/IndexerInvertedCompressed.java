@@ -56,30 +56,30 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 				}
 	        }
 	    }
-	    Vector<Integer> numlist = null;
-	    int counter=0;
-	    for(int i=0;i<_terms.size();i++){
-	    	System.out.print(_terms.get(i)+":");
-	    	Vector<Vector<Byte>> plist = _index.get(_terms.get(i));
-	    	counter=0;
-	    	for(Vector<Byte> enlist:plist){
-	    		counter++;
-	    		try {
-					numlist = extractNumbers(enlist);
-					System.out.print("(");
-		    		for(int m:numlist)
-		    		{
-		    			System.out.print(m+",");
-		    		}
-		    		System.out.print(")");    		
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    		
-	    	}
-	    	System.out.println(counter);
-	    }
+//	    Vector<Integer> numlist = null;
+//	    int counter=0;
+//	    for(int i=0;i<_terms.size();i++){
+//	    	System.out.print(_terms.get(i)+":");
+//	    	Vector<Vector<Byte>> plist = _index.get(_terms.get(i));
+//	    	counter=0;
+//	    	for(Vector<Byte> enlist:plist){
+//	    		counter++;
+//	    		try {
+//					numlist = extractNumbers(enlist);
+//					System.out.print("(");
+//		    		for(int m:numlist)
+//		    		{
+//		    			System.out.print(m+",");
+//		    		}
+//		    		System.out.print(")");    		
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//	    		
+//	    	}
+//	    	System.out.println(counter);
+//	    }
 	    
 	    System.out.println(
 		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
@@ -366,6 +366,38 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 	  return max;
   }
 
+  
+  public int nextPhrase(Query query, int docid, int pos) throws Exception{
+	  Document idVerify=nextDoc(query,docid-1);
+	  if(!idVerify.equals(_documents.get(docid))){
+		  System.out.println("Enter here");
+		  return -1;
+	  }
+	  Vector<Integer> poslist=new Vector<Integer>();
+	   int id=0;
+	   for(int i=0;i<query._tokens.size();i++){
+		 id=next_pos(query._tokens.get(i),docid,pos);
+		 if(id!=-1)
+			 return -1;
+		 poslist.add(id);
+	   }
+	   if (checkContinuous(poslist))
+		   return poslist.get(0);
+	   else
+		   return nextPhrase(query,docid,poslist.get(poslist.size()-1));
+  }
+  
+  private boolean checkContinuous(Vector<Integer> poslist)
+  {
+	 if(poslist == null)
+		 return false;
+	 for(int i=1;i<poslist.size();i++)
+	 {
+		 if(poslist.get(i) != poslist.get(i-1)+1)
+			 return false;			 
+	 }
+	 return true;
+  }
   // the next occurrence of the term in docid after pos 
   private int next_pos(String word,int docid,int pos) throws Exception{
 	  if(!_index.containsKey(word))
@@ -395,6 +427,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 	  }
 		 return -1;
 }
+  
+  
   @Override
   public int corpusDocFrequencyByTerm(String term) {
     return 0;
@@ -416,19 +450,23 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   {
 	  
 	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
-	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
-	  //index.constructIndex();
-	  Query query = new Query("Writer Summer Format");
+	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
+	  index.constructIndex();
+	  Query query = new Query("Bonnie Clyde");
 	  query.processQuery();
+	  
 	  try {
 		index.loadIndex();
 		Document nextdoc = index.nextDoc(query, 7);
 		
 		if(nextdoc!=null)
-			System.out.println(nextdoc._docid);
+			{
+				System.out.println(nextdoc._docid);
+			}
 		else
 			System.out.println("Null");
-		int x = index.next_pos("Summer", 3, 30);
+		
+		int x = index.nextPhrase(query,3,0);
 		System.out.println("The next position is "+x);
 		
 	} catch (IOException e) {
