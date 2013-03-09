@@ -1,211 +1,178 @@
 package edu.nyu.cs.cs2580;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.Vector;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.concurrent.atomic.AtomicInteger;
+import edu.nyu.cs.cs2580.SearchEngine.Options;
 
+/**
+ * Handles each incoming query, students do not need to change this class except
+ * to provide more query time CGI arguments and the HTML output.
+ * 
+ * N.B. This class is not thread-safe. 
+ * 
+ * @author congyu
+ * @author fdiaz
+ */
 class QueryHandler implements HttpHandler {
-	private static String plainResponse = "Request received, but I am not smart enough to echo yet!\n";
 
-	private RankerFactory rankerFactory;
-	private AtomicInteger session;
+  /**
+   * CGI arguments provided by the user through the URL. This will determine
+   * which Ranker to use and what output format to adopt. For simplicity, all
+   * arguments are publicly accessible.
+   */
+  public static class CgiArguments {
+    // The raw user query
+    public String _query = "";
+    // How many results to return
+    private int _numResults = 10;
+    
+    // The type of the ranker we will be using.
+    public enum RankerType {
+      NONE,
+      FULLSCAN,
+      CONJUNCTIVE,
+      FAVORITE,
+      COSINE,
+      PHRASE,
+      QL,
+      LINEAR,
+    }
+    public RankerType _rankerType = RankerType.NONE;
+    
+    // The output format.
+    public enum OutputFormat {
+      TEXT,
+      HTML,
+    }
+    public OutputFormat _outputFormat = OutputFormat.TEXT;
 
-	public QueryHandler(RankerFactory rankerFactory) {
-		this.rankerFactory = rankerFactory;
-		this.session = new AtomicInteger(0);
-	}
+    public CgiArguments(String uriQuery) {
+      String[] params = uriQuery.split("&");
+      for (String param : params) {
+        String[] keyval = param.split("=", 2);
+        if (keyval.length < 2) {
+          continue;
+        }
+        String key = keyval[0].toLowerCase();
+        String val = keyval[1];
+        if (key.equals("query")) {
+          _query = val;
+        } else if (key.equals("num")) {
+          try {
+            _numResults = Integer.parseInt(val);
+          } catch (NumberFormatException e) {
+            // Ignored, search engine should never fail upon invalid user input.
+          }
+        } else if (key.equals("ranker")) {
+          try {
+            _rankerType = RankerType.valueOf(val.toUpperCase());
+          } catch (IllegalArgumentException e) {
+            // Ignored, search engine should never fail upon invalid user input.
+          }
+        } else if (key.equals("format")) {
+          try {
+            _outputFormat = OutputFormat.valueOf(val.toUpperCase());
+          } catch (IllegalArgumentException e) {
+            // Ignored, search engine should never fail upon invalid user input.
+          }
+        }
+      }  // End of iterating over params
+    }
+  }
 
-	public static Map<String, String> getQueryMap(String query) {
-		String[] params = query.split("&");
-		Map<String, String> map = new HashMap<String, String>();
-		for (String param : params) {
-			String name = param.split("=")[0];
-			String value = param.split("=")[1];
+  // For accessing the underlying documents to be used by the Ranker. Since 
+  // we are not worried about thread-safety here, the Indexer class must take
+  // care of thread-safety.
+  private Indexer _indexer;
 
-			try {
-				name = URLDecoder.decode(name,
-						System.getProperty("file.encoding"));
-				value = URLDecoder.decode(value,
-						System.getProperty("file.encoding"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			map.put(name, value);
-		}
-		return map;
-	}
+  public QueryHandler(Options options, Indexer indexer) {
+    _indexer = indexer;
+  }
 
-	public void handle(HttpExchange exchange) throws IOException {
-		String requestMethod = exchange.getRequestMethod();
-		if (!requestMethod.equalsIgnoreCase("GET")) { // GET requests only.
-			return;
-		}
+  private void respondWithMsg(HttpExchange exchange, final String message)
+      throws IOException {
+    Headers responseHeaders = exchange.getResponseHeaders();
+    responseHeaders.set("Content-Type", "text/plain");
+    exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
+    OutputStream responseBody = exchange.getResponseBody();
+    responseBody.write(message.getBytes());
+    responseBody.close();
+  }
 
-		// Print the user request header.
-		Headers requestHeaders = exchange.getRequestHeaders();
-		System.out.print("Incoming request: ");
-		for (String key : requestHeaders.keySet()) {
-			System.out.print(key + ":" + requestHeaders.get(key) + "; ");
-		}
-		System.out.println();
-		String queryResponse = "";
-		String uriQuery = exchange.getRequestURI().getQuery();
-		String uriPath = exchange.getRequestURI().getPath();
-		boolean isHTML = false;
+  private void constructTextOutput(
+      final Vector<ScoredDocument> docs, StringBuffer response) {
+    for (ScoredDocument doc : docs) {
+      response.append(response.length() > 0 ? "\n" : "");
+      response.append(doc.asTextResult());
+    }
+    response.append(response.length() > 0 ? "\n" : "");
+  }
 
-		Ranker ranker = rankerFactory.getRanker("");
-		Map<String, String> query_map = null;
-		int currentSession = session.get();
-		Logger searchLogger = Logger.getInstance();
-		
-		if(uriPath.equals("/")){
-			//display index
-			isHTML = true;
+  public void handle(HttpExchange exchange) throws IOException {
+    String requestMethod = exchange.getRequestMethod();
+    if (!requestMethod.equalsIgnoreCase("GET")) { // GET requests only.
+      return;
+    }
 
-			System.out.println("test");
-			
-			String fileName = "bootstrap/index.html";
+    // Print the user request header.
+    Headers requestHeaders = exchange.getRequestHeaders();
+    System.out.print("Incoming request: ");
+    for (String key : requestHeaders.keySet()) {
+      System.out.print(key + ":" + requestHeaders.get(key) + "; ");
+    }
+    System.out.println();
 
-			StringBuilder content = new StringBuilder();
+    // Validate the incoming request.
+    String uriQuery = exchange.getRequestURI().getQuery();
+    String uriPath = exchange.getRequestURI().getPath();
+    if (uriPath == null || uriQuery == null) {
+      respondWithMsg(exchange, "Something wrong with the URI!");
+    }
+    if (!uriPath.equals("/search")) {
+      respondWithMsg(exchange, "Only /search is handled!");
+    }
+    System.out.println("Query: " + uriQuery);
 
-			try {
-				BufferedReader input = new BufferedReader(new FileReader(
-						fileName));
-				try {
-					String line = null; // not declared within while loop
-					while ((line = input.readLine()) != null) {
-						content.append(line);
-						content.append(System.getProperty("line.separator"));
-					}
-				} finally {
-					input.close();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			
-			
-			queryResponse += content.toString();
-		}
+    // Process the CGI arguments.
+    CgiArguments cgiArgs = new CgiArguments(uriQuery);
+    if (cgiArgs._query.isEmpty()) {
+      respondWithMsg(exchange, "No query is given!");
+    }
 
-		if ((uriPath != null) && (uriQuery != null)) {
-			if (uriPath.equals("/search")) {
-				query_map = getQueryMap(uriQuery);
-				Set<String> keys = query_map.keySet();
-				if (keys.contains("query")) {
-					if (keys.contains("ranker")) {
-						String ranker_type = query_map.get("ranker");
-						
-						ranker = rankerFactory.getRanker(ranker_type);
+    // Create the ranker.
+    Ranker ranker = Ranker.Factory.getRankerByArguments(
+        cgiArgs, SearchEngine.OPTIONS, _indexer);
+    if (ranker == null) {
+      respondWithMsg(exchange,
+          "Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
+    }
 
-						if (keys.contains("format")) {
-							if (query_map.get("format").equals("HTML")) {
-								isHTML = true;
-								session.incrementAndGet();
-							}
-						}
-					}
-					Vector<ScoredDocument> sds = ranker.runquery(query_map
-							.get("query"));
-					Iterator<ScoredDocument> itr = sds.iterator();
-					while (itr.hasNext()) {
-						ScoredDocument sd = itr.next();
-						if (queryResponse.length() > 0) {
-							queryResponse = queryResponse + "\n";
-						}
-						if (isHTML) {
-							queryResponse += sd.asHTML(currentSession,
-									query_map.get("query"));
-							
-							//Log Render
-							Date time = new Date();
-							String loginfo = currentSession + "\t" + query_map
-									.get("query") + "\t" + sd._did + "\t"
-									+ "render" + "\t" + time + "\n";
-							searchLogger.logWriter("hw1.4-log", loginfo, true);
-							
-						} else {
-							queryResponse = queryResponse
-									+ query_map.get("query") + "\t"
-									+ sd.asString();
-						}
-					}
-					if (queryResponse.length() > 0) {
-						queryResponse = queryResponse + "\n";
-					}
+    // Processing the query.
+    Query processedQuery = new Query(cgiArgs._query);
+    processedQuery.processQuery();
 
-				}
-				if (!isHTML) {
-					// Write response to file
-					Logger logger = Logger.getInstance();
-
-					logger.logWriter(ranker.getLogName(), queryResponse, true);
-					// Construct a simple response.
-					String first = query_map.get("query") + "\t"
-							+ query_map.get("ranker") + "\r\n";
-					queryResponse = first + queryResponse;
-				}
-			} else if (uriPath.equals("/log")) {
-				isHTML = true;
-				query_map = getQueryMap(uriQuery);
-				Set<String> logkeys = query_map.keySet();
-				String sid = null;
-				String did = null;
-				String action = "render";
-				String query = null;
-				if (logkeys.contains("sid"))
-					sid = query_map.get("sid");
-				if (logkeys.contains("did"))
-					did = query_map.get("did");
-				if (logkeys.contains("action"))
-					action = query_map.get("action");
-				if (logkeys.contains("query"))
-					query = URLDecoder.decode(query_map.get("query"),
-							System.getProperty("file.encoding"));
-				// write loging information to hw1.4-log.tsv
-				System.out.println("Come to log...|");
-				
-				Date time = new Date();
-				String loginfo = sid + "\t" + query + "\t" + did + "\t"
-						+ action + "\t" + time + "\n";
-				searchLogger.logWriter("hw1.4-log", loginfo, true);
-				String back = "<script>history.go(-1); </script>";
-				queryResponse += back;
-			}
-
-			else if (uriPath.equals("/index")) {
-				
-
-			}
-
-		}
-
-		Headers responseHeaders = exchange.getResponseHeaders();
-		if (isHTML) {
-			responseHeaders.set("Content-Type", "text/html");
-		} else {
-			responseHeaders.set("Content-Type", "text/plain");
-		}
-		exchange.sendResponseHeaders(200, 0); // arbitrary number of bytes
-		OutputStream responseBody = exchange.getResponseBody();
-		responseBody.write(queryResponse.getBytes());
-		responseBody.close();
-	}
-
+    // Ranking.
+    Vector<ScoredDocument> scoredDocs =
+        ranker.runQuery(processedQuery, cgiArgs._numResults);
+    StringBuffer response = new StringBuffer();
+    switch (cgiArgs._outputFormat) {
+    case TEXT:
+      constructTextOutput(scoredDocs, response);
+      break;
+    case HTML:
+      // @CS2580: Plug in your HTML output
+      break;
+    default:
+      // nothing
+    }
+    respondWithMsg(exchange, response.toString());
+    System.out.println("Finished query: " + cgiArgs._query);
+  }
 }
+

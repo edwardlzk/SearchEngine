@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw1;
 
 import java.io.IOException;
 import java.io.File;

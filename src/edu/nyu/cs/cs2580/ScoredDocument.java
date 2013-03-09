@@ -1,39 +1,40 @@
 package edu.nyu.cs.cs2580;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+/**
+ * Document with score.
+ * 
+ * @author fdiaz
+ * @author congyu
+ */
+class ScoredDocument implements Comparable<ScoredDocument> {
+  private Document _doc;
+  private double _score;
 
-// @CS2580: this class should not be changed.
-class ScoredDocument {
-  public int _did;
-  public String _title;
-  public double _score;
-
-  ScoredDocument(int did, String title, double score){
-    _did = did;
-    _title = title;
+  public ScoredDocument(Document doc, double score) {
+    _doc = doc;
     _score = score;
   }
 
-  String asString(){
-    return new String(
-      Integer.toString(_did) + "\t" + _title + "\t" + Double.toString(_score));
-  
+  public String asTextResult() {
+    StringBuffer buf = new StringBuffer();
+    buf.append(_doc._docid).append("\t");
+    buf.append(_doc.getTitle()).append("\t");
+    buf.append(_score);
+    return buf.toString();
   }
-  
-  String asHTML(int sessionId, String query){
-	  String newLine = "\r\n";
-	  try {
-		query = URLEncoder.encode(query, System.getProperty("file.encoding"));
-	} catch (UnsupportedEncodingException e) {
-		e.printStackTrace();
-	}
-	  StringBuilder ret = new StringBuilder();
-	  
-	  ret.append("<li>").append("<a href='/log?did="+_did+"&sid="+sessionId+"&query="+query+"&action=click'>")
-	  .append(_title)
-	  .append("</a>").append("</li>");
-	  
-	 return ret.toString();
+
+  /**
+   * @CS2580: Student should implement {@code asHtmlResult} for final project.
+   */
+  public String asHtmlResult() {
+    return "";
+  }
+
+  @Override
+  public int compareTo(ScoredDocument o) {
+    if (this._score == o._score) {
+      return 0;
+    }
+    return (this._score > o._score) ? 1 : -1;
   }
 }

@@ -1,10 +1,9 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw1;
 
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.Ranker;
 
 public class NumViews implements Ranker {
 
