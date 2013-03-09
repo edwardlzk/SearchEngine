@@ -415,7 +415,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   public static void main(String[] args) throws Exception
   {
 	  
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngineHW2/conf/engine.conf");
+	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  //index.constructIndex();
 	  Query query = new Query("Writer Summer Format");
