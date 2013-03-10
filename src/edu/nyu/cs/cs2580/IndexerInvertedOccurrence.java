@@ -38,53 +38,7 @@ public class IndexerInvertedOccurrence extends Indexer{
   public void constructIndex() throws IOException {
 	  String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
-	
-<<<<<<< HEAD
-	    File folder = new File(corpusFile);
-	    File[] listOfFiles = folder.listFiles();
 
-	    for (File file : listOfFiles) {
-	        if (file.isFile()) {
-	        	String name=file.getName();
-	            System.out.println(name);
-	            String filepath=corpusFile+name;
-	            BufferedReader reader = new BufferedReader(new FileReader(filepath));
-	            StringBuffer content=new StringBuffer();
-	            try{
-	                String line = null;
-	            	while((line = reader.readLine()) != null) {
-	            		content.append(line);
-	            	}
-	            }finally{
-	            	reader.close();
-	            }
-	  
-	  	        processDocument(content.toString());
-	        }
-	    }
-	    for(int i=0;i<_terms.size();i++){
-	    	System.out.print(_terms.get(i)+":");
-	    	Set<Integer> keys=_index.get(_terms.get(i)).keySet();
-	    	for(int j:keys){
-	    		System.out.println("("+j+","+_index.get(_terms.get(i)).get(j)+")");
-	    	}
-	    	System.out.println();
-	    }
-	    
-	    
-	    System.out.println(
-		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
-
-		    String indexFile = _options._indexPrefix + "/corpus.idx";
-		    System.out.println("Store index to: " + indexFile);
-		    ObjectOutputStream writer =
-		        new ObjectOutputStream(new FileOutputStream(indexFile));
-		    writer.writeObject(this);
-		    writer.close();
-	    
-  }
-
-=======
 		  chooseFiles cf=new chooseFiles(_options);
 		  int times = cf.writeTimes();
 		  System.out.println(times);
@@ -122,7 +76,6 @@ public class IndexerInvertedOccurrence extends Indexer{
 		 }
 	    
   }
->>>>>>> 1411c88821ac4e301be7001099e6d099ea66b97f
 	  
 	  private void processDocument(String content) {
 		    Scanner s = new Scanner(content).useDelimiter("\t");
