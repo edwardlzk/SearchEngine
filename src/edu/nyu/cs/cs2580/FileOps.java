@@ -27,6 +27,31 @@ public class FileOps {
 		this.base = base;
 	}
 	
+	
+	public static String readFile(File file){
+		StringBuilder content = new StringBuilder();
+
+		try {
+			BufferedReader input = new BufferedReader(new FileReader(file));
+			try {
+				String line = null; // not declared within while loop
+				while ((line = input.readLine()) != null) {
+					content.append(line);
+					content.append(System.getProperty("line.separator"));
+				}
+			} finally {
+				input.close();
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return content.toString();
+	}
+	
+//	public static void append(File file, String line){
+//		BufferedReader input = new BufferedReader(new FileReader(file));
+//	}
+	
 	public String read(String name) {
 		
 		String fileName = base + name;
@@ -50,6 +75,14 @@ public class FileOps {
 		return content.toString();
 	}
 	
+	
+	
+	
+	/**
+	 * Function to write term indexes to file
+	 * @param name	Filename
+	 * @param content	a Map which map from a term to its index
+	 */
 	public void write(String name, Map<String, String> content) {
 		String fileName = base + name;
 
@@ -81,6 +114,8 @@ public class FileOps {
 			e.printStackTrace();
 		}
 	}
+	
+//	public void 
 	
 	public void merge(String[] tempFiles, String output, String delimiter) throws IOException{
 		//Heap for keys, after getting next smallest term, get corresponding BufferedReader from map.
