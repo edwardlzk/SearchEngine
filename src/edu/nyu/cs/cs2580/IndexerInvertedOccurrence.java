@@ -3,7 +3,6 @@ package edu.nyu.cs.cs2580;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,19 +36,32 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
   
   @Override
   public void constructIndex() throws IOException {
-	  	String corpusFile = _options._tempFolder+"/";
+	  String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
 	
 	    File folder = new File(corpusFile);
 	    File[] listOfFiles = folder.listFiles();
 
 	    for (File file : listOfFiles) {
-	    	 if (file.isFile()) {  
-	    		    System.out.println(file.getName());
-		            processDocument(file);
-		        }
+	        if (file.isFile()) {
+	        	String name=file.getName();
+	            System.out.println(name);
+	            String filepath=corpusFile+name;
+	            BufferedReader reader = new BufferedReader(new FileReader(filepath));
+	            StringBuffer content=new StringBuffer();
+	            try{
+	                String line = null;
+	            	while((line = reader.readLine()) != null) {
+	            		content.append(line);
+	            	}
+	            }finally{
+	            	reader.close();
+	            }
+	  
+	  	        processDocument(content.toString());
+	        }
 	    }
-	/*    for(int i=0;i<_terms.size();i++){
+	    for(int i=0;i<_terms.size();i++){
 	    	System.out.print(_terms.get(i)+":");
 	    	Set<Integer> keys=_index.get(_terms.get(i)).keySet();
 	    	for(int j:keys){
@@ -57,14 +69,18 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	    	}
 	    	System.out.println();
 	    }
-	    */
-	    	    
-/*	    System.out.println(
+	    
+	    Query q=new Query("New York");
+	    q.processQuery();
+	    
+	    int id=nextDoc(q,0)._docid;
+	    System.out.println(id);
+	    
+	    System.out.println(
 		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
 
-	    	String indexFile = _options._indexPrefix + "/corpus.idx";
-		    System.out.println("Store index to: " + indexFile);*/
-	    	String indexFile = _options._indexPrefix + "/corpus.idx";
+		    String indexFile = _options._indexPrefix + "/corpus.idx";
+		    System.out.println("Store index to: " + indexFile);
 		    ObjectOutputStream writer =
 		        new ObjectOutputStream(new FileOutputStream(indexFile));
 		    writer.writeObject(this);
@@ -72,29 +88,37 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	    
   }
 
- 
+  private String remove(String html){
+		int start=html.indexOf("<title>");
+		int end=html.indexOf("</title>");
+		String title=html.substring(start+7,end);
+		title = title.replaceAll("&amp;","").replaceAll("  ", " ");
+		
+		start=html.indexOf("<p>");
+		end=html.indexOf("</p>");
+		String body=html.substring(start+3, end);
+		body = body.replaceAll("<!--.*?-->", "").replaceAll("<[^>]+>", "");
+		body = body.replaceAll("&nbsp;","");
+		body = body.replaceAll("&amp;","");	
+		body = body.replaceAll("  ", " ");
+		
+		return title+"\t"+body;
+	  }
 	  
-  private void processDocument(File file) {
-	    Scanner s;
-		try {
-				s = new Scanner(file).useDelimiter("\t");
-				String title = s.next();
-			    String body = s.next();
-			    s.close();
-			    DocumentIndexed doc = new DocumentIndexed(_documents.size());
-			    doc.setTitle(title);
-			    _documents.add(doc);
-			    ++_numDocs;
-			    generateIndex(title);
-			    generateIndex(body);
-			    //System.out.println(title);
-			    //System.out.println(body);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	   
-}
+	  private void processDocument(String content) {
+		    Scanner s = new Scanner(content).useDelimiter("\t");
+		    String title = s.next();
+		    //String body = s.next();
+		    s.close();
+		    DocumentIndexed doc = new DocumentIndexed(_documents.size());
+		    //doc.setTitle(title);
+		    _documents.add(doc);
+		    ++_numDocs;
+		    generateIndex(title);
+		    //generateIndex(body);
+		    //System.out.println(title);
+		    //System.out.println(body);
+	}
 	  private void generateIndex(String content){
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
@@ -179,11 +203,10 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	   }else{
 		  return nextDoc(query, max(ids)-1); 
 	   }
-	   
-	   System.out.println(result);
-	   return result==-1? null:_documents.get(result); // judge whether found
+	   int r;
+	   r=result==Integer.MAX_VALUE? docid:result; // judge whether found
 	  // if((nextPhrase(query, _documents.get(r)._docid, 0))!=Integer.MAX_VALUE)
-		   
+		   return _documents.get(r);
 	   
 	   
 	  }
@@ -206,7 +229,7 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	  private int next(String word, int docid){
 			// Binary Search
 			if(_index.size() == 0 || !_index.containsKey(word))
-				return -1;
+				return Integer.MAX_VALUE;
 			HashMap<Integer,Vector<Integer>> docIDs = _index.get(word);
 			Set<Integer> keys=docIDs.keySet();
 			Integer[] sortedKey=new Integer[keys.size()];
@@ -216,31 +239,29 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 			}
 		    Arrays.sort(sortedKey);
 			if(sortedKey[sortedKey.length-1]<= docid)
-				return -1;
+				return Integer.MIN_VALUE;
 			if(sortedKey[0] > docid){
 				return sortedKey[0];
 			}
 			int high=sortedKey.length-1;
-			int result=binarySearch(word,1,high,docid,sortedKey);
+			int result=binarySearch(word,0,high,docid,sortedKey);
 			return  sortedKey[result]; 	  
 		}
-	  
-
 	  private int binarySearch(String word, int low, int high, int docid, Integer[] docIDs){
-	   	  	while(high-low>1){
-	   		  int mid=(low+high) >>> 1;
-	   		  if(docIDs[mid]<=docid){
-	   			  low=mid+1;
-	   		  }else{
-	   			  high=mid;
-	   		  }
-	   	  }
-	   		  return docIDs[low]>docid ? low:high;
-	  }
+		  while((high-low)>1){
+			  int mid=(low+high)/2;
+			  if(docIDs[mid]<=docid){
+				  low=mid;
+			  }else{
+				  high=mid;
+			  }
+		  }
+		  return high;
+	  } 
   public int nextPhrase(Query query, int docid, int pos){
 	  Document idVerify=nextDoc(query,docid-1);
 	  if(!idVerify.equals(_documents.get(docid))){
-		  return -1;
+		  return Integer.MAX_VALUE;
 	  }
 	  Vector<Integer> ids=new Vector<Integer>();
 	   int id;
@@ -249,8 +270,8 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 		 ids.add(id);  
 	   }
 	   for(int k:ids){
-	   if(k==-1)
-		   return -1;
+	   if(k==Integer.MAX_VALUE)
+		   return Integer.MAX_VALUE;
 		}
 	   int j=0;
 	   for(;j<ids.size()-1;j++){
@@ -271,7 +292,7 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 			 return i;
 		 }
 	 }
-	  return -1;
+	  return Integer.MAX_VALUE;
   }
   
   @Override
@@ -289,56 +310,5 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
   public int documentTermFrequency(String term, String url) {
     SearchEngine.Check(false, "Not implemented!");
     return 0;
-  }
-  public static void main(String[] args) throws Exception
-  {
-	  
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
-	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
-	  index.constructIndex();
-	  Query query = new Query("Bonnie Clyde");
-	  query.processQuery();
-	  
-	  try {
-		index.loadIndex();
-		Document nextdoc = index.nextDoc(query, 7);
-		
-		if(nextdoc!=null)
-			{
-				System.out.println(nextdoc._docid);
-			}
-		else
-			System.out.println("Null");
-		
-		int x = index.nextPhrase(query,3,2);
-		System.out.println("The next position is "+x);
-		
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  
-//	  Vector<Byte> res =  test.vbyteConversion(100000000);	  
-//	  for(int j=res.size()-1;j>=0;j--)
-//	  {
-//		  StringBuilder builder = new StringBuilder();
-//		  for(int i=0;i<8;i++)
-//		  {
-//			  if((res.get(j)&(1<<i))>0)
-//				  builder.append(1);
-//			  else
-//				  builder.append(0);
-//		  }
-//		  System.out.print(builder.reverse().toString()+"   ");
-//	  }
-//	 int x = test.convertVbyteToNum(res);
-//	 System.out.println(x);
-//	 int m = (int) (res.get(0) & ((1<<7)-1)) + res.get(1)*128;
-//	 System.out.println(m);
-//	 System.out.println(test.vmax^2);
-	  
   }
 }
