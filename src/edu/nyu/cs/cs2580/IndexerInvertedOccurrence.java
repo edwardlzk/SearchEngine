@@ -80,13 +80,13 @@ public class IndexerInvertedOccurrence extends Indexer{
 	  private void processDocument(String content) {
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
-		    //String body = s.next();
+		    String body = s.next();
 		    s.close();
 		    DocumentIndexed doc = new DocumentIndexed(_documents.size());
 		    //doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    generateIndex(title);
+		    generateIndex(title+doc);
 		    //generateIndex(body);
 		    //System.out.println(title);
 		    //System.out.println(body);
@@ -129,9 +129,11 @@ public class IndexerInvertedOccurrence extends Indexer{
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
 	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String docFile = _options._indexPrefix+"/";
+	 
 	    System.out.println("Load index from: " + indexFile);
-	    String outFile=_options._indexPrefix + "/index_load.txt";
-        BufferedWriter writer=new BufferedWriter(new FileWriter(outFile));
+	    //String outFile=_options._indexPrefix + "/index_load.txt";
+        //BufferedWriter writer=new BufferedWriter(new FileWriter(outFile));
 	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	    String line;
 	    while((line=reader.readLine())!=null){
@@ -147,15 +149,23 @@ public class IndexerInvertedOccurrence extends Indexer{
 	    	System.out.println(data);
 	    	String[] docs=data.split("\\|");
 	    	termDocFren=docs.length;
+	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
 	        for(String doc:docs){
-	    	termCorpusFren += doc.split(",").length;
+	    	String[] docid= doc.split(",");
+	    	Appenddoc.add(docid[0]);
+	    	termCorpusFren +=docid.length;
 	        }
 	        termCorpusFren -= termDocFren;
 	        System.out.println(termDocFren+" "+termCorpusFren );
-	        writer.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	        
+	        //writer.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	        for(String docid : Appenddoc){
+	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+docid,true));
+	        addDoc.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	        addDoc.close();
+	        }
 	    }
-	    reader.close();
-	    writer.close();
+	    reader.close();  
   }
 
 

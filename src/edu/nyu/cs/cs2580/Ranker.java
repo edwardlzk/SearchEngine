@@ -66,7 +66,7 @@ public abstract class Ranker {
       case CONJUNCTIVE:
         return new RankerConjunctive(options, arguments, indexer);
       case FAVORITE:
-        return new RankerFavorite(options, arguments, indexer);
+        return new RankerQueryLikelihood(options, arguments, indexer);
       case COSINE:
         // Plug in your cosine Ranker
         break;
