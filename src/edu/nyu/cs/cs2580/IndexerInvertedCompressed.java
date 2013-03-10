@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
@@ -20,8 +22,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 /**
  * @CS2580: Implement this class for HW2.
  */
-public class IndexerInvertedCompressed extends Indexer implements Serializable{
-  private static final long serialVersionUID = 1077111905740085033L;
+public class IndexerInvertedCompressed extends Indexer{
   private final int vmax = 128;
   
   // the first number in the vector<Byte> is the doc id, the second number is the number of word occurrence, 
@@ -39,23 +40,29 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   }
 
   @Override
-  public void constructIndex() throws FileNotFoundException, IOException {
-	  String corpusFile = _options._tempFolder+"/";
+  public void constructIndex() throws IOException {
+	    String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
 	
-	    File folder = new File(corpusFile);
-	    File[] listOfFiles = folder.listFiles();
-
-	    for (File file : listOfFiles) {
-	        if (file.isFile()) {
-	  	        try {
-					processDocument(file);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        }
-	    }
+		  chooseFiles cf=new chooseFiles(_options);
+		  int times = cf.writeTimes();
+		  System.out.println(times);
+		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
+		  for(int i=0;i<times;i++){
+			  Vector<String> files=cf.loadFile(i);
+			  for(String name:files){
+		        String filepath=corpusFile+name;
+		        File file=new File(filepath);
+		        String content = ProcessHtml.process(file);
+		        if (content != null)
+		        	processDocument(content);
+	      
+			  }
+			  String name="temp"+i+".txt";
+			  Map<String, String> content = new HashMap<String,String>();
+			  
+			  
+		  }
 //	    Vector<Integer> numlist = null;
 //	    int counter=0;
 //	    for(int i=0;i<_terms.size();i++){
@@ -80,21 +87,11 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 //	    	}
 //	    	System.out.println(counter);
 //	    }
-	    
-	    System.out.println(
-		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
-
-		    String indexFile = _options._indexPrefix + "/corpus.idx";
-		    System.out.println("Store index to: " + indexFile);
-		    ObjectOutputStream writer =
-		        new ObjectOutputStream(new FileOutputStream(indexFile));
-		    writer.writeObject(this);
-		    writer.close();
-	
+	    	
   }
   
-	  private void processDocument(File file) throws Exception {
-		    Scanner s = new Scanner(file).useDelimiter("\t");
+	  private void processDocument(String content) throws IOException{
+		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
 		    s.close();
@@ -109,7 +106,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 		    //System.out.println(body);
 	}
 	  
-	  private void generateIndex(String content) throws Exception{
+	  private void generateIndex(String content) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int did=_documents.size()-1;
@@ -153,10 +150,10 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 		    return;
 }
  // Convert the docid and the position values
-  private Vector<Integer> extractNumbers(Vector<Byte> poslist) throws Exception
+  private Vector<Integer> extractNumbers(Vector<Byte> poslist) throws IOException
   {
 	  if(poslist == null || poslist.size()==0)
-		  throw new Exception("List is null, no information can be extracted");
+		  throw new IOException("List is null, no information can be extracted");
 	  Vector<Integer> res = new Vector<Integer>();
 	  Vector<Byte> curNum = new Vector<Byte>();
 	  curNum.add(poslist.firstElement()); // the first byte of a number always starts with MSB=1
@@ -222,10 +219,10 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 //	  }
 //  }
   // extract the docId for encoded list
-  private int extractDocId(Vector<Byte> enposition) throws Exception
+  private int extractDocId(Vector<Byte> enposition) throws IOException
   {
 	  if(enposition==null || enposition.size()==0)
-		  throw new Exception("There is no doc id inside the encoded list");
+		  throw new IOException("There is no doc id inside the encoded list");
 	  Vector<Byte> did = new Vector<Byte>();
 	  // a number contains at least one end byte
 	  did.add(enposition.firstElement());
@@ -367,7 +364,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
   }
 
   
-  public int nextPhrase(Query query, int docid, int pos) throws Exception{
+  public int nextPhrase(Query query, int docid, int pos) throws IOException{
 	  Document idVerify=nextDoc(query,docid-1);
 	  if(!idVerify.equals(_documents.get(docid))){
 		  System.out.println("Enter here");
@@ -399,7 +396,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 	 return true;
   }
   // the next occurrence of the term in docid after pos 
-  private int next_pos(String word,int docid,int pos) throws Exception{
+  private int next_pos(String word,int docid,int pos) throws IOException{
 	  if(!_index.containsKey(word))
 		  return -1;
 	  Vector<Integer> docIDs=extractAlldids(word);
@@ -414,7 +411,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 		  }
 	  }
 	  if(offset==-1)
-			 throw new Exception("This docid doesn't contain this term");
+			 throw new IOException("This docid doesn't contain this term");
 	  Vector<Byte> poslist = _index.get(word).get(offset);
 	  // extract the id and all the positions in that id that the term occurs
 	  Vector<Integer> enlist = extractNumbers(poslist);
