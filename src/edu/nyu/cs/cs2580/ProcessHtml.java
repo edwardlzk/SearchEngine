@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,32 +21,39 @@ public class ProcessHtml {
 	public static String process(File file)
 	{
 		StringBuilder builder = new StringBuilder();
-		try {
-			Document doc = Jsoup.parse(file, "UTF-8", "");
-			String title = doc.title(); //process the title of the html
-			
-			// replace all the non-word characters except ' and - to space
-			String resultTitle = title.replaceAll("[^\\w&&[^'-]]", " ");
-			// replace duplicate white spaces to one space
-			resultTitle = resultTitle.replaceAll("\\s+"," ");
-			System.out.println(resultTitle);
-			builder.append(resultTitle);
-			// the title and body are seperated by tab
-			builder.append("\t");
-			String body = doc.body().text(); //process the body of the html
-			// replace all the non-word characters except ' and - to space
-			String resultBody = body.replaceAll("[^\\w&&[^'-]]", " ");
-			// replace duplicate white spaces to one space
-			resultBody = resultBody.replaceAll("\\s+"," ");
-			builder.append(resultBody);
-			System.out.println(resultBody);
-			return builder.toString();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		String html = FileOps.readFile(file);
+
+		String titlePattern = "<title>(.*)</title>";
+		String bodyPattern = ".*<body[^>]*>(.*)</body>";
+		
+		Pattern title = Pattern.compile(titlePattern);
+		Pattern body = Pattern.compile(bodyPattern);
+		
+		Matcher titleResult = title.matcher(html);
+		Matcher bodyResult = body.matcher(html);
+		
+		titleResult.find();
+		String titleString = titleResult.group(1); //process the title of the html
+		String resultTitle = titleString.replaceAll("\\&.*;"," ");
+		// replace all the non-word characters except ' and - to space
+		 resultTitle = resultTitle.replaceAll("[^\\w]", " ");
+		// replace duplicate white spaces to one space
+		resultTitle = resultTitle.replaceAll("\\s+"," ");
+		
+		System.out.println(resultTitle);
+		builder.append(resultTitle);
+		// the title and body are seperated by tab
+		builder.append("\t");
+		
+		boolean found = bodyResult.find();
+		String bodyString = bodyResult.group(1); //process the body of the html
+		// replace all the non-word characters except ' and - to space
+		String resultBody = bodyString.replaceAll("[^\\w]", " ");
+		// replace duplicate white spaces to one space
+		resultBody = resultBody.replaceAll("\\s+"," ");
+		builder.append(resultBody);
+		System.out.println(resultBody);
+		return builder.toString();
 	}
 	/**
 	 * @param args
@@ -52,8 +61,8 @@ public class ProcessHtml {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
-		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/data/wiki/1983–84_Liverpool_F.C._season.html");	
+		Options option = new Options("conf/engine.conf");
+		File file = new File("data/hw2/wiki/test.html");	
 		String res = ProcessHtml.process(file);
 		System.out.println(res);
 		Scanner s = new Scanner(res).useDelimiter("\t");
