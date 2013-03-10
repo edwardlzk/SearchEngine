@@ -57,7 +57,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		        String content = ProcessHtml.process(file);
 		        totalTime += new Date().getTime() - time;
 		        if (content != null)
-		        	processDocument(content,name);
+		        	processDocument(content);
 	      
 			  }
 			  System.out.println("Times here : " + i);
@@ -81,7 +81,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		 }
 		 
   }
-  private void processDocument(String content, String filename) {
+  private void processDocument(String content) {
 	  try{
 	    Scanner s;
 		s = new Scanner(content).useDelimiter("\t");
@@ -96,7 +96,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		generateIndex(body);
 	  }
 	  catch(Exception e){
-		  System.out.println("The file that has error: "+ filename);
+		  System.out.println("The file that has error");
 	  }
 	   
 }

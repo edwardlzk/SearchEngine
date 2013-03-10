@@ -1,10 +1,12 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,52 +39,41 @@ public class IndexerInvertedOccurrence extends Indexer{
 	  String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
 	
-	    File folder = new File(corpusFile);
-	    File[] listOfFiles = folder.listFiles();
-
-	    for (File file : listOfFiles) {
-	        if (file.isFile()) {
-	        	String name=file.getName();
-	            System.out.println(name);
-	            String filepath=corpusFile+name;
-	            BufferedReader reader = new BufferedReader(new FileReader(filepath));
-	            StringBuffer content=new StringBuffer();
-	            try{
-	                String line = null;
-	            	while((line = reader.readLine()) != null) {
-	            		content.append(line);
-	            	}
-	            }finally{
-	            	reader.close();
-	            }
-	  
-	  	        processDocument(content.toString());
-	        }
-	    }
-	    for(int i=0;i<_terms.size();i++){
-	    	System.out.print(_terms.get(i)+":");
-	    	Set<Integer> keys=_index.get(_terms.get(i)).keySet();
-	    	for(int j:keys){
-	    		System.out.println("("+j+","+_index.get(_terms.get(i)).get(j)+")");
-	    	}
-	    	System.out.println();
-	    }
-	    
-	    Query q=new Query("New York");
-	    q.processQuery();
-	    
-	    int id=nextDoc(q,0)._docid;
-	    System.out.println(id);
-	    
-	    System.out.println(
-		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
-
-		    String indexFile = _options._indexPrefix + "/corpus.idx";
-		    System.out.println("Store index to: " + indexFile);
-		    ObjectOutputStream writer =
-		        new ObjectOutputStream(new FileOutputStream(indexFile));
-		    writer.writeObject(this);
-		    writer.close();
+		  chooseFiles cf=new chooseFiles(_options);
+		  int times = cf.writeTimes();
+		  System.out.println(times);
+		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
+		  for(int i=0;i<times;i++){
+			  Vector<String> files=cf.loadFile(i);
+			  for(String name:files){
+		        String filepath=corpusFile+name;
+		        File file=new File(filepath);
+		        String content = ProcessHtml.process(file);
+		        if (content != null)
+		        	processDocument(content);    
+			  }
+			  String name="temp"+i+".txt";
+			  Map<String, String> content=new HashMap<String,String>();
+		      for(int k=0;k<_terms.size();k++){
+		    	  Set<Integer> keys=_index.get(_terms.get(k)).keySet();
+		    	  StringBuilder value=new StringBuilder();
+			    	for(int j:keys){
+			    		Vector<Integer> pos=_index.get(_terms.get(k)).get(j);
+			    		Integer docid=new Integer(j);
+			    		value.append(docid.toString()).append(",");
+			    		for(int p:pos){
+			    		value.append(p).append(",");
+			    		}
+			    		value.deleteCharAt(value.length()-1);
+			    		value.append("|");
+			    	}
+			    	value.deleteCharAt(value.length()-1);
+			    	content.put(_terms.get(k),value.toString());	
+		      }
+		      filewriter.write(name, content);
+			  _index.clear();
+			  _terms.clear();
+		 }
 	    
   }
 	  
@@ -139,25 +130,34 @@ public class IndexerInvertedOccurrence extends Indexer{
   public void loadIndex() throws IOException, ClassNotFoundException {
 	  String indexFile = _options._indexPrefix + "/corpus.idx";
 	    System.out.println("Load index from: " + indexFile);
-
-	    ObjectInputStream reader =
-	        new ObjectInputStream(new FileInputStream(indexFile));
-	    IndexerInvertedOccurrence loaded = (IndexerInvertedOccurrence) reader.readObject();
-
-	    this._documents = loaded._documents;
-	    // Compute numDocs and totalTermFrequency b/c Indexer is not serializable.
-	    this._numDocs = _documents.size();
-	    //for (Integer freq : loaded._termCorpusFrequency.values()) {
-	      //this._totalTermFrequency += freq;
-	    //}
-	    //this._dictionary = loaded._dictionary;
-	    this._terms = loaded._terms;
-	    //this._termCorpusFrequency = loaded._termCorpusFrequency;
-	    //this._termDocFrequency = loaded._termDocFrequency;
+	    String outFile=_options._indexPrefix + "/index_load.txt";
+        BufferedWriter writer=new BufferedWriter(new FileWriter(outFile));
+	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	    String line;
+	    while((line=reader.readLine())!=null){
+	    	 int termDocFren=0;
+	         int termCorpusFren=0;
+	         String title="";
+	         String data="";
+	    	Scanner s=new Scanner(line).useDelimiter("\t");
+	    	while(s.hasNext()){
+	    		title=s.next();
+	    		data=s.next();
+	    	}
+	    	System.out.println(data);
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	        for(String doc:docs){
+	    	termCorpusFren += doc.split(",").length;
+	        }
+	        termCorpusFren -= termDocFren;
+	        System.out.println(termDocFren+" "+termCorpusFren );
+	        writer.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	    }
 	    reader.close();
-
-	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
+	    writer.close();
   }
+
 
   @Override
   public Document getDoc(int docid) {
@@ -291,5 +291,30 @@ public class IndexerInvertedOccurrence extends Indexer{
   public int documentTermFrequency(String term, String url) {
     SearchEngine.Check(false, "Not implemented!");
     return 0;
+  }
+  public static void main(String[] args) throws IOException {
+	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
+	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
+   	  index.constructIndex();
+//	  Query query = new Query("the free");
+//	  query.processQuery();
+//	  try {
+//		index.loadIndex();
+//		Document nextdoc = index.nextDoc(query, 8);
+//		
+//		if(nextdoc!=null)
+//			System.out.println(nextdoc._docid);
+//		else
+//			System.out.println("Null");
+//		
+		
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	} catch (ClassNotFoundException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+	  
   }
 }
