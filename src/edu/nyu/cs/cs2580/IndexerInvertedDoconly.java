@@ -52,9 +52,11 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
-	            processDocument(content,name);
-	        
+		        if (content != null)
+		        	processDocument(content,name);
+	      
 			  }
+			  System.out.println("Times here : " + i);
 			  String name="temp"+i+".txt";
 			  Map<String, String> content = new HashMap<String,String>();
 			  for(String term:_index.keySet())
@@ -67,6 +69,7 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 				  builder.deleteCharAt(builder.length()-1);
 				  content.put(term,builder.toString());
 			  }
+			  
 			  filewriter.write(name, content);
 			  _index.clear();
 			  _terms.clear();

@@ -22,22 +22,26 @@ public class ProcessHtml {
 		try {
 			Document doc = Jsoup.parse(file, "UTF-8", "");
 			String title = doc.title(); //process the title of the html
+			String body = doc.body().text(); //process the body of the html
+			if (title == null || title.equals("") || body == null || body.equals(""))
+				return null;
+			
 			
 			// replace all the non-word characters except ' and - to space
 			String resultTitle = title.replaceAll("[^\\w&&[^'-]]", " ");
 			// replace duplicate white spaces to one space
 			resultTitle = resultTitle.replaceAll("\\s+"," ");
-			System.out.println(resultTitle);
+			//System.out.println(resultTitle);
 			builder.append(resultTitle);
 			// the title and body are seperated by tab
 			builder.append("\t");
-			String body = doc.body().text(); //process the body of the html
+			
 			// replace all the non-word characters except ' and - to space
 			String resultBody = body.replaceAll("[^\\w&&[^'-]]", " ");
 			// replace duplicate white spaces to one space
 			resultBody = resultBody.replaceAll("\\s+"," ");
 			builder.append(resultBody);
-			System.out.println(resultBody);
+			//System.out.println(resultBody);
 			return builder.toString();
 			
 		} catch (IOException e) {
@@ -53,14 +57,19 @@ public class ProcessHtml {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
-		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/data/wiki/1983–84_Liverpool_F.C._season.html");	
+		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/testdata/test.html");	
 		String res = ProcessHtml.process(file);
-		System.out.println(res);
-		Scanner s = new Scanner(res).useDelimiter("\t");
-		String title = s.next();
-		String body = s.next();
-		System.out.println(title);
-		System.out.println(body);
+		//System.out.println(res);
+		if(res != null)
+		{
+			Scanner s = new Scanner(res).useDelimiter("\t");
+			String title = s.next();
+			String body = s.next();
+			System.out.println(title);
+			System.out.println(body);
+		}
+		else
+			System.out.println(res);
 		
 	}
 
