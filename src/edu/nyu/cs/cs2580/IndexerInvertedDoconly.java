@@ -17,8 +17,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 /**
  * @CS2580: Implement this class for HW2.
  */
-public class IndexerInvertedDoconly extends Indexer implements Serializable{
-  private static final long serialVersionUID = 1077111905740085031L;
+public class IndexerInvertedDoconly extends Indexer {
   
   // Map each term to its associate document
   private Map<String, Vector<Integer>> _index=new HashMap<String,Vector<Integer>>();
@@ -27,6 +26,9 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
   //Stores all Document in memory.
   private Vector<DocumentIndexed> _documents = new Vector<DocumentIndexed>();
   
+  private long totalTime = 0;
+  private long time = 0;
+  private Calendar cal = Calendar.getInstance();
   
   // Provided for serialization
   public IndexerInvertedDoconly(){}
@@ -51,12 +53,15 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
+		        time = new Date().getTime();
 		        String content = ProcessHtml.process(file);
+		        totalTime += new Date().getTime() - time;
 		        if (content != null)
 		        	processDocument(content,name);
 	      
 			  }
 			  System.out.println("Times here : " + i);
+			  System.out.println("processes:" + totalTime);
 			  String name="temp"+i+".txt";
 			  Map<String, String> content = new HashMap<String,String>();
 			  for(String term:_index.keySet())
@@ -74,26 +79,7 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 			  _index.clear();
 			  _terms.clear();
 		 }
-		
 		 
-/*	    for(int i=0;i<_terms.size();i++){
-	    	System.out.print(_terms.get(i)+":");
-	    	for(int j=0;j<_index.get(_terms.get(i)).size();j++){
-	    		System.out.print(_index.get(_terms.get(i)).get(j)+" ");
-	    	}
-	    	System.out.println();
-	    }
-	  
-	    System.out.println(
-	        "Indexed " + Integer.toString(_numDocs) + " docs with ");
-
-	    String indexFile = _options._indexPrefix + "/corpus.idx";
-	    System.out.println("Store index to: " + indexFile);
-	    ObjectOutputStream writer =
-	        new ObjectOutputStream(new FileOutputStream(indexFile));
-	    writer.writeObject(this);
-	    writer.close();*/
-		  
   }
   private void processDocument(String content, String filename) {
 	  try{
@@ -112,8 +98,6 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 	  catch(Exception e){
 		  System.out.println("The file that has error: "+ filename);
 	  }
-		//System.out.println(title);
-		//System.out.println(body);
 	   
 }
   private void generateIndex(String content){

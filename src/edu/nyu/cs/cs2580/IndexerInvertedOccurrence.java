@@ -17,10 +17,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 /**
  * @CS2580: Implement this class for HW2.
  */
-public class IndexerInvertedOccurrence extends Indexer implements Serializable{
-	private static final long serialVersionUID = 1077111905740085032L;
-	
-	  private HashMap<String, HashMap<Integer,Vector<Integer>>> _index=new HashMap<String,HashMap<Integer,Vector<Integer>>>();
+public class IndexerInvertedOccurrence extends Indexer{
+		  private HashMap<String, HashMap<Integer,Vector<Integer>>> _index=new HashMap<String,HashMap<Integer,Vector<Integer>>>();
 	  //all unique terms
 	  private Vector<String> _terms = new Vector<String>();
 	  //Stores all Document in memory.
@@ -87,23 +85,6 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 		    writer.close();
 	    
   }
-
-  private String remove(String html){
-		int start=html.indexOf("<title>");
-		int end=html.indexOf("</title>");
-		String title=html.substring(start+7,end);
-		title = title.replaceAll("&amp;","").replaceAll("  ", " ");
-		
-		start=html.indexOf("<p>");
-		end=html.indexOf("</p>");
-		String body=html.substring(start+3, end);
-		body = body.replaceAll("<!--.*?-->", "").replaceAll("<[^>]+>", "");
-		body = body.replaceAll("&nbsp;","");
-		body = body.replaceAll("&amp;","");	
-		body = body.replaceAll("  ", " ");
-		
-		return title+"\t"+body;
-	  }
 	  
 	  private void processDocument(String content) {
 		    Scanner s = new Scanner(content).useDelimiter("\t");
