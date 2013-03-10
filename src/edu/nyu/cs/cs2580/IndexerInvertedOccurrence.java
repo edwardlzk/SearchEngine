@@ -80,13 +80,13 @@ public class IndexerInvertedOccurrence extends Indexer{
 	  private void processDocument(String content) {
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
-		    //String body = s.next();
+		    String body = s.next();
 		    s.close();
 		    DocumentIndexed doc = new DocumentIndexed(_documents.size());
 		    //doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    generateIndex(title);
+		    generateIndex(title+doc);
 		    //generateIndex(body);
 		    //System.out.println(title);
 		    //System.out.println(body);
