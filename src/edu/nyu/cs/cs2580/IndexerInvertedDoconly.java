@@ -39,18 +39,41 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 
   @Override
   public void constructIndex() throws IOException {
-	    String corpusFile = _options._tempFolder+"/";
+	    String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
 	
-	    File folder = new File(corpusFile);
-	    File[] listOfFiles = folder.listFiles();
-
-	    for (File file : listOfFiles) {
-	        if (file.isFile()) {  
-	            processDocument(file);
-	        }
-	    }
-	    for(int i=0;i<_terms.size();i++){
+		  chooseFiles cf=new chooseFiles(_options);
+		  int times = cf.writeTimes();
+		  System.out.println(times);
+		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
+		  for(int i=0;i<times;i++){
+			  Vector<String> files=cf.loadFile(i);
+			  for(String name:files){
+		        String filepath=corpusFile+name;
+		        File file=new File(filepath);
+		        String content = ProcessHtml.process(file);
+	            processDocument(content,name);
+	        
+			  }
+			  String name="temp"+i+".txt";
+			  Map<String, String> content = new HashMap<String,String>();
+			  for(String term:_index.keySet())
+			  {
+				  StringBuilder builder = new StringBuilder();
+				  for(Integer x:_index.get(term))
+				  {
+					  builder.append(x+"|");
+				  }
+				  builder.deleteCharAt(builder.length()-1);
+				  content.put(term,builder.toString());
+			  }
+			  filewriter.write(name, content);
+			  _index.clear();
+			  _terms.clear();
+		 }
+		
+		 
+/*	    for(int i=0;i<_terms.size();i++){
 	    	System.out.print(_terms.get(i)+":");
 	    	for(int j=0;j<_index.get(_terms.get(i)).size();j++){
 	    		System.out.print(_index.get(_terms.get(i)).get(j)+" ");
@@ -66,27 +89,28 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 	    ObjectOutputStream writer =
 	        new ObjectOutputStream(new FileOutputStream(indexFile));
 	    writer.writeObject(this);
-	    writer.close();
+	    writer.close();*/
+		  
   }
-  private void processDocument(File file) {
+  private void processDocument(String content, String filename) {
+	  try{
 	    Scanner s;
-		try {
-				s = new Scanner(file).useDelimiter("\t");
-				String title = s.next();
-			    String body = s.next();
-			    s.close();
-			    DocumentIndexed doc = new DocumentIndexed(_documents.size());
-			    doc.setTitle(title);
-			    _documents.add(doc);
-			    ++_numDocs;
-			    generateIndex(title);
-			    generateIndex(body);
-			    //System.out.println(title);
-			    //System.out.println(body);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		s = new Scanner(content).useDelimiter("\t");
+		String title = s.next();
+		String body = s.next();
+		s.close();
+		DocumentIndexed doc = new DocumentIndexed(_documents.size());
+		doc.setTitle(title);
+		_documents.add(doc);
+		++_numDocs;
+		generateIndex(title);
+		generateIndex(body);
+	  }
+	  catch(Exception e){
+		  System.out.println("The file that has error: "+ filename);
+	  }
+		//System.out.println(title);
+		//System.out.println(body);
 	   
 }
   private void generateIndex(String content){
@@ -236,25 +260,25 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable{
 	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
    	  index.constructIndex();
-	  Query query = new Query("the free");
-	  query.processQuery();
-	  try {
-		index.loadIndex();
-		Document nextdoc = index.nextDoc(query, 8);
+//	  Query query = new Query("the free");
+//	  query.processQuery();
+//	  try {
+//		index.loadIndex();
+//		Document nextdoc = index.nextDoc(query, 8);
+//		
+//		if(nextdoc!=null)
+//			System.out.println(nextdoc._docid);
+//		else
+//			System.out.println("Null");
+//		
 		
-		if(nextdoc!=null)
-			System.out.println(nextdoc._docid);
-		else
-			System.out.println("Null");
-		
-		
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	} catch (ClassNotFoundException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
 	  
   }
   

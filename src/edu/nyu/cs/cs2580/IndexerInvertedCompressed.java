@@ -477,25 +477,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable{
 		e.printStackTrace();
 	}
 	  
-//	  Vector<Byte> res =  test.vbyteConversion(100000000);	  
-//	  for(int j=res.size()-1;j>=0;j--)
-//	  {
-//		  StringBuilder builder = new StringBuilder();
-//		  for(int i=0;i<8;i++)
-//		  {
-//			  if((res.get(j)&(1<<i))>0)
-//				  builder.append(1);
-//			  else
-//				  builder.append(0);
-//		  }
-//		  System.out.print(builder.reverse().toString()+"   ");
-//	  }
-//	 int x = test.convertVbyteToNum(res);
-//	 System.out.println(x);
-//	 int m = (int) (res.get(0) & ((1<<7)-1)) + res.get(1)*128;
-//	 System.out.println(m);
-//	 System.out.println(test.vmax^2);
-	  
   }
   
 }
