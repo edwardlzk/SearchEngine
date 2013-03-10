@@ -70,11 +70,6 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	    	System.out.println();
 	    }
 	    
-	    Query q=new Query("New York");
-	    q.processQuery();
-	    
-	    int id=nextDoc(q,0)._docid;
-	    System.out.println(id);
 	    
 	    System.out.println(
 		        "Indexed " + Integer.toString(_numDocs) + " docs with ");
@@ -88,22 +83,6 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable{
 	    
   }
 
-  private String remove(String html){
-		int start=html.indexOf("<title>");
-		int end=html.indexOf("</title>");
-		String title=html.substring(start+7,end);
-		title = title.replaceAll("&amp;","").replaceAll("  ", " ");
-		
-		start=html.indexOf("<p>");
-		end=html.indexOf("</p>");
-		String body=html.substring(start+3, end);
-		body = body.replaceAll("<!--.*?-->", "").replaceAll("<[^>]+>", "");
-		body = body.replaceAll("&nbsp;","");
-		body = body.replaceAll("&amp;","");	
-		body = body.replaceAll("  ", " ");
-		
-		return title+"\t"+body;
-	  }
 	  
 	  private void processDocument(String content) {
 		    Scanner s = new Scanner(content).useDelimiter("\t");
