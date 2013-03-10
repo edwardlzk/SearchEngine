@@ -1,11 +1,13 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -126,28 +128,42 @@ public class IndexerInvertedDoconly extends Indexer {
   
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
-	    String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String docFile = _options._indexPrefix+"/";
+	 
 	    System.out.println("Load index from: " + indexFile);
-
-	    ObjectInputStream reader =
-	        new ObjectInputStream(new FileInputStream(indexFile));
-	    IndexerInvertedDoconly loaded = (IndexerInvertedDoconly) reader.readObject();
-	    this._documents = loaded._documents;
-	    // Compute numDocs and totalTermFrequency b/c Indexer is not serializable.
-	    this._numDocs = _documents.size();
-	    //for (Integer freq : loaded._termCorpusFrequency.values()) {
-	      //this._totalTermFrequency += freq;
-	    //}
-	    //this._dictionary = loaded._dictionary;
-	    this._terms = loaded._terms;
-	    //this._termCorpusFrequency = loaded._termCorpusFrequency;
-	    //this._termDocFrequency = loaded._termDocFrequency;
 	    
-	    // ************load the index
-	    this._index=loaded._index;
-	    reader.close();
-
-	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
+	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	    String line;
+	    while((line=reader.readLine())!=null){
+	    	 int termDocFren=0;
+	         int termCorpusFren=0;
+	         String title="";
+	         String data="";
+	    	Scanner s=new Scanner(line).useDelimiter("\t");
+	    	while(s.hasNext()){
+	    		title=s.next();
+	    		data=s.next();
+	    	}
+	    	//System.out.println(data);
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	    	termCorpusFren=termDocFren;
+	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	        for(String doc:docs){
+	    	Appenddoc.add(doc);
+	    	//termCorpusFren +=docs.length;
+	        }
+	        //termCorpusFren -= termDocFren;
+	       // System.out.println(termDocFren+" "+termCorpusFren );
+	        
+	        for(String docid : Appenddoc){
+	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+docid,true));
+	        addDoc.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	        addDoc.close();
+	        }
+	    }
+	    reader.close(); 
 }
   
 
