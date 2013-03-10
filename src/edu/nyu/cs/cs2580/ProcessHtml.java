@@ -54,6 +54,7 @@ public class ProcessHtml {
 		builder.append(resultBody);
 		System.out.println(resultBody);
 		return builder.toString();
+
 	}
 	/**
 	 * @param args
@@ -61,15 +62,22 @@ public class ProcessHtml {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
+
 		Options option = new Options("conf/engine.conf");
 		File file = new File("data/hw2/wiki/test.html");	
+
 		String res = ProcessHtml.process(file);
-		System.out.println(res);
-		Scanner s = new Scanner(res).useDelimiter("\t");
-		String title = s.next();
-		String body = s.next();
-		System.out.println(title);
-		System.out.println(body);
+		//System.out.println(res);
+		if(res != null)
+		{
+			Scanner s = new Scanner(res).useDelimiter("\t");
+			String title = s.next();
+			String body = s.next();
+			System.out.println(title);
+			System.out.println(body);
+		}
+		else
+			System.out.println(res);
 		
 	}
 
