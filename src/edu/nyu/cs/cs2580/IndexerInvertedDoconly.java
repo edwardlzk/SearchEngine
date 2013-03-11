@@ -118,6 +118,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	  int totalcount = 0;
 	    while (s.hasNext()) {
 	      ++_totalTermFrequency;
+	      ++totalcount;
 	      String token = s.next();
 	      // decrement the size() by 1 as the real doc id
 	      int did=_documents.size()-1;
