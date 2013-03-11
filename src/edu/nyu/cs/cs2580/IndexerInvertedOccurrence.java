@@ -191,27 +191,52 @@ public class IndexerInvertedOccurrence extends Indexer{
    */
   @Override
   public DocumentIndexed nextDoc(Query query, int docid) {
-	  Vector<Integer> ids=new Vector<Integer>();
-	   int id;
-	   int result=docid;
-	   for(int i=0;i<query._tokens.size();i++){
-		   //System.out.println(query._tokens.get(i));
-		 id=next(query._tokens.get(i),docid);
-		
-		 ids.add(id);  
-	   }
-	   if(ids.size()==1||find(ids)){
-		   result=ids.get(0);
-	   }else{
-		  return nextDoc(query, max(ids)-1); 
-	   }
-	   int r;
-	   r=result==Integer.MAX_VALUE? docid:result; // judge whether found
-	  // if((nextPhrase(query, _documents.get(r)._docid, 0))!=Integer.MAX_VALUE)
-		   return _documents.get(r);
-	   
-	   
+	  DocumentIndexed doc=new DocumentIndexed(docid);
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  HashMap<String, Vector<Integer>> terms=new HashMap<String, Vector<Integer>>();	//term and its position
+	    try {
+			BufferedReader reader=new BufferedReader(new FileReader(indexFile));
+			String line;
+			while((line=reader.readLine())!=null){
+				String[] data=line.split("\t");
+				if(query._tokens.contains(data[0])){ //if found one token in the query
+					String pos=data[1];
+					Vector<Integer> docids=new Vector<Integer>();
+					for(String s:pos.split("\\|")){
+						docids.add(Integer.parseInt((s.split(","))[0])); //get all docids 
+				}
+				terms.put(data[0],docids); //save term and its docids	
+					
+			}// end for find one term
+			}// end for read file
+			reader.close();
+	    
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    
+	    Vector<Integer> ids=new Vector<Integer>();
+		int result;
+		int id;
+		for(String term:query._tokens){
+			 id=next(term,docid, terms.get(term));	
+			 ids.add(id);  
+		}
+		   if(ids.size()!=query._tokens.size()) //no doc includes all the terms
+			   return null;
+		   
+		   if(ids.size()==1||find(ids)){     // found one
+			   result=ids.get(0);
+			   doc=getDoc(result);
+			   return doc;
+					   
+		   }else{
+			  return nextDoc(query, max(ids)-1); 
+		   }
+	
 	  }
+
 	  private boolean find(Vector<Integer> ids){
 		  int first=ids.get(0);
 		  for(int i=1;i<ids.size();i++){
@@ -228,38 +253,30 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  }
 		  return max;
 	  }
-	  private int next(String word, int docid){
+	  private int next(String word, int docid, Vector<Integer> docids){
 			// Binary Search
-			if(_index.size() == 0 || !_index.containsKey(word))
-				return Integer.MAX_VALUE;
-			HashMap<Integer,Vector<Integer>> docIDs = _index.get(word);
-			Set<Integer> keys=docIDs.keySet();
-			Integer[] sortedKey=new Integer[keys.size()];
-			int temp=0;
-			for(int k:keys){ 
-				sortedKey[temp++]=k;
+			if(docids.lastElement()<= docid)
+				return -1;
+			if(docids.firstElement() > docid){
+				return docids.firstElement();
 			}
-		    Arrays.sort(sortedKey);
-			if(sortedKey[sortedKey.length-1]<= docid)
-				return Integer.MIN_VALUE;
-			if(sortedKey[0] > docid){
-				return sortedKey[0];
-			}
-			int high=sortedKey.length-1;
-			int result=binarySearch(word,0,high,docid,sortedKey);
-			return  sortedKey[result]; 	  
+			int high=docids.size()-1;
+			int result=binarySearch(word,0,high,docid,docids);
+			return  docids.get(result); 	  
 		}
-	  private int binarySearch(String word, int low, int high, int docid, Integer[] docIDs){
-		  while((high-low)>1){
-			  int mid=(low+high)/2;
-			  if(docIDs[mid]<=docid){
-				  low=mid;
-			  }else{
-				  high=mid;
-			  }
-		  }
-		  return high;
+	  private int binarySearch(String word, int low, int high, int docid, Vector<Integer> docIDs){
+	   	  	while(high-low>1){
+	     		  int mid=(low+high) >>> 1;
+	     		  if(docIDs.get(mid)<=docid){
+	     			  low=mid+1;
+	     		  }else{
+	     			  high=mid;
+	     		  }
+	     	  }
+	     		  return docIDs.get(low)>docid ? low:high;
 	  } 
+	  
+	  
   public int nextPhrase(Query query, int docid, int pos){
 	  Document idVerify=nextDoc(query,docid-1);
 	  if(!idVerify.equals(_documents.get(docid))){
