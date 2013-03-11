@@ -133,13 +133,11 @@ public class IndexerInvertedOccurrence extends Indexer{
 	  String docFile = _options._indexPrefix+"/";
 	 
 	    System.out.println("Load index from: " + indexFile);
-	    //String outFile=_options._indexPrefix + "/index_load.txt";
-        //BufferedWriter writer=new BufferedWriter(new FileWriter(outFile));
+	    
 	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	    String line;
 	    while((line=reader.readLine())!=null){
 	    	 int termDocFren=0;
-	         int termCorpusFren=0;
 	         String title="";
 	         String data="";
 	    	Scanner s=new Scanner(line).useDelimiter("\t");
@@ -148,22 +146,15 @@ public class IndexerInvertedOccurrence extends Indexer{
 	    		data=s.next();
 	    	}
 	    	System.out.println(data);
-	    	String[] docs=data.split("\\|");
-	    	termDocFren=docs.length;
-	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	    	String[] docs=data.split("\\|"); //docid and pos
+	    	
 	        for(String doc:docs){
-	    	String[] docid= doc.split(",");
-	    	Appenddoc.add(docid[0]);
-	    	termCorpusFren +=docid.length;
-	        }
-	        termCorpusFren -= termDocFren;
-	        System.out.println(termDocFren+" "+termCorpusFren );
-	        
-	        //writer.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
-	        for(String docid : Appenddoc){
-	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+docid,true));
-	        addDoc.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
-	        addDoc.close();
+	    	String[] docid= doc.split(",");  
+	    	String id=docid[0];
+	    	termDocFren=docid.length-1;
+	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+id,true));
+	        addDoc.write(title+"\t"+termDocFren+"\n");
+	        addDoc.close();   
 	        }
 	    }
 	    reader.close();  
@@ -172,7 +163,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 
   @Override
   public DocumentIndexed getDoc(int docid) {
-	  DocumentIndexed doc=new DocumentIndexed(docid);
+	DocumentIndexed doc=new DocumentIndexed(docid);
 	String docpath=""+docid;
 	System.out.println(docpath);
     try {
@@ -184,23 +175,22 @@ public class IndexerInvertedOccurrence extends Indexer{
 			if(count==1){
 				doc.setTitle(line);
 			}
-			if(count==2){
-				doc.setTermTotal
-			}
-				
+			else if(count==2){
+				doc.setTermTotal(Integer.parseInt(line));
+			}				
 		}
 		reader.close();
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-    return null;
+    return doc;
   }
 
   /**
    * In HW2, you should be using {@link DocumentIndexed}.
    */
   @Override
-  public Document nextDoc(Query query, int docid) {
+  public DocumentIndexed nextDoc(Query query, int docid) {
 	  Vector<Integer> ids=new Vector<Integer>();
 	   int id;
 	   int result=docid;
@@ -309,18 +299,93 @@ public class IndexerInvertedOccurrence extends Indexer{
   
   @Override
   public int corpusDocFrequencyByTerm(String term) {
-    return _index.containsKey(term)?
-    		(_index.get(term)).size():0;
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	        String line;
+	         while((line=reader.readLine())!=null){
+	        	 int termDocFren=0;
+	        	 String title="";
+	        	 String data="";
+	        	 Scanner s=new Scanner(line).useDelimiter("\t");
+	        	 	while(s.hasNext()){
+	        	 		title=s.next();
+	        	 		data=s.next();
+	        	 	}
+	        if(title.equals(term)){
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	        }
+	        reader.close();
+	        return termDocFren;
+	    	}
+	        reader.close();   
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return 0;
   }
 
   @Override
   public int corpusTermFrequency(String term) {
-    return 0;
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	        String line;
+	         while((line=reader.readLine())!=null){
+	        	 int termDocFren=0;
+	        	 int termCorpusFren=0;
+	        	 String title="";
+	        	 String data="";
+	        	 Scanner s=new Scanner(line).useDelimiter("\t");
+	        	 	while(s.hasNext()){
+	        	 		title=s.next();
+	        	 		data=s.next();
+	        	 	}
+	        if(title.equals(term)){
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	        for(String doc:docs){
+	    	String[] docid= doc.split(",");
+	    	Appenddoc.add(docid[0]);
+	    	termCorpusFren +=docid.length;
+	        }
+	        termCorpusFren -= termDocFren;
+	        reader.close();
+	        return termCorpusFren;
+	    	}
+	        }
+	        reader.close();   
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return 0;
   }
 
   @Override
   public int documentTermFrequency(String term, String url) {
-    SearchEngine.Check(false, "Not implemented!");
+	  String docpath=""+url;
+	  int result;
+	  try {
+		BufferedReader reader = new BufferedReader(new FileReader(docpath));
+		String line;
+		int count=0;
+		while((line=reader.readLine())!=null){
+			count++;
+			if(count>2){
+				String[] terms=line.split("\t");
+				if(terms[0].equals(term)){
+					result=Integer.parseInt(terms[1]);
+					reader.close();
+					return result;
+				}
+			}
+		}
+		reader.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     return 0;
   }
   public static void main(String[] args) throws IOException {

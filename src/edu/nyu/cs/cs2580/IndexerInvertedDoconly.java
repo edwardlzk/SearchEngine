@@ -168,9 +168,28 @@ public class IndexerInvertedDoconly extends Indexer {
   
 
   @Override
-  public Document getDoc(int docid) {
-    SearchEngine.Check(false, "Do NOT change, not used for this Indexer!");
-    return null;
+  public DocumentIndexed getDoc(int docid) {
+	  DocumentIndexed doc=new DocumentIndexed(docid);
+		String docpath=""+docid;
+		System.out.println(docpath);
+	    try {
+			BufferedReader reader=new BufferedReader(new FileReader(docpath));
+			String line;
+			int count=0;
+			while((line=reader.readLine())!=null){
+				count++;
+				if(count==1){
+					doc.setTitle(line);
+				}
+				else if(count==2){
+					doc.setTermTotal(Integer.parseInt(line));
+				}				
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return doc;
   }
 
   /**
@@ -216,24 +235,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	  
 	  else if(find(ids))
 	   { 
-		  DocumentIndexed doc=new DocumentIndexed(ids.get(0));
-		  //read doc file to get information
-	/*	  try {
-			BufferedReader read=new BufferedReader(new FileReader(ids.get(0).toString()));
-			String content;
-			int count=0;
-			while((content=read.readLine())!=null){
-				count++;
-				if(count==1)
-				doc.setTitle(content);
-				//if(count==2)
-				//doc.termFrequency=content;
-                //look for the term and get the term information			 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		  
+		  DocumentIndexed doc=getDoc(ids.get(0));
 		   return doc;
 	   }
 	   else{
