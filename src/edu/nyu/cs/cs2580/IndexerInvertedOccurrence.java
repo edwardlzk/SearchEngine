@@ -278,19 +278,19 @@ public class IndexerInvertedOccurrence extends Indexer{
 	  
 	  
   public int nextPhrase(Query query, int docid, int pos){
-	  Document idVerify=nextDoc(query,docid-1);
-	  if(!idVerify.equals(_documents.get(docid))){
-		  return Integer.MAX_VALUE;
+	  DocumentIndexed idVerify=nextDoc(query,docid-1);
+	  if(idVerify._docid!=docid){
+		  return -1;
 	  }
 	  Vector<Integer> ids=new Vector<Integer>();
 	   int id;
-	   for(int i=0;i<query._tokens.size();i++){
+	   for(int i=0;i<query._tokens.size();i++){       //each term's position
 		 id=next_pos(query._tokens.get(i),docid,pos);
 		 ids.add(id);  
 	   }
 	   for(int k:ids){
-	   if(k==Integer.MAX_VALUE)
-		   return Integer.MAX_VALUE;
+	   if(k==-1)
+		   return -1;
 		}
 	   int j=0;
 	   for(;j<ids.size()-1;j++){
@@ -305,13 +305,34 @@ public class IndexerInvertedOccurrence extends Indexer{
 		   return nextPhrase(query,docid,ids.get(ids.size()-1));
   }
   private int next_pos(String word,int docid,int pos){
-	 Vector<Integer> docIDs=_index.get(word).get(docid);
-	 for(int i:docIDs){
-		 if(i>pos){
-			 return i;
-		 }
-	 }
-	  return Integer.MAX_VALUE;
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	    try {
+			BufferedReader reader=new BufferedReader(new FileReader(indexFile));
+			String line;
+			while((line=reader.readLine())!=null){
+				String[] data=line.split("\t");
+				if(word.equals(data[0])){ //if found one token in the query
+					String positions=data[1];
+					for(String s:positions.split("\\|")){
+						if(docid==Integer.parseInt((s.split(","))[0])){ //found docid
+							String[] allpos=s.split(",");
+							for(String sp:allpos){  //get all pos in the doc
+								if(Integer.parseInt(sp)>pos){
+									reader.close();
+									return Integer.parseInt(sp);
+								} //found the pos and return
+							} //end for loop for all pos for one term in one doc
+						}
+				} //end for found docid
+					
+			}// end for find the term
+			}// end for read file
+			reader.close();
+	    	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	  return -1;  //not return yet, indicate not found next pos, return -1
   }
   
   @Override
