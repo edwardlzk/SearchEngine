@@ -54,7 +54,13 @@ public class ProcessHtml {
 		}
 
 		String titleString = titleResult.group(1); //process the title of the html
+		
+		if(titleString.equals("")){
+			return null;
+		}
 		String resultTitle = titleString.replaceAll("\\&.*;"," ");
+		
+		
 //>>>>>>> 5d9afa8f9caa412d5a0f90d40fd6cff824414104
 		// replace all the non-word characters except ' and - to space
 //		 resultTitle = resultTitle.replaceAll("[^\\w]", " ");
@@ -96,16 +102,19 @@ public class ProcessHtml {
 		
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
+		if(resultBody.equals("")){
+			return null;
+		}
 		builder.append(resultBody);
 		String output = builder.toString();
 		
-		System.out.println("before stem:"+output);
+//		System.out.println("before stem:"+output);
 		
 		Stemmer stemmer = new Stemmer();
 		stemmer.add(output);
 		stemmer.stem();
 		
-		System.out.println("after stem:"+stemmer.toString());
+//		System.out.println("after stem:"+stemmer.toString());
 		return stemmer.toString();
 
 	}

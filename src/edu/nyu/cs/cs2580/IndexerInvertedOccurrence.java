@@ -45,13 +45,14 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
 		  for(int i=0;i<times;i++){
+			  System.out.println(i);
 			  Vector<String> files=cf.loadFile(i);
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content);    
+		        	processDocument(content,name);    
 			  }
 			  String name="temp"+i+".txt";
 			  Map<String, String> content=new HashMap<String,String>();
@@ -75,10 +76,17 @@ public class IndexerInvertedOccurrence extends Indexer{
 			  _index.clear();
 			  _terms.clear();
 		 }
+		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
+		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
+		  // the first line in the corpus_statistics is the number of docs in the corpus
+		  outsta.write(_numDocs+"\n");
+		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
+		  outsta.close();
 	    
   }
 	  
-	  private void processDocument(String content) {
+	  private void processDocument(String content,String fileName) {
+		  try{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
@@ -87,41 +95,59 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    //doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    generateIndex(title+doc);
-		    //generateIndex(body);
-		    //System.out.println(title);
-		    //System.out.println(body);
+			generateIndex(title+body,fileName,title);
+		  } catch(Exception e){
+			  System.out.println("The file that has error");
+		  }
+
 	}
-	  private void generateIndex(String content){
+	  private void generateIndex(String content,String fileName,String title){
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
+		  int totalcount = 0;
+		  HashMap<String,Vector<Integer>> t_plist = new HashMap<String,Vector<Integer>>();
+	      Vector<Integer> t_poslist = null;
+	      int did = _documents.size()-1;
 		    while (s.hasNext()) {
+		      ++_totalTermFrequency;
+		      ++ totalcount;
 		      String token = s.next();
-		      int did=_documents.size()-1;
-		      if (!_terms.contains(token)) {
-		    	  _terms.add(token);
-		    	  HashMap<Integer,Vector<Integer>> plist=new HashMap<Integer,Vector<Integer>>();
-		    	  Vector<Integer> position=new Vector<Integer>();
-		    	  position.add(pos);
-		    	  plist.put(did, position);
-		          _index.put(token, plist);
-		      }else{
-		    	  HashMap<Integer,Vector<Integer>> plist=_index.get(token);
-		    	  if(plist.containsKey(did)){
-		    		  Vector<Integer> position=plist.get(did);
-			    	  position.add(pos);
-			    	  plist.put(did, position);
-			    	  _index.put(token,plist); 
-		    	  }else{
-		    	  Vector<Integer> position=new Vector<Integer>();
-		    	  position.add(pos);
-		    	  plist.put(did, position);
-		    	  _index.put(token,plist);
-		    	  }
+		      if(!t_plist.containsKey(token)){
+		    	  t_poslist  = new Vector<Integer> ();
+		    	  t_plist.put(token,t_poslist);
 		      }
-		      pos++;
-		      }
-		      
+		      t_poslist = t_plist.get(token);
+		      t_poslist.add(pos);
+		      ++pos;
+		    }
+		    for(String term:t_plist.keySet())
+		    {
+		    	if(!_terms.contains(term)){
+		    		_terms.add(term);
+		    		HashMap<Integer,Vector<Integer>> n_list = new HashMap<Integer,Vector<Integer>>();
+		    		n_list.put(did, t_plist.get(term));
+		    		_index.put(term, n_list);
+		    	}
+		    	else{
+		    		HashMap<Integer,Vector<Integer>> plist = _index.get(term);
+		    		plist.put(did, t_plist.get(term));
+		    	}
+		    		
+		    }
+		    try{
+			    // store the document in our index	        
+			    String filePath = _options._indexPrefix+"/"+fileName;
+			    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+			    out.write(title+"\n");
+			    out.write(totalcount+"\n");
+			    for(String term:t_plist.keySet())
+			    {
+			    	out.write(term+"\t"+t_plist.get(term).size()+"\n");
+			    }
+			    out.close();
+			    }catch(IOException e){
+			    	e.printStackTrace();	    	
+			    } 
 		    return;
 }
   
