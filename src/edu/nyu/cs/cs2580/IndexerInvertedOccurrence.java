@@ -3,15 +3,9 @@ package edu.nyu.cs.cs2580;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.*;
 
 
@@ -24,8 +18,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class IndexerInvertedOccurrence extends Indexer{
 		  private HashMap<String, HashMap<Integer,Vector<Integer>>> _index=new HashMap<String,HashMap<Integer,Vector<Integer>>>();
-	  //all unique terms
-	  private Vector<String> _terms = new Vector<String>();
+//	  //all unique terms
+//	  private Vector<String> _terms = new Vector<String>();
 	  //Stores all Document in memory.
 	  private Vector<DocumentIndexed> _documents = new Vector<DocumentIndexed>();
 	
@@ -46,6 +40,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  int times = cf.writeTimes();
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
+		  String[] tempFiles = new String[times];
 		  for(int i=0;i<times;i++){
 			  System.out.println(i);
 			  Vector<String> files=cf.loadFile(i);
@@ -54,40 +49,39 @@ public class IndexerInvertedOccurrence extends Indexer{
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content,name);    
+		        	processDocument(content);    
 			  }
 			  String name="temp"+i+".txt";
+			  tempFiles[i] = name;
 			  Map<String, String> content=new HashMap<String,String>();
-		      for(int k=0;k<_terms.size();k++){
-		    	  Set<Integer> keys=_index.get(_terms.get(k)).keySet();
+		      for(String term:_index.keySet()){
 		    	  StringBuilder value=new StringBuilder();
-			    	for(int j:keys){
-			    		Vector<Integer> pos=_index.get(_terms.get(k)).get(j);
-			    		Integer docid=new Integer(j);
-			    		value.append(docid.toString()).append(",");
-			    		for(int p:pos){
-			    		value.append(p).append(",");
-			    		}
-			    		value.deleteCharAt(value.length()-1);
-			    		value.append("|");
-			    	}
-			    	value.deleteCharAt(value.length()-1);
-			    	content.put(_terms.get(k),value.toString());	
-		      }
-		      filewriter.write(name, content);
-			  _index.clear();
-			  _terms.clear();
-		 }
+		    	  for(Integer did:_index.get(term).keySet())
+		    	  {
+		    		  value.append(did).append(",");
+		    		  for(int p:_index.get(term).get(did)){
+		    			  value.append(p).append(",");
+		    		  }
+		    		  value.deleteCharAt(value.length()-1);
+		    		  value.append("|"); 		  
+		    	  }
+		    	  value.deleteCharAt(value.length()-1);
+		    	  content.put(term, value.toString());
+	      }
+	      filewriter.write(name, content);
+		  _index.clear();
+	 }
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
 		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
 		  // the first line in the corpus_statistics is the number of docs in the corpus
 		  outsta.write(_numDocs+"\n");
 		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
 		  outsta.close();
+		  filewriter.merge(tempFiles, "merge.txt", "|");
 	    
   }
 	  
-	  private void processDocument(String content,String fileName) {
+	  private void processDocument(String content) {
 		  try{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
@@ -97,13 +91,13 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    //doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-			generateIndex(title+body,fileName,title);
+			generateIndex(title+body,title);
 		  } catch(Exception e){
 			  System.out.println("The file that has error");
 		  }
 
 	}
-	  private void generateIndex(String content,String fileName,String title){
+	  private void generateIndex(String content,String title){
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
@@ -124,8 +118,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    }
 		    for(String term:t_plist.keySet())
 		    {
-		    	if(!_terms.contains(term)){
-		    		_terms.add(term);
+		    	if(!_index.containsKey(term)){
 		    		HashMap<Integer,Vector<Integer>> n_list = new HashMap<Integer,Vector<Integer>>();
 		    		n_list.put(did, t_plist.get(term));
 		    		_index.put(term, n_list);
@@ -138,8 +131,8 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    }
 		    try{
 			    // store the document in our index	        
-			    String filePath = _options._indexPrefix+"/"+fileName;
-			    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+			    String filePath = _options._indexPrefix+"/"+did;
+			    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
 			    out.write(title+"\n");
 			    out.write(totalcount+"\n");
 			    for(String term:t_plist.keySet())
@@ -157,35 +150,20 @@ public class IndexerInvertedOccurrence extends Indexer{
   
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/statistics";
 	  String docFile = _options._indexPrefix+"/";
 	 
 	    System.out.println("Load index from: " + indexFile);
-	    
 	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
-	    String line;
-	    while((line=reader.readLine())!=null){
-	    	 int termDocFren=0;
-	         String title="";
-	         String data="";
-	    	Scanner s=new Scanner(line).useDelimiter("\t");
-	    	while(s.hasNext()){
-	    		title=s.next();
-	    		data=s.next();
-	    	}
-	    	System.out.println(data);
-	    	String[] docs=data.split("\\|"); //docid and pos
+	    String line =null;
+	    if((line=reader.readLine())!=null)
+	    	this._numDocs = Integer.parseInt(line);
+	    if((line=reader.readLine())!=null)
+	    	this._totalTermFrequency =  Integer.parseInt(line);
+	    reader.close();
+	    System.out.println("Number of docs: "+this._numDocs);
+	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
 	    	
-	        for(String doc:docs){
-	    	String[] docid= doc.split(",");  
-	    	String id=docid[0];
-	    	termDocFren=docid.length-1;
-	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+id,true));
-	        addDoc.write(title+"\t"+termDocFren+"\n");
-	        addDoc.close();   
-	        }
-	    }
-	    reader.close();  
   }
 
 
@@ -454,10 +432,12 @@ public class IndexerInvertedOccurrence extends Indexer{
 	}
     return 0;
   }
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
 	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
 	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
-   	  index.constructIndex();
+	  index.constructIndex();
+	  index.loadIndex();
+ //  	  index.constructIndex();
 //	  Query query = new Query("the free");
 //	  query.processQuery();
 //	  try {
