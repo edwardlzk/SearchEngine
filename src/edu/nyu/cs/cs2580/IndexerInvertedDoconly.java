@@ -3,15 +3,9 @@ package edu.nyu.cs.cs2580;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.*;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
@@ -87,7 +81,13 @@ public class IndexerInvertedDoconly extends Indexer {
 		  outsta.write(_numDocs+"\n");
 		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
 		  outsta.close();
-		 
+		  String[] files=new String[times];
+		  for(int count=0;count<times;count++){
+		  files[count]="temp"+count+".txt";
+		  }
+		  filewriter.merge(files, "index.txt", "|");
+		  
+		  
   }
   private void processDocument(String content,String fileName) {
 	  try{
@@ -96,24 +96,26 @@ public class IndexerInvertedDoconly extends Indexer {
 		String title = s.next();
 		String body = s.next();
 		s.close();
-		DocumentIndexed doc = new DocumentIndexed(_documents.size());
-		doc.setTitle(title);
-		_documents.add(doc);
-		++_numDocs;
-	    // store the document in our index	        
-	    String filePath = _options._indexPrefix+"/"+fileName;
+		//DocumentIndexed doc = new DocumentIndexed(_documents.size());
+		//doc.setTitle(title);
+		//_documents.add(doc);
+		  // store the document in our index	
+		String filePath = _options._indexPrefix+"/"+_numDocs;     
 	    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-	    out.write(doc._docid+"\n");
+	    //out.write(doc._docid+"\n");
 	    out.write(title+"\n");
-	    out.close();	
-		generateIndex(title+body,fileName);
+	 
+		int totalcount=generateIndex(title+body,_numDocs);
+		out.write(totalcount+"\n");
+		out.close();
+		++_numDocs;
 	  }
 	  catch(Exception e){
 		  System.out.println("The file that has error");
 	  }
 	   
 }
-  private void generateIndex(String content,String fileName){
+  private int generateIndex(String content,int docid){
 	  Scanner s = new Scanner(content);  // Uses white space by default.
 	  int totalcount = 0;
 	    while (s.hasNext()) {
@@ -121,62 +123,49 @@ public class IndexerInvertedDoconly extends Indexer {
 	      ++totalcount;
 	      String token = s.next();
 	      // decrement the size() by 1 as the real doc id
-	      int did=_documents.size()-1;
-	      if (!_terms.contains(token)) {
-	    	  _terms.add(token);
-	    	  Vector<Integer> plist=new Vector<Integer>();
-	    	  plist.add(did);
-	          _index.put(token, plist);
-	      }else
-	      {
-	    	  Vector<Integer> plist=_index.get(token);
-	    	  if(!plist.contains(did)){	  
-	    	  plist.add(did);
-	    	  _index.put(token,plist);
+	      //int did=_documents.size()-1;
+	     
+	      Vector<Integer> plist=_index.get(token);
+	      if(plist!=null){
+	    	  if(plist.lastElement()!=docid){	  
+	    	  plist.add(docid);
+	    	  _index.put(token,plist); 
 	    	  }
+	      }else{
+	    	  //_terms.add(token);
+	    	  Vector<Integer> p=new Vector<Integer>();
+	    	  p.add(docid);
+	          _index.put(token, p); 
 	      }
-	      
+	 
 	    }
-	    try{
-	    // store the document in our index	        
-	    String filePath = _options._indexPrefix+"/"+fileName;
-	    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
-	    out.write(totalcount+"\n");
-	    out.close();
-	    }catch(IOException e){
-	    	e.printStackTrace();	    	
-	    }
-	    return;
+	    
+	    return totalcount;
   }
   
   @Override
-  public void loadIndex() throws IOException, ClassNotFoundException {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
-	  String docFile = _options._indexPrefix+"/";
+  public void loadIndex(){
+	  String indexFile = _options._indexPrefix + "/statistics";
 	 
 	    System.out.println("Load index from: " + indexFile);
-	    
+	    try{
 	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	    String line;
+	    int count=0;
 	    while((line=reader.readLine())!=null){
-	    	 int termDocFren=1; // assume each term appear in this doc once
-	         String title="";
-	         String data="";
-	    	Scanner s=new Scanner(line).useDelimiter("\t");
-	    	while(s.hasNext()){
-	    		title=s.next();
-	    		data=s.next();
-	    	}
-	    	System.out.println(data);
-	    	String[] docs=data.split("\\|"); //docid
-	    	
-	        for(String doc:docs){
-	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+doc,true));
-	        addDoc.write(title+"\t"+termDocFren+"\n");
-	        addDoc.close();   
-	        }
+	    	++count;
+	    	if(count==1)
+	    	_numDocs=Integer.parseInt(line);
+	    	if(count==2)
+	    	_totalTermFrequency=Integer.parseInt(line);
+	  	
 	    }
 	    reader.close();  
+	    System.out.println("Indexed " + Integer.toString(_numDocs) + " docs with " +
+	            Long.toString(_totalTermFrequency) + " terms.");
+	    }catch(Exception e){
+	    	
+	    }
 }
   
 
@@ -190,7 +179,7 @@ public class IndexerInvertedDoconly extends Indexer {
 			String line;
 			int count=0;
 			while((line=reader.readLine())!=null){
-				count++;
+				++count;
 				if(count==1){
 					doc.setTitle(line);
 				}
@@ -393,9 +382,10 @@ public class IndexerInvertedDoconly extends Indexer {
   }
  
   public static void main(String[] args) throws IOException {
-	  Options option = new Options("./conf/engine.conf");
+	  Options option = new Options("conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
-   	  index.constructIndex();
+   	  //index.constructIndex();
+   	  index.loadIndex();
 //   	  Query q=new Query("land landfall label");
 //   	  q.processQuery();
 //	  DocumentIndexed d=index.nextDoc(q,3);
