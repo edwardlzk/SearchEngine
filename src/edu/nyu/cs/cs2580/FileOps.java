@@ -53,6 +53,9 @@ public class FileOps {
 		return content.toString();
 	}
 	
+	
+	
+	
 //	public static void append(File file, String line){
 //		BufferedReader input = new BufferedReader(new FileReader(file));
 //	}
@@ -120,7 +123,33 @@ public class FileOps {
 		}
 	}
 	
-//	public void 
+	/**
+	 * Write content to a file, if the file exist, it will OVERWRITE the file.
+	 * @param name	filename
+	 * @param content	file content
+	 */
+	public void write(String name, String content){
+		String fileName = base + name;
+		
+
+		// if file doesnt exists, then create it
+		
+			try {
+				File file = new File(fileName);
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileWriter fileWritter = new FileWriter(fileName);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				bufferWritter.write(content);
+				bufferWritter.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
 	
 	public void merge(String[] tempFiles, String output, String delimiter) throws IOException{
 		//Heap for keys, after getting next smallest term, get corresponding BufferedReader from map.
