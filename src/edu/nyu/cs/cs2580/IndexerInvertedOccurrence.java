@@ -168,31 +168,6 @@ public class IndexerInvertedOccurrence extends Indexer{
 	    System.out.println("Number of docs: "+this._numDocs);
 	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
 	    	
-	    		
-//	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
-//	    String line;
-//	    while((line=reader.readLine())!=null){
-//	    	 int termDocFren=0;
-//	         String title="";
-//	         String data="";
-//	    	Scanner s=new Scanner(line).useDelimiter("\t");
-//	    	while(s.hasNext()){
-//	    		title=s.next();
-//	    		data=s.next();
-//	    	}
-//	    	System.out.println(data);
-//	    	String[] docs=data.split("\\|"); //docid and pos
-//	    	
-//	        for(String doc:docs){
-//	    	String[] docid= doc.split(",");  
-//	    	String id=docid[0];
-//	    	termDocFren=docid.length-1;
-//	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+id,true));
-//	        addDoc.write(title+"\t"+termDocFren+"\n");
-//	        addDoc.close();   
-//	        }
-//	    }
-//	    reader.close();  
   }
 
 
