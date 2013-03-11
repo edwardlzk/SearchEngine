@@ -50,7 +50,7 @@ public class ProcessHtml {
 		Matcher bodyResult = body.matcher(html);
 		
 		if(!titleResult.find() || !bodyResult.find()){
-			System.err.println(file.getName());
+			return null;
 		}
 
 		String titleString = titleResult.group(1); //process the title of the html

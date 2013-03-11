@@ -51,7 +51,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  int times = cf.writeTimes();
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
-		//  FileOutputStream fos = null;
+		  FileOutputStream fos = null;
 		 
 		  for(int i=0;i<times;i++){
 			  Vector<String> files=cf.loadFile(i);
@@ -66,7 +66,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			  }
 			  
 			  String name="temp"+i+".txt";
-			 // fos = new  FileOutputStream(_options._indexPrefix+name);
+			  fos = new  FileOutputStream(_options._indexPrefix+name);
 			  Map<String, String> content = new HashMap<String,String>();
 			  for(String term:_index.keySet())
 			  {
@@ -75,27 +75,50 @@ public class IndexerInvertedCompressed extends Indexer{
 				  {
 					 // first append the docid
 					  int n = bytesInTitle(bytes);
-					  for(int j=0;j<n;j++)
-						//  fos.write(bytes.get(j));
-						 builder.append((byte)bytes.get(j));
+					  byte[] title = new byte[n];
+//					  for(int j=0;j<n;j++)
+//						//  fos.write(bytes.get(j));
+//						 builder.append((byte)bytes.get(j));
+					  
+					  for(int j = 0; j<n; j++){
+						  title[j] = bytes.get(j);
+					  }
+					  
+					  fos.write(title);
+					  
 					  // then append the position counts
 					  int counts = countVectorListNumber(bytes) - 1;
 					  Vector<Byte> v_counts = vbyteConversion(counts);
-					  for(Byte count:v_counts)
-						  builder.append((byte)count);
+					  byte[] v_counts_array = new byte[v_counts.size()];
+					  for(int k = 0; k<v_counts.size(); k++){
+						  v_counts_array[k] = v_counts.get(k);
+					  }
+					  
+					  fos.write(v_counts_array);
+					  
+					  byte[] pos = new byte[bytes.size()-n];
+					  int index = 0;
+					  for(int k = n; k<bytes.size(); k++)
+						  pos[index++] = bytes.get(k);
+					  
+//					  builder.append(pos);
+					  fos.write(pos);
+					  
+//					  for(Byte count:v_counts)
+//						  builder.append((byte)count);
 						 // fos.write(count);
 					  // last append the all the positions
-					  for(int k=n; k< bytes.size();k++)
-					  {
-						  builder.append((byte)bytes.get(k));
-						//  fos.write(bytes.get(k));
-					  }
+//					  for(int k=n; k< bytes.size();k++)
+//					  {
+//						  builder.append((byte)bytes.get(k));
+//						//  fos.write(bytes.get(k));
+//					  }
 				  }
 				  
 				  content.put(term, builder.toString());
 			  }
 			//  fos.close();
-		      filewriter.write(name, content);
+//		      filewriter.write(name, content);
 			  _index.clear();
 			  _terms.clear();		  
 		  }
@@ -509,7 +532,7 @@ public class IndexerInvertedCompressed extends Indexer{
   public static void main(String[] args) throws Exception
   {
 	  
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
+	  Options option = new Options("conf/engine.conf");
 	 IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 //	 Vector<Byte> value = index.vbyteConversion(50);
