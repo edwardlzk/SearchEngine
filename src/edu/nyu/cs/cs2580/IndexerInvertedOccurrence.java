@@ -54,7 +54,24 @@ public class IndexerInvertedOccurrence extends Indexer{
 			  Map<String, String> content=new HashMap<String,String>();
 		      for(String term:_index.keySet()){
 		    	  StringBuilder value=new StringBuilder();
-		    	  for(Integer did:_index.get(term).keySet())
+		    	  
+		    	  Set<Integer> keys=_index.get(term).keySet();
+		    	  Integer[] did=new Integer[keys.size()];
+		    	  int count=0;
+		    	  for(Integer key:keys){
+		    		  did[count++]=key;
+		    	  }
+		    	  Arrays.sort(did);
+		    	  for(count=0;count<did.length;count++){
+		    		  value.append(did[count]).append(",");
+		    		  for(int p:_index.get(term).get(did[count])){
+		    			  value.append(p).append(",");
+		    		  }
+		    		  value.deleteCharAt(value.length()-1);
+		    		  value.append("|"); 
+		    	  }
+		    	  
+		    /*	  for(Integer did:_index.get(term).keySet())
 		    	  {
 		    		  value.append(did).append(",");
 		    		  for(int p:_index.get(term).get(did)){
@@ -62,7 +79,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    		  }
 		    		  value.deleteCharAt(value.length()-1);
 		    		  value.append("|"); 		  
-		    	  }
+		    	  }*/
 		    	  value.deleteCharAt(value.length()-1);
 		    	  content.put(term, value.toString());
 	      }
@@ -73,7 +90,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
 		  // the first line in the corpus_statistics is the number of docs in the corpus
 		  outsta.write(_numDocs+"\n");
-		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
+		  outsta.write(_totalTermFrequency+"\n");
 		  outsta.close();
 		  filewriter.merge(tempFiles, "merge.txt", "|");
 	    
@@ -124,6 +141,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    	else{
 		    		HashMap<Integer,Vector<Integer>> plist = _index.get(term);
 		    		plist.put(did, t_plist.get(term));
+		    		_index.put(term, plist);
 		    	}
 		    		
 		    }
@@ -431,7 +449,7 @@ public class IndexerInvertedOccurrence extends Indexer{
     return 0;
   }
   public static void main(String[] args) throws IOException, ClassNotFoundException {
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
+	  Options option = new Options("conf/engine.conf");
 	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
 	  index.constructIndex();
 	  index.loadIndex();
