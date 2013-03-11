@@ -24,10 +24,10 @@ public class ProcessHtml {
 		String html = FileOps.readFile(file);
 
 		String titlePattern = "<title>(.*)</title>";
-		String bodyPattern = ".*<body[^>]*>(.*)</body>";
+		String bodyPattern = "<body.*>.+</body>";
 		
 		Pattern title = Pattern.compile(titlePattern);
-		Pattern body = Pattern.compile(bodyPattern);
+		Pattern body = Pattern.compile(bodyPattern, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
 		
 		Matcher titleResult = title.matcher(html);
 		Matcher bodyResult = body.matcher(html);
@@ -46,9 +46,12 @@ public class ProcessHtml {
 		builder.append("\t");
 		
 		boolean found = bodyResult.find();
-		String bodyString = bodyResult.group(1); //process the body of the html
+		String bodyString = bodyResult.group(); //process the body of the html
 		// replace all the non-word characters except ' and - to space
-		String resultBody = bodyString.replaceAll("[^\\w]", " ");
+		String resultBody = bodyString.replaceAll("\\&.*;"," ");
+		resultBody = resultBody.replaceAll("<[/]?.*?/?>", " ");
+		resultBody = resultBody.replaceAll("[^\\w]", " ");
+		
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
 		builder.append(resultBody);
@@ -64,7 +67,9 @@ public class ProcessHtml {
 		// TODO Auto-generated method stub
 
 		Options option = new Options("conf/engine.conf");
-		File file = new File("testdata/'03_Bonnie_&_Clyde");	
+
+		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
+
 
 		String res = ProcessHtml.process(file);
 		//System.out.println(res);

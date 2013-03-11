@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -170,8 +171,28 @@ public class IndexerInvertedOccurrence extends Indexer{
 
 
   @Override
-  public Document getDoc(int docid) {
-    SearchEngine.Check(false, "Do NOT change, not used for this Indexer!");
+  public DocumentIndexed getDoc(int docid) {
+	  DocumentIndexed doc=new DocumentIndexed(docid);
+	String docpath=""+docid;
+	System.out.println(docpath);
+    try {
+		BufferedReader reader=new BufferedReader(new FileReader(docpath));
+		String line;
+		int count=0;
+		while((line=reader.readLine())!=null){
+			count++;
+			if(count==1){
+				doc.setTitle(line);
+			}
+			if(count==2){
+				
+			}
+				
+		}
+		reader.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     return null;
   }
 

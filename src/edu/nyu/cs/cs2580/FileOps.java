@@ -3,9 +3,12 @@ package edu.nyu.cs.cs2580;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,9 +33,11 @@ public class FileOps {
 	
 	public static String readFile(File file){
 		StringBuilder content = new StringBuilder();
-
+		
 		try {
-			BufferedReader input = new BufferedReader(new FileReader(file));
+			InputStream is = new FileInputStream(file);
+			InputStreamReader isr = new InputStreamReader(is, "utf-8");
+			BufferedReader input = new BufferedReader(isr);
 			try {
 				String line = null; // not declared within while loop
 				while ((line = input.readLine()) != null) {
