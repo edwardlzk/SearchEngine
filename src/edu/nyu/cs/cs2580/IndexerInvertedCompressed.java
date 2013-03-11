@@ -24,6 +24,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 /**
  * @CS2580: Implement this class for HW2.
+ * 
+ * TODO compress method
  */
 public class IndexerInvertedCompressed extends Indexer{
   private final int vmax = 128;

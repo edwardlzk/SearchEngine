@@ -14,7 +14,11 @@
 12_inch_singles
 1525
 1542
+<<<<<<< HEAD
 155Ð158_North_Street,_Brighton
+=======
+155â€“158_North_Street,_Brighton
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 1596
 1622
 163_North_Street,_Brighton
@@ -51,6 +55,7 @@
 1961_Grammy_Awards
 1962_Grammy_Awards
 1963_Grammy_Awards
+<<<<<<< HEAD
 1963Ð64_in_English_football
 1964_Grammy_Awards
 1964Ð65_European_Cup
@@ -85,16 +90,57 @@
 1976_Guatemala_earthquake
 1976_UEFA_Cup_Final
 1976Ð77_European_Cup
+=======
+1963â€“64_in_English_football
+1964_Grammy_Awards
+1964â€“65_European_Cup
+1964â€“65_FA_Cup
+1965_Grammy_Awards
+1965â€“66_European_Cup_Winners'_Cup
+1966_Grammy_Awards
+1966_UEFA_Cup_Winners'_Cup_Final
+1966â€“67_European_Cup
+1967_Grammy_Awards
+1967â€“68_Inter-Cities_Fairs_Cup
+1968_Grammy_Awards
+1968â€“69_Inter-Cities_Fairs_Cup
+1969_Grammy_Awards
+1969â€“70_Inter-Cities_Fairs_Cup
+1970_Grammy_Awards
+1970â€“71_Inter-Cities_Fairs_Cup
+1971_FA_Cup_Final
+1971_Grammy_Awards
+1971â€“72_European_Cup_Winners'_Cup
+1972_Grammy_Awards
+1972â€“73_UEFA_Cup
+1973_Grammy_Awards
+1973_UEFA_Cup_Final
+1973â€“74_European_Cup
+1974_Grammy_Awards
+1974â€“75_European_Cup_Winners'_Cup
+1975_Grammy_Awards
+1975â€“76_in_English_football
+1975â€“76_UEFA_Cup
+1976_Grammy_Awards
+1976_Guatemala_earthquake
+1976_UEFA_Cup_Final
+1976â€“77_European_Cup
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 1977_European_Cup_Final
 1977_European_Super_Cup
 1977_FA_Cup_Final
 1977_Grammy_Awards
 1977_UEFA_Super_Cup
+<<<<<<< HEAD
 1977Ð78_European_Cup
+=======
+1977â€“78_European_Cup
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 1978
 1978_European_Cup_Final
 1978_European_Super_Cup
 1978_Grammy_Awards
+<<<<<<< HEAD
 1978Ð79_European_Cup
 1979_Grammy_Awards
 1979Ð80_European_Cup
@@ -111,11 +157,33 @@
 1983Ð84_European_Cup
 1983Ð84_Liverpool_F.C._season
 1983Ð84_Liverpool_F.C._season.html
+=======
+1978â€“79_European_Cup
+1979_Grammy_Awards
+1979â€“80_European_Cup
+1980_Cannes_Film_Festival
+1980_Grammy_Awards
+1980â€“81_European_Cup
+1981_European_Cup_Final
+1981_Grammy_Awards
+1981_Intercontinental_Cup
+1981â€“82_European_Cup
+1982_Grammy_Awards
+1982â€“83_European_Cup
+1983_Grammy_Awards
+1983â€“84_European_Cup
+1983â€“84_Liverpool_F.C._season
+1983â€“84_Liverpool_F.C._season.html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 1984_European_Cup_Final
 1984_European_Super_Cup
 1984_Grammy_Awards
 1984_Intercontinental_Cup
+<<<<<<< HEAD
 1984Ð85_European_Cup
+=======
+1984â€“85_European_Cup
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 1985_European_Cup_Final
 1985_Grammy_Awards
 1986_Grammy_Awards
@@ -125,6 +193,7 @@
 1990_Grammy_Awards
 1991
 1991_Grammy_Awards
+<<<<<<< HEAD
 1991Ð92_UEFA_Cup
 1992_FA_Cup_Final
 1992_Grammy_Awards
@@ -145,11 +214,34 @@
 1999Ð2000_FA_Premier_League
 1999Ð2000_Liverpool_F.C._season
 1999Ð2000_Liverpool_F.C._season.html
+=======
+1991â€“92_UEFA_Cup
+1992_FA_Cup_Final
+1992_Grammy_Awards
+1992â€“93_European_Cup_Winners'_Cup
+1993_Grammy_Awards
+1994_Grammy_Awards
+1995_Grammy_Awards
+1995â€“96_UEFA_Cup
+1996_FA_Cup_Final
+1996_Grammy_Awards
+1996â€“97_UEFA_Cup_Winners'_Cup
+1997_Grammy_Awards
+1997â€“98_UEFA_Cup
+1998_Grammy_Awards
+1998â€“99_FA_Premier_League
+1998â€“99_UEFA_Cup
+1999_Grammy_Awards
+1999â€“2000_FA_Premier_League
+1999â€“2000_Liverpool_F.C._season
+1999â€“2000_Liverpool_F.C._season.html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 19th_century
 1st_Grammy_Awards
 2-step_garage
 2000
 2000_Grammy_Awards
+<<<<<<< HEAD
 2000Ð01_UEFA_Cup
 2001_Grammy_Awards
 2001_UEFA_Cup_Final
@@ -173,11 +265,37 @@
 2004Ð05_Liverpool_F.C._season
 2004Ð05_Liverpool_F.C._season.html
 2004Ð05_UEFA_Champions_League
+=======
+2000â€“01_UEFA_Cup
+2001_Grammy_Awards
+2001_UEFA_Cup_Final
+2001_UEFA_Super_Cup
+2001â€“02_FA_Premier_League
+2001â€“02_Liverpool_F.C._season
+2001â€“02_Liverpool_F.C._season.html
+2001â€“02_UEFA_Champions_League
+2002
+2002_Grammy_Awards
+2002_Gujarat_riots
+2002â€“03_FA_Premier_League
+2002â€“03_UEFA_Champions_League
+2002â€“03_UEFA_Cup
+2003_Grammy_Awards
+2003â€“04_FA_Premier_League
+2003â€“04_Liverpool_F.C._season
+2003â€“04_Liverpool_F.C._season.html
+2003â€“04_UEFA_Cup
+2004_Grammy_Awards
+2004â€“05_Liverpool_F.C._season
+2004â€“05_Liverpool_F.C._season.html
+2004â€“05_UEFA_Champions_League
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 2005_FIFA_Club_World_Championship
 2005_FIFA_Club_World_Championship_Final
 2005_Grammy_Awards
 2005_UEFA_Champions_League_Final
 2005_UEFA_Super_Cup
+<<<<<<< HEAD
 2005Ð06_UEFA_Champions_League
 2006_Grammy_Awards
 2006Ð07_UEFA_Champions_League
@@ -190,6 +308,20 @@
 2008_World_Music_Awards
 2008Ð09_Premier_League
 2008Ð09_UEFA_Champions_League
+=======
+2005â€“06_UEFA_Champions_League
+2006_Grammy_Awards
+2006â€“07_UEFA_Champions_League
+2007_Grammy_Awards
+2007_UEFA_Champions_League_Final
+2007â€“08_Premier_League
+2007â€“08_UEFA_Champions_League
+2008_Grammy_Awards
+2008_Kosovo_declaration_of_independence
+2008_World_Music_Awards
+2008â€“09_Premier_League
+2008â€“09_UEFA_Champions_League
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 2009_BRIT_Awards
 2009_Grammy_Awards
 2009_Kids'_Choice_Awards
@@ -199,6 +331,7 @@
 2009_MuchMusic_Video_Awards
 2009_Soul_Train_Music_Awards
 2009_Tamil_diaspora_protests_in_Canada
+<<<<<<< HEAD
 2009Ð10_Premier_League
 2009Ð10_UEFA_Champions_League
 2009Ð10_UEFA_Europa_League
@@ -208,6 +341,17 @@
 2010Ð11_Premier_League
 2010Ð11_UEFA_Europa_League
 2010Ð11_UEFA_Europa_League_group_stage
+=======
+2009â€“10_Premier_League
+2009â€“10_UEFA_Champions_League
+2009â€“10_UEFA_Europa_League
+2010_Grammy_Awards
+2010_Teen_Choice_Awards
+2010_World_Music_Awards
+2010â€“11_Premier_League
+2010â€“11_UEFA_Europa_League
+2010â€“11_UEFA_Europa_League_group_stage
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 2011
 2011_Billboard_Music_Awards
 2011_Grammy_Awards
@@ -217,13 +361,21 @@
 2012_Grammy_Awards
 2012_phenomenon
 2012_Wikipedia_blackout
+<<<<<<< HEAD
 2012Ð13_UEFA_Europa_League
+=======
+2012â€“13_UEFA_Europa_League
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 2013_Africa_Cup_of_Nations
 2013_Africa_Cup_of_Nations_Final
 2013_Grammy_Awards
 2013_Kumbh_Mela_stampede
 2013_North_Korean_nuclear_test
+<<<<<<< HEAD
 2013Ð14_UEFA_Europa_League
+=======
+2013â€“14_UEFA_Europa_League
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 20th_Century_Fox
 21_(Adele_album)
 24-hour_clock
@@ -235,9 +387,15 @@
 45rpm_single
 46th_Grammy_Awards
 49th_Grammy_Awards
+<<<<<<< HEAD
 4_(BeyoncŽ_Knowles_album)
 4__The_Remix
 4_Intimate_Nights_with_BeyoncŽ
+=======
+4_(BeyoncÃ©_Knowles_album)
+4__The_Remix
+4_Intimate_Nights_with_BeyoncÃ©
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 509th_Composite_Group
 50_Cent
 50th_Grammy_Awards
@@ -279,7 +437,11 @@ A_New_English_Dictionary
 A_Rocket_to_the_Moon
 A_Thousand_Miles
 A_Whole_New_World
+<<<<<<< HEAD
 A_Woman_Like_Me_(BeyoncŽ_Knowles_song)
+=======
+A_Woman_Like_Me_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Aaliyah
 Aaron_Neville
 Aaron_Swartz
@@ -293,8 +455,13 @@ Aberdeen_F.C.
 Aboriginal_English_Dialects
 About.com
 About.com.html
+<<<<<<< HEAD
 Above_and_BeyoncŽ__Video_Collection_&_Dance_Mixes
 Above_and_BeyoncŽ_Ð_Video_Collection_&_Dance_Mixes
+=======
+Above_and_BeyoncÃ©__Video_Collection_&_Dance_Mixes
+Above_and_BeyoncÃ©_â€“_Video_Collection_&_Dance_Mixes
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Abraham_Lincoln
 ABS-CBN_News_and_Current_Affairs
 Absolute_dating
@@ -302,7 +469,11 @@ Absolute_time_and_space
 Abstract_algebra
 Abstract_art
 Abstraction_(mathematics)
+<<<<<<< HEAD
 ABSÐCBN_Corporation
+=======
+ABSâ€“CBN_Corporation
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Abuwtiyuw
 AC_Sparta_Prague
 Academia
@@ -311,7 +482,11 @@ Academic_studies_about_Wikipedia
 Academy_Award
 Academy_Award_for_Best_Director
 Academy_of_Country_Music_Awards
+<<<<<<< HEAD
 AcadŽmie_franaise
+=======
+AcadÃ©mie_franÃ§aise
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Acadia
 Accent_(dialect)
 Access_control
@@ -560,7 +735,11 @@ Andes
 Andre_Gregory
 Andrea_Seabrook
 Andreas_Carlsson
+<<<<<<< HEAD
 Andrei_?erban
+=======
+Andrei_Åžerban
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Andrew_Dalby
 Andrew_Dost
 Andrew_Keen
@@ -569,8 +748,13 @@ Andrew_Orlowski
 Andrew_W._Mellon
 Andrew_W._Mellon.html
 Andrew_Wyatt
+<<<<<<< HEAD
 AndrŽ_KertŽsz
 AndrŽ_Previn
+=======
+AndrÃ©_KertÃ©sz
+AndrÃ©_Previn
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Andriy_Shevchenko
 Android_(operating_system)
 Andy_Gibb
@@ -658,7 +842,11 @@ Archaeomagnetic_dating
 Archaeopteryx
 Archetype
 Archimedes
+<<<<<<< HEAD
 Archipelago_of_San_AndrŽs,_Providencia_and_Santa_Catalina
+=======
+Archipelago_of_San_AndrÃ©s,_Providencia_and_Santa_Catalina
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Architecture
 Arctic_Tern
 Area_studies
@@ -698,17 +886,30 @@ Artists_and_repertoire
 Aruba
 ArXiv
 As_Long_as_He_Needs_Me
+<<<<<<< HEAD
 AS_Saint-ƒtienne
+=======
+AS_Saint-Ã‰tienne
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Ash_Wednesday
 Asharite
 Asia
 Asian_hip_hop
+<<<<<<< HEAD
 Asociaci—n_Mexicana_de_Productores_de_Fonogramas_y_Videogramas
 Aspirated_consonant
 ASPRO_chronology
 Assembly_of_Kosovo
 Associa‹o_Brasileira_dos_Produtores_de_Discos
 Associa‹o_Fonogr‡fica_Portuguesa
+=======
+AsociaciÃ³n_Mexicana_de_Productores_de_Fonogramas_y_Videogramas
+Aspirated_consonant
+ASPRO_chronology
+Assembly_of_Kosovo
+AssociaÃ§Ã£o_Brasileira_dos_Produtores_de_Discos
+AssociaÃ§Ã£o_FonogrÃ¡fica_Portuguesa
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Associated_Newspapers
 Associated_Newspapers_Ltd
 Associated_Press
@@ -725,13 +926,21 @@ Astronomy
 Asturian_Wikipedia
 At_Last
 At_Seventeen
+<<<<<<< HEAD
 AtatŸrk_Olympic_Stadium
+=======
+AtatÃ¼rk_Olympic_Stadium
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Athletic_Bilbao
 Atlanta
 Atlantic_City,_New_Jersey
 Atlantic_Ocean
 Atlantic_Records
+<<<<<<< HEAD
 AtlŽtico_Madrid
+=======
+AtlÃ©tico_Madrid
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Audio_engineering
 Audio_mastering
 Audio_mixing_(recorded_music)
@@ -764,7 +973,11 @@ Auxiliary_verb
 Avant-garde
 Avant-garde_music
 Avatar
+<<<<<<< HEAD
 Ave_Maria_(BeyoncŽ_Knowles_song)
+=======
+Ave_Maria_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Average_annual_daily_traffic
 Average_Joe
 Aviation
@@ -795,7 +1008,11 @@ B.o.B.html
 Babakotia
 Baby_Baby_(Amy_Grant_song)
 Baby_boom_generation
+<<<<<<< HEAD
 Baby_Boy_(BeyoncŽ_Knowles_song)
+=======
+Baby_Boy_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Babyface_(musician)
 Bachelorette_party
 Backing_vocalist
@@ -810,7 +1027,11 @@ BAFTA_Award_for_Best_Film
 Bahamas
 Bahamian_English
 Bahrain
+<<<<<<< HEAD
 Bahraini_uprising_(2011Ðpresent)
+=======
+Bahraini_uprising_(2011â€“present)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Baidu_Baike
 Bald_Eagle
 Balkan_pop
@@ -967,11 +1188,19 @@ Bette_Midler
 Betty_Comden
 BeyHive
 BeyHive_(mobile_application)
+<<<<<<< HEAD
 BeyoncŽ
 BeyoncŽ__The_Ultimate_Performer
 BeyoncŽ_Knowles
 BeyoncŽ_Knowles_discography
 BeyoncŽ_Knowles_videography
+=======
+BeyoncÃ©
+BeyoncÃ©__The_Ultimate_Performer
+BeyoncÃ©_Knowles
+BeyoncÃ©_Knowles_discography
+BeyoncÃ©_Knowles_videography
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Bhangragga
 Bharattherium
 Bhutan
@@ -1010,7 +1239,11 @@ Billboard_200
 Billboard_Brasil
 Billboard_charts
 Billboard_Comprehensive_Albums
+<<<<<<< HEAD
 Billboard_En_Espa–ol
+=======
+Billboard_En_EspaÃ±ol
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Billboard_Greece
 Billboard_Hot_100
 Billboard_Hot_100_50th_Anniversary_Charts
@@ -1021,7 +1254,11 @@ Billboard_Music_Awards
 Billboard_Radio_Monitor
 Billboard_Social_50
 Billboard_Top_Latin_Albums
+<<<<<<< HEAD
 Billboard_TŸrkiye
+=======
+Billboard_TÃ¼rkiye
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Billboard_Year-End
 Billie_Jean
 Billion_Dollar_Baby
@@ -1092,7 +1329,11 @@ Bodiam_Castle
 Body_painting
 Bog_turtle
 Bogle
+<<<<<<< HEAD
 BokmŒl
+=======
+BokmÃ¥l
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Boletus_edulis
 Boletus_frostii
 Bolivia
@@ -1106,7 +1347,11 @@ Boney_M
 Bonnie_Raitt
 Bono
 Boogie_(genre)
+<<<<<<< HEAD
 Book_BeyoncŽ_Knowles
+=======
+Book_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Book_Destiny's_Child
 Book_English_language
 Book_of_Isaiah
@@ -1117,11 +1362,19 @@ Boom_Boom_Pow
 Bootylicious
 Borat_Sagdiyev
 Boris_Floricic
+<<<<<<< HEAD
 Boris_Tadi?
 Born_Free_(song)
 Borobudur
 Borussia_Dortmund
 Borussia_Mšnchengladbach
+=======
+Boris_TadiÄ‡
+Born_Free_(song)
+Borobudur
+Borussia_Dortmund
+Borussia_MÃ¶nchengladbach
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Bosnian_and_Herzegovinan_hip_hop
 Boston
 Boston_accent
@@ -1155,7 +1408,11 @@ Breakbeat
 Breaking_Bad
 Breaking_Up_Is_Hard_to_Do_(song)
 Breathe_(Faith_Hill_song)
+<<<<<<< HEAD
 Brei?ablik_UBK
+=======
+BreiÃ°ablik_UBK
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Brenda_Russell
 Brethren_of_Purity
 Brett_James
@@ -1191,7 +1448,11 @@ Britney_Spears
 Broad-billed_Parrot
 Broadway_theatre
 Brockhaus_encyclopedia
+<<<<<<< HEAD
 Brockhaus_EnzyklopŠdie
+=======
+Brockhaus_EnzyklopÃ¤die
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Broken-Hearted_Girl
 Bronwyn_Bancroft
 Bronwyn_Oliver
@@ -1210,10 +1471,17 @@ Brummie
 Brunei
 Bruno_Mars
 Brussels
+<<<<<<< HEAD
 BrŸno_(character)
 Bryan-Michael_Cox
 Bryan_Adams
 Br¿ndby_IF
+=======
+BrÃ¼no_(character)
+Bryan-Michael_Cox
+Bryan_Adams
+BrÃ¸ndby_IF
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Bubblegum_pop
 Bubbling_Under_Hot_100_Singles
 Buccaneer_(musician)
@@ -1532,9 +1800,15 @@ Category_Basketball_players
 Category_Beatboxers
 Category_Best_Director_Academy_Award_winners
 Category_Best_Director_BAFTA_Award_winners
+<<<<<<< HEAD
 Category_BeyoncŽ_Knowles
 Category_BeyoncŽ_Knowles_albums
 Category_BeyoncŽ_Knowles_songs
+=======
+Category_BeyoncÃ©_Knowles
+Category_BeyoncÃ©_Knowles_albums
+Category_BeyoncÃ©_Knowles_songs
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Category_Big_Machine_Records_singles
 Category_Billboard_charts
 Category_Billboard_Hot_100_number-one_singles
@@ -2003,7 +2277,11 @@ Category_Singles_certified_gold_by_the_Recording_Industry_Association_of_America
 Category_Singles_certified_platinum_by_the_Australian_Recording_Industry_Association
 Category_Singles_certified_platinum_by_the_International_Federation_of_the_Phonographic_Industry_of_Denmark
 Category_Singles_certified_platinum_by_the_International_Federation_of_the_Phonographic_Industry_of_Switzerland
+<<<<<<< HEAD
 Category_Singles_certified_platinum_by_the_Productores_de_Mœsica_de_Espa–a
+=======
+Category_Singles_certified_platinum_by_the_Productores_de_MÃºsica_de_EspaÃ±a
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Category_Singles_certified_platinum_by_the_Recording_Industry_Association_of_America
 Category_Singles_certified_platinum_by_the_Recording_Industry_Association_of_New_Zealand
 Category_Singles_certified_quadruple_platinum_by_the_Recording_Industry_Association_of_America
@@ -2036,7 +2314,11 @@ Category_Songs_produced_by_Toby_Gad
 Category_Songs_produced_by_Tricky_Stewart
 Category_Songs_with_feminist_themes
 Category_Songs_written_by_BC_Jean
+<<<<<<< HEAD
 Category_Songs_written_by_BeyoncŽ_Knowles
+=======
+Category_Songs_written_by_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Category_Songs_written_by_The-Dream
 Category_Songs_written_by_Toby_Gad
 Category_Songs_written_by_Tricky_Stewart
@@ -2051,7 +2333,11 @@ Category_Statistics
 Category_Street_dance
 Category_Stress-timed_languages
 Category_Structural_engineering
+<<<<<<< HEAD
 Category_SubjectÐverbÐobject_languages
+=======
+Category_Subjectâ€“verbâ€“object_languages
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Category_Subscription_required_using_via
 Category_Superhero_fiction
 Category_Superhero_role-playing_games
@@ -2339,7 +2625,11 @@ Classical_antiquity
 Classical_mechanics
 Classical_music
 Clathrus_ruber
+<<<<<<< HEAD
 Claude_Franois
+=======
+Claude_FranÃ§ois
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Claude_Kelly
 Claude_Kirkpatrick
 Claudio_Monteverdi
@@ -2359,7 +2649,11 @@ Close_front_unrounded_vowel
 Cloud_Gate
 Clover,_Utah
 Club_(weapon)
+<<<<<<< HEAD
 Club_AtlŽtico_Independiente
+=======
+Club_AtlÃ©tico_Independiente
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Club_Brugge_K.V.
 Clube_de_Regatas_do_Flamengo
 Cluster_(computing)
@@ -2467,8 +2761,13 @@ Computing_Tabulating_Recording_Company
 ComScore
 Concise_Oxford_English_Dictionary
 Concurrency_(road)
+<<<<<<< HEAD
 CondŽ_Nast_Publications
 CondŽNet
+=======
+CondÃ©_Nast_Publications
+CondÃ©Net
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Conductor_(music)
 Confederate_States
 Confessions_on_a_Dance_Floor
@@ -2533,13 +2832,21 @@ Costa_Rica
 Cottingley,_Bradford
 Cottingley_Fairies
 Cotton_Mather
+<<<<<<< HEAD
 CotÐcaught_merger
+=======
+Cotâ€“caught_merger
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Cougar
 Cougar_Town
 Could_It_Be_Magic
 Council_of_Europe
 Countability
+<<<<<<< HEAD
 Countdown_(BeyoncŽ_Knowles_song)
+=======
+Countdown_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Counterculture
 Counting
 Country_music
@@ -2561,7 +2868,11 @@ Cox_Enterprises
 Crack_a_Bottle
 Craft
 Craig_Wiseman
+<<<<<<< HEAD
 Crazy_in_Love_(BeyoncŽ_Knowles_song)
+=======
+Crazy_in_Love_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 CrazySexyCool
 Creationism
 Creative_Commons
@@ -2572,7 +2883,11 @@ Creole_language
 Creole_music
 Crescendo
 Crescent_Honeyeater
+<<<<<<< HEAD
 CretaceousÐPaleogene_extinction_event
+=======
+Cretaceousâ€“Paleogene_extinction_event
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Criminal_justice
 Criminology
 Crip_Walk
@@ -2607,7 +2922,11 @@ Culture_of_Fiji
 Culture_of_the_Song_Dynasty
 Cumbia_rap
 Cumbrian_dialect
+<<<<<<< HEAD
 Curaao
+=======
+CuraÃ§ao
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Curriculum_vitae
 Cy_Coleman
 Cyathus
@@ -2631,7 +2950,11 @@ D._Train.html
 D_(musical_note)
 Da_Capo_Press
 Dabba_kali
+<<<<<<< HEAD
 Daddy_(BeyoncŽ_Knowles_song)
+=======
+Daddy_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Daddy_Cool_(Boney_M._song)
 Daddy_Cool_(Boney_M._song).html
 Daddy_Yankee
@@ -2692,7 +3015,11 @@ Daspletosaurus
 Database_server
 Dating_methodologies_in_archaeology
 Daughters_(John_Mayer_song)
+<<<<<<< HEAD
 Dave_AudŽ
+=======
+Dave_AudÃ©
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Dave_Haywood
 Dave_Kelly_(producer)
 Dave_McCracken
@@ -2744,7 +3071,11 @@ Deinosuchus
 Delay_(audio_effect)
 Deletionism_and_inclusionism_in_Wikipedia
 Deletionpedia
+<<<<<<< HEAD
 Delf’_Geli
+=======
+DelfÃ­_Geli
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Delichon
 Deloitte_Touche_Tohmatsu
 Democratization_of_knowledge
@@ -2762,7 +3093,11 @@ Dennis_Publishing
 Dental_stop
 Denver_Mint
 Dependent_territory
+<<<<<<< HEAD
 Deportivo_AlavŽs
+=======
+Deportivo_AlavÃ©s
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Deposition_(Aerosol_physics)
 Derby_County_F.C._in_European_football
 Derby_County_F.C._in_European_football.html
@@ -2786,7 +3121,11 @@ Detroit_Tigers
 Development_studies
 Devils_&_Dust_(song)
 Devo
+<<<<<<< HEAD
 DŽjˆ_Vu_(BeyoncŽ_Knowles_song)
+=======
+DÃ©jÃ _Vu_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Diacritic
 Diacritics
 Diaeresis_(diacritic)
@@ -2847,12 +3186,20 @@ Disco_polo
 Disco_Step-by-Step_Television_Show
 Discogs
 Discotheque
+<<<<<<< HEAD
 Discothque
+=======
+DiscothÃ¨que
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Discrete_geometry
 Discrete_mathematics
 Dissociative_identity_disorder
 Disturbia_(song)
+<<<<<<< HEAD
 Diva_(BeyoncŽ_Knowles_song)
+=======
+Diva_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Divisive_rhythm
 Dixie_Chicks
 Dixieland
@@ -2893,7 +3240,11 @@ Donna_Summer
 Donovan_Germain
 Doo-wop
 Doomsday_device
+<<<<<<< HEAD
 DoppelgŠnger
+=======
+DoppelgÃ¤nger
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Dorothy_Stratten
 Dortmund
 Dose_(magazine)
@@ -2922,7 +3273,11 @@ Dreamtime
 Dreamtime_(Duerr_book)
 DreamWorks
 Dresden
+<<<<<<< HEAD
 Drents
+=======
+DrÃ¨ents
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Dried_nasal_mucus
 Drop_It_Like_It's_Hot
 Drops_of_Jupiter_(Tell_Me)
@@ -2952,7 +3307,11 @@ Dutch_Low_Saxon_Wikipedia
 Dutch_Top_40
 Dutch_Wikipedia
 Dutty_Wine
+<<<<<<< HEAD
 DŸrer's_Rhinoceros
+=======
+DÃ¼rer's_Rhinoceros
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Dynamical_systems
 Dynamo_Dresden
 E
@@ -2982,7 +3341,11 @@ Easy_listening
 Eating_the_Dinosaur
 Ebony_and_Ivory
 Echo_(music_award)
+<<<<<<< HEAD
 Eckart_Hšfling
+=======
+Eckart_HÃ¶fling
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Economic
 Economic_geography
 Economic_globalization
@@ -3008,7 +3371,11 @@ Edwin_Sherin
 Eek-a-Mouse
 Efficient_energy_use
 Eg_White
+<<<<<<< HEAD
 Ego_(BeyoncŽ_Knowles_song)
+=======
+Ego_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Egypt
 Egyptian_Arabic_Wikipedia
 Egyptian_chronology
@@ -3068,7 +3435,11 @@ Emmy_Award
 Emory_Law_Journal
 Emperor_Penguin
 Encarta
+<<<<<<< HEAD
 Enciclopedia_Libre_Universal_en_Espa–ol
+=======
+Enciclopedia_Libre_Universal_en_EspaÃ±ol
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Enciclopedia_universal_ilustrada_europeo-americana
 Encore_Las_Vegas
 Encyclopaedia_Judaica
@@ -3078,9 +3449,15 @@ Encyclopedia_Americana
 Encyclopedia_of_Life
 Encyclopedia_of_the_Brethren_of_Purity
 Encyclopedic_dictionary
+<<<<<<< HEAD
 EncyclopŽdie
 Encyclop¾dia_Britannica
 Encyclop¾dia_Britannica_Eleventh_Edition
+=======
+EncyclopÃ©die
+EncyclopÃ¦dia_Britannica
+EncyclopÃ¦dia_Britannica_Eleventh_Edition
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 End_of_Time_(song)
 Endless_Love_(song)
 Endurantism
@@ -3145,7 +3522,11 @@ Eric_Clapton
 Eric_S._Raymond
 Eric_S._Raymond.html
 Eric_Stefani
+<<<<<<< HEAD
 Erik_Mšller
+=======
+Erik_MÃ¶ller
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Eritrea
 Ernest_Gold_(composer)
 Erykah_Badu
@@ -3225,7 +3606,11 @@ Extended_play
 Extra_time
 Eye_of_the_Tiger
 Eye_Weekly
+<<<<<<< HEAD
 ƒmile_Durkheim
+=======
+Ã‰mile_Durkheim
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 F
 F.C._Internazionale_Milano
 F.C._Internazionale_Milano.html
@@ -3262,6 +3647,7 @@ Fausto_Cercignani
 Fayard_Nicholas
 FC_Barcelona
 FC_Bayern_Munich
+<<<<<<< HEAD
 FC_Dinamo_Bucure?ti
 FC_Dinamo_Tbilisi
 FC_Lahti
@@ -3270,6 +3656,16 @@ FC_Steaua_Bucure?ti
 FC_Swarovski_Tirol
 FC_Utrecht
 FC_ZŸrich
+=======
+FC_Dinamo_BucureÈ™ti
+FC_Dinamo_Tbilisi
+FC_Lahti
+FC_Spartak_Moscow
+FC_Steaua_BucureÅŸti
+FC_Swarovski_Tirol
+FC_Utrecht
+FC_ZÃ¼rich
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Feather_River_Route
 February_12
 February_13
@@ -3290,10 +3686,17 @@ Felt_Forum
 Feminism
 Feminist_economics
 Fender_Jazz_Bass
+<<<<<<< HEAD
 Ferencv‡rosi_TC
 Fergie_(singer)
 Fernanda_B._ViŽgas
 Fernanda_B._ViŽgas.html
+=======
+FerencvÃ¡rosi_TC
+Fergie_(singer)
+Fernanda_B._ViÃ©gas
+Fernanda_B._ViÃ©gas.html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Fernando_(song)
 Fertilisation_of_Orchids
 Fever_(1956_song)
@@ -3336,7 +3739,11 @@ First_Monday_(journal)
 First_World
 Fiscal_year
 FK506
+<<<<<<< HEAD
 FK_Rabotni?ki
+=======
+FK_RabotniÄki
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Flag_of_Armenia
 Flag_of_Australia
 Flag_of_Belarus
@@ -3360,7 +3767,11 @@ Flo_Rida
 Floating_(dance)
 Florence_and_the_Machine
 Florence_Devouard
+<<<<<<< HEAD
 Florian—polis
+=======
+FlorianÃ³polis
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Floruit
 Flugelhorn
 Fluorine_absorption_dating
@@ -3409,8 +3820,13 @@ Francis_Ford_Coppola
 Francis_Grasso
 Francis_Lieber
 Franco_Grillini
+<<<<<<< HEAD
 Franois_Rabelais
 Franois_Truffaut
+=======
+FranÃ§ois_Rabelais
+FranÃ§ois_Truffaut
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Frank_Dunlop_(director)
 Frank_Farian
 Frank_J._Myers
@@ -3594,7 +4010,11 @@ Germany
 Get_Busy
 Get_Down_Tonight
 Get_Me_Bodied
+<<<<<<< HEAD
 GŽrard_Houllier
+=======
+GÃ©rard_Houllier
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 GFDL
 Ghana
 Ghetto_house
@@ -3676,7 +4096,11 @@ Gothic_art
 Gotye
 Governor_of_Louisiana
 Gower_Champion
+<<<<<<< HEAD
 Gšdel's_incompleteness_theorems
+=======
+GÃ¶del's_incompleteness_theorems
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 GPL
 GQ
 Graceland_(song)
@@ -3811,7 +4235,11 @@ Great_Vowel_Shift
 Greatest_Day_(Take_That_song)
 Greatest_Hits_Volume_III__I'm_a_Survivor
 Greco-Roman
+<<<<<<< HEAD
 Greco-Turkish_War_(1919Ð1922)
+=======
+Greco-Turkish_War_(1919â€“1922)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Greece
 Greece_runestones
 Greek_diaspora
@@ -3824,7 +4252,11 @@ Greeks
 Greeks_in_Georgia
 Greeks_in_Italy
 Green_Day
+<<<<<<< HEAD
 Green_Light_(BeyoncŽ_Knowles_song)
+=======
+Green_Light_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Greenwich_Village
 Greg_Kot
 Gregor_Mendel
@@ -3848,7 +4280,11 @@ Grover_Washington,_Jr.
 Grupo_Folha
 Guam
 GUAM_Organization_for_Democracy_and_Economic_Development
+<<<<<<< HEAD
 Guaran’_language
+=======
+GuaranÃ­_language
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Guardian_Media_Group
 Guatemala
 Guatemala_City
@@ -3865,7 +4301,11 @@ Guns_N'_Roses
 Guru_Josh
 Gussie_Clarke
 Gustav_Klimt
+<<<<<<< HEAD
 Gustave_DorŽ
+=======
+Gustave_DorÃ©
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Guy_(band)
 Guy_Berryman
 Guyana
@@ -3877,7 +4317,11 @@ Gymnopilus_maritimus
 Gyromitra_esculenta
 H
 H2g2
+<<<<<<< HEAD
 Hachette_Filipacchi_MŽdias
+=======
+Hachette_Filipacchi_MÃ©dias
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Hail_Mary
 Haile_Selassie_of_Ethiopia
 Haitian_Creole_Wikipedia
@@ -3888,7 +4332,11 @@ Half_eagle
 Halfdan_Ragnarsson
 Halle_Berry
 Hallucinogens
+<<<<<<< HEAD
 Halo_(BeyoncŽ_Knowles_song)
+=======
+Halo_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Halston
 Hamburger_SV
 Hammond_organ
@@ -4038,12 +4486,21 @@ History_of_encyclopedias
 History_of_evolutionary_thought
 History_of_hip_hop_music
 History_of_Liverpool_F.C.
+<<<<<<< HEAD
 History_of_Liverpool_F.C._(1892Ð1959)
 History_of_Liverpool_F.C._(1892Ð1959).html
 History_of_Liverpool_F.C._(1959Ð1985)
 History_of_Liverpool_F.C._(1959Ð1985).html
 History_of_Liverpool_F.C._(1985Ðpresent)
 History_of_Liverpool_F.C._(1985Ðpresent).html
+=======
+History_of_Liverpool_F.C._(1892â€“1959)
+History_of_Liverpool_F.C._(1892â€“1959).html
+History_of_Liverpool_F.C._(1959â€“1985)
+History_of_Liverpool_F.C._(1959â€“1985).html
+History_of_Liverpool_F.C._(1985â€“present)
+History_of_Liverpool_F.C._(1985â€“present).html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 History_of_Mathematics
 History_of_music_piracy
 History_of_science_and_technology
@@ -4117,7 +4574,11 @@ Hotel_California_(song)
 Hour
 House_dance
 House_music
+<<<<<<< HEAD
 House_of_DerŽon
+=======
+House_of_DerÃ©on
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 House_with_Chimaeras
 Houston
 Houston_Chronicle
@@ -4192,7 +4653,11 @@ I_Am...Sasha_Fierce
 I_Am...Sasha_Fierce.html
 I_Believe_I_Can_Fly
 I_Can_Love_You_Like_That
+<<<<<<< HEAD
 I_Care_(BeyoncŽ_Knowles_song)
+=======
+I_Care_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 I_Don't_Want_to_Miss_a_Thing
 I_Feel_For_You
 I_Feel_Love
@@ -4205,7 +4670,11 @@ I_Just_Want_to_Be_Your_Everything
 I_Keep_On_Loving_You
 I_Left_My_Heart_in_San_Francisco
 I_Love_Lucy
+<<<<<<< HEAD
 I_Miss_You_(BeyoncŽ_Knowles_song)
+=======
+I_Miss_You_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 I_Still_Haven't_Found_What_I'm_Looking_For
 I_Swear
 I_Try
@@ -4233,7 +4702,11 @@ Icelandic_hip_hop
 Icelandic_language
 Icelandic_Phallological_Museum
 Ichigo_Kurosaki
+<<<<<<< HEAD
 Ichikawa_Danj?r?_I
+=======
+Ichikawa_DanjÅ«rÅ_I
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Idol_(TV_series)
 Idris_Elba
 If_I_Ain't_Got_You
@@ -4347,7 +4820,11 @@ Interstate_80
 Interstate_80_(Nevada)
 Interstate_80_(Utah)
 Interstate_80_Business_(Nevada)
+<<<<<<< HEAD
 Interstate_80_Business_(West_Wendover,_NevadaÐWendover,_Utah)
+=======
+Interstate_80_Business_(West_Wendover,_Nevadaâ€“Wendover,_Utah)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Interstate_Highway_System
 Intervocalic_alveolar_flapping
 Interwiki_links
@@ -4425,7 +4902,11 @@ Jackson,_Mississippi
 Jackson_5__The_Ultimate_Collection
 Jackson_State_University
 Jacques_Demy
+<<<<<<< HEAD
 Jagadguru_R?mabhadr?c?rya
+=======
+Jagadguru_RÄmabhadrÄcÄrya
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Jah_Thomas
 Jake_Nava
 Jam!
@@ -4457,7 +4938,11 @@ Jamie_Carragher
 Jamie_Foxx
 Jan_Breydel_Stadion
 Jane_Elliott_(choreographer)
+<<<<<<< HEAD
 Janelle_Mon‡e
+=======
+Janelle_MonÃ¡e
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Janet_(album)
 Janet_Jackson
 Jangle_pop
@@ -4490,7 +4975,11 @@ Jazz_dance
 Jazz_funeral
 Jazz_hands
 Jazz_rap
+<<<<<<< HEAD
 J‡nos_KertŽsz
+=======
+JÃ¡nos_KertÃ©sz
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Jean-Marc_Cerrone
 Jean-Paul_Gaultier
 Jean_Erdman
@@ -4597,7 +5086,11 @@ Johnny_Mandel
 Johnny_Mathis
 Johnny_Mercer
 Johnta_Austin
+<<<<<<< HEAD
 Johnt‡_Austin
+=======
+JohntÃ¡_Austin
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Joint_custody_(United_States)
 Joint_Information_Systems_Committee
 JoJo_(singer)
@@ -4608,7 +5101,11 @@ Jonas_Brothers
 Jonathan_Zittrain
 Jonathon_Davis
 Jonny_Buckland
+<<<<<<< HEAD
 Jorge_Calder—n
+=======
+Jorge_CalderÃ³n
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Joseph_Banks
 Joseph_Bosworth
 Joseph_Brooks_(songwriter)
@@ -4622,9 +5119,15 @@ Joseph_Nation
 Joseph_Priestley_House
 Josephine_Baker
 Josey_Wales
+<<<<<<< HEAD
 JosŽ_Mourinho
 JosŽ_Quintero
 JosŽ_Rizal
+=======
+JosÃ©_Mourinho
+JosÃ©_Quintero
+JosÃ©_Rizal
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Josh_Kear
 Josh_Ramsay
 Josh_Tyrangiel
@@ -4657,7 +5160,11 @@ Jutes
 Jutland
 Juvenile_(rapper)
 Juventus_F.C.
+<<<<<<< HEAD
 JŸrgen_Schmidhuber
+=======
+JÃ¼rgen_Schmidhuber
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 K
 K-pop
 K.d._lang
@@ -4684,7 +5191,11 @@ Katy_Perry
 Kaveri
 Kaveri_River
 Kazakh_Wikipedia
+<<<<<<< HEAD
 K?la_(time)
+=======
+KÄla_(time)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 KC_and_the_Sunshine_Band
 Keep_It_Comin'_Love
 Keep_On_Loving_You_(album)
@@ -4715,7 +5226,11 @@ Kevin_Keegan
 Key_(music)
 Keyboard_(instrument)
 Keyboard_instrument
+<<<<<<< HEAD
 KhloŽ_Kardashian
+=======
+KhloÃ©_Kardashian
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Kid_Albums
 Kid_Creole_and_the_Coconuts
 Kid_Cudi
@@ -4744,7 +5259,11 @@ Kissing_You_(Des'ree_song)
 Kitty_Kat_(song)
 Kiwix
 Klaxons
+<<<<<<< HEAD
 KnattspyrnufŽlag_Reykjav’kur
+=======
+KnattspyrnufÃ©lag_ReykjavÃ­kur
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Knighthood
 Knowledge
 Knowledge_base
@@ -4761,7 +5280,11 @@ Korean_Wikipedia
 Korn
 Kosovar_hip_hop
 Kourtney_Kardashian
+<<<<<<< HEAD
 Kšlsch_dialect
+=======
+KÃ¶lsch_dialect
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Kraftwerk
 Kremlinology
 Kris_Kristofferson
@@ -4775,9 +5298,15 @@ Kuro5hin.org
 Kuro5hin.org.html
 Kylie_Minogue
 L
+<<<<<<< HEAD
 L'ƒquipe
 L'Officiel
 L'OrŽal
+=======
+L'Ã‰quipe
+L'Officiel
+L'OrÃ©al
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 L'Orfeo
 L-pop
 L-vocalization
@@ -4799,7 +5328,11 @@ Lady_G
 Lady_Gaga
 Lady_Marmalade
 Lady_Saw
+<<<<<<< HEAD
 La•ko
+=======
+LaÃ¯ko
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Lamarckism
 Lamb_and_mutton
 Lancashire_dialect_and_accent
@@ -4832,7 +5365,11 @@ Languages_of_the_African_Union
 Languages_of_the_European_Union
 Languages_of_Zambia
 Languages_of_Zimbabwe
+<<<<<<< HEAD
 Langues_d'o•l
+=======
+Langues_d'oÃ¯l
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Lapis_lazuli
 Lara's_Theme
 Larry_Henley
@@ -4945,7 +5482,11 @@ Library_of_Congress_Control_Number
 Library_reference_desk
 Library_science
 Libre_knowledge
+<<<<<<< HEAD
 Lic?_Movil?
+=======
+LicÄƒ_MovilÄƒ
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 License
 Lichenometry
 Lie_group
@@ -5014,7 +5555,11 @@ List_of_artists_who_reached_number_one_on_the_U.S._Mainstream_Top_40_chart.html
 List_of_artists_who_reached_number_one_on_the_U.S._Rhythmic_chart
 List_of_artists_who_reached_number_one_on_the_U.S._Rhythmic_chart.html
 List_of_auxiliary_Interstate_Highways
+<<<<<<< HEAD
 List_of_awards_and_nominations_received_by_BeyoncŽ_Knowles
+=======
+List_of_awards_and_nominations_received_by_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 List_of_awards_and_nominations_received_by_Destiny's_Child
 List_of_basic_mathematics_topics
 List_of_basic_technology_topics
@@ -5030,11 +5575,19 @@ List_of_best-selling_singles
 List_of_best-selling_singles_in_the_United_States
 List_of_best-selling_singles_of_the_2000s_(UK)
 List_of_best-selling_singles_worldwide
+<<<<<<< HEAD
 List_of_BeyoncŽ_Knowles_concert_tours
 List_of_Billboard_Hot_100_chart_achievements_and_milestones
 List_of_Billboard_Hot_Country_Songs_chart_achievements
 List_of_Billboard_number-one_singles_during_1950Ð1958_(U.S.)
 List_of_Billboard_number-one_singles_during_1950Ð1958_(U.S.).html
+=======
+List_of_BeyoncÃ©_Knowles_concert_tours
+List_of_Billboard_Hot_100_chart_achievements_and_milestones
+List_of_Billboard_Hot_Country_Songs_chart_achievements
+List_of_Billboard_number-one_singles_during_1950â€“1958_(U.S.)
+List_of_Billboard_number-one_singles_during_1950â€“1958_(U.S.).html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 List_of_Billboard_number-one_singles_of_the_1940s_(U.S.)
 List_of_Billboard_number-one_singles_of_the_1940s_(U.S.).html
 List_of_Billboard_Social_50_number-one_artists
@@ -5075,8 +5628,13 @@ List_of_Greek_words_with_English_derivatives
 List_of_hip_hop_albums_considered_to_be_influential
 List_of_hip_hop_genres
 List_of_historical_anniversaries
+<<<<<<< HEAD
 List_of_Hot_100_number-one_singles_during_1958Ð1969_(U.S.)
 List_of_Hot_100_number-one_singles_during_1958Ð1969_(U.S.).html
+=======
+List_of_Hot_100_number-one_singles_during_1958â€“1969_(U.S.)
+List_of_Hot_100_number-one_singles_during_1958â€“1969_(U.S.).html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 List_of_Hot_100_number-one_singles_of_1958_(U.S.)
 List_of_Hot_100_number-one_singles_of_1958_(U.S.).html
 List_of_Hot_100_number-one_singles_of_1959_(U.S.)
@@ -5210,8 +5768,13 @@ List_of_Liverpool_F.C._managers
 List_of_Liverpool_F.C._managers.html
 List_of_Liverpool_F.C._players
 List_of_Liverpool_F.C._players.html
+<<<<<<< HEAD
 List_of_Liverpool_F.C._players_(25Ð99_appearances)
 List_of_Liverpool_F.C._players_(25Ð99_appearances).html
+=======
+List_of_Liverpool_F.C._players_(25â€“99_appearances)
+List_of_Liverpool_F.C._players_(25â€“99_appearances).html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 List_of_Liverpool_F.C._players_(fewer_than_25_appearances)
 List_of_Liverpool_F.C._players_(fewer_than_25_appearances).html
 List_of_Liverpool_F.C._records_and_statistics
@@ -5332,7 +5895,11 @@ List_of_reggae_musicians
 List_of_Rita_Rocks_episodes
 List_of_singles_which_have_spent_the_most_weeks_on_the_UK_Singles_Chart
 List_of_social_science_journals
+<<<<<<< HEAD
 List_of_songs_recorded_by_BeyoncŽ_Knowles
+=======
+List_of_songs_recorded_by_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 List_of_state_highways_in_Utah
 List_of_state_highways_serving_Utah_state_parks_and_institutions
 List_of_superhuman_features_and_abilities_in_fiction
@@ -5366,25 +5933,41 @@ Little_Mix
 Little_Moreton_Hall
 Little_Rock,_Arkansas
 Live_at_Roseland__Elements_of_4
+<<<<<<< HEAD
 Live_at_Wembley_(BeyoncŽ_Knowles_album)
+=======
+Live_at_Wembley_(BeyoncÃ©_Knowles_album)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Live_Like_You_Were_Dying_(song)
 Live_Lounge
 Live_Your_Life
 Liverpool_F.C.
 Liverpool_F.C._(Superleague_Formula_team)
 Liverpool_F.C._(Superleague_Formula_team).html
+<<<<<<< HEAD
 Liverpool_F.C._2005Ð06_UEFA_Champions_League_qualification
 Liverpool_F.C._2005Ð06_UEFA_Champions_League_qualification.html
+=======
+Liverpool_F.C._2005â€“06_UEFA_Champions_League_qualification
+Liverpool_F.C._2005â€“06_UEFA_Champions_League_qualification.html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Liverpool_F.C._in_European_football
 Liverpool_F.C._in_European_football.html
 Liverpool_F.C._league_record_by_opponent
 Liverpool_F.C._league_record_by_opponent.html
 Liverpool_F.C._Reserves_and_Academy
 Liverpool_F.C._Reserves_and_Academy.html
+<<<<<<< HEAD
 Liverpool_F.C._season_1995Ð96
 Liverpool_F.C._season_1995Ð96.html
 Liverpool_F.C.ÐManchester_United_F.C._rivalry
 Liverpool_F.C.ÐManchester_United_F.C._rivalry.html
+=======
+Liverpool_F.C._season_1995â€“96
+Liverpool_F.C._season_1995â€“96.html
+Liverpool_F.C.â€“Manchester_United_F.C._rivalry
+Liverpool_F.C.â€“Manchester_United_F.C._rivalry.html
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Liverpool_L.F.C.
 Livin'_la_Vida_Loca
 Liz_Rose
@@ -5415,7 +5998,11 @@ Los_Angeles,_California
 Los_Angeles_Symphony_Orchestra
 Los_Angeles_Times
 Los_Lobos
+<<<<<<< HEAD
 Los_Premios_MTV_LatinoamŽrica
+=======
+Los_Premios_MTV_LatinoamÃ©rica
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Lose_My_Breath
 Lose_Yourself
 Losing_My_Religion
@@ -5460,7 +6047,11 @@ Lucius_Arruntius_the_Younger
 Ludacris
 Ludwig_van_Beethoven
 Luigi_Facelli
+<<<<<<< HEAD
 Luis_Garc’a_Sanz
+=======
+Luis_GarcÃ­a_Sanz
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Luis_Resto_(musician)
 Luka_(song)
 Lunar_calendar
@@ -5596,7 +6187,11 @@ Massachusetts_Constitution
 Massachusetts_House_of_Representatives
 Massachusetts_Institute_of_Technology
 Massachusetts_Senate
+<<<<<<< HEAD
 MassÐenergy_equivalence
+=======
+Massâ€“energy_equivalence
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Mastertone
 Masturbation
 Masudi
@@ -5642,7 +6237,11 @@ Mayanist
 Maynard_James_Keenan
 MCA_Records
 McCormick_Tribune_Plaza_&_Ice_Rink
+<<<<<<< HEAD
 Me,_Myself_and_I_(BeyoncŽ_Knowles_song)
+=======
+Me,_Myself_and_I_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Me_Against_Myself
 Me_and_Bobby_McGee
 Measure_theory
@@ -5700,7 +6299,11 @@ MetroLyrics
 Mexican_hip_hop
 Mexican_pop_music
 Mezzo-soprano
+<<<<<<< HEAD
 MŽnage_problem
+=======
+MÃ©nage_problem
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 MFSB
 Miami
 Miami_bass
@@ -5763,7 +6366,11 @@ Military_technology_and_equipment
 Milk_Famous
 Millennium
 Millennium_Park
+<<<<<<< HEAD
 Milo?_Forman
+=======
+MiloÅ¡_Forman
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Milwaukee_Brewers
 Milwaukee_Journal_Sentinel
 Min_Nan_Wikipedia
@@ -5839,8 +6446,13 @@ Motor_coordination
 Motown
 Motown_sound
 Movie_premiere
+<<<<<<< HEAD
 M˜cheno_language
 MšbiusÐKantor_graph
+=======
+MÃ²cheno_language
+MÃ¶biusâ€“Kantor_graph
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Mr._Bangladesh
 Mr._Bangladesh.html
 Mrs._Robinson
@@ -5906,7 +6518,11 @@ Music_of_Black_Origin_Awards
 Music_of_Bonaire
 Music_of_Croatia
 Music_of_Cuba
+<<<<<<< HEAD
 Music_of_Curaao
+=======
+Music_of_CuraÃ§ao
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Music_of_Dominica
 Music_of_Germany
 Music_of_Grenada
@@ -5950,7 +6566,11 @@ Mutabaruka
 Mutant_disco
 Mutazilite
 MUZU_TV
+<<<<<<< HEAD
 Mœsica_Popular_Brasileira
+=======
+MÃºsica_Popular_Brasileira
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 My_Beautiful_Dark_Twisted_Fantasy
 My_Chemical_Romance
 My_Cup_Runneth_Over
@@ -5967,7 +6587,11 @@ Mysore_district
 MySpace
 MySQL
 MyWikiBiz
+<<<<<<< HEAD
 M?a
+=======
+MÃ½a
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 N
 NAACP_Image_Award
 NAACP_Image_Award_for_Outstanding_Actress_in_a_Motion_Picture
@@ -6027,7 +6651,11 @@ Natural_selection
 Naturalis_Historia
 Nature_(journal)
 Nature_Publishing_Group
+<<<<<<< HEAD
 Naughty_Girl_(BeyoncŽ_Knowles_song)
+=======
+Naughty_Girl_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Nauru
 Nazi_concentration_camps
 NBC
@@ -6191,7 +6819,11 @@ Northern_Ireland
 Northern_Mariana_Islands
 Northern_Sami_Wikipedia
 Northern_Soul
+<<<<<<< HEAD
 NorthÐCentral_American_English
+=======
+Northâ€“Central_American_English
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Norton_Priory
 Norway
 Norwegian_American
@@ -6229,7 +6861,11 @@ Nynorsk
 O
 O.C._Smith
 O.C._Smith.html
+<<<<<<< HEAD
 ObersturmfŸhrer
+=======
+ObersturmfÃ¼hrer
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Obfuscation
 Oboe
 Obscenity
@@ -6361,7 +6997,11 @@ Oxford_Internet_Institute
 Oxford_University_Press
 Ozark_English
 Ozone_(magazine)
+<<<<<<< HEAD
 …3_Austria_Top_40
+=======
+Ã–3_Austria_Top_40
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 P
 P_A
 P_ARTS
@@ -6441,7 +7081,11 @@ Paul_S._Walsh
 Paul_S._Walsh.html
 Paul_Sills
 Paul_Simon
+<<<<<<< HEAD
 Paul_Skali?
+=======
+Paul_SkaliÄ‡
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Paul_Stanley
 Paul_Vance
 Paul_Williams_(songwriter)
@@ -6583,7 +7227,11 @@ Pinoy_hip_hop
 Pinoy_pop
 Pipe_organ
 Pippin_(musical)
+<<<<<<< HEAD
 PiratbyrŒn
+=======
+PiratbyrÃ¥n
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Pirate_Parties_International
 Pitcairn_Islands
 Pitchfork_Media
@@ -6618,7 +7266,11 @@ Polish_language
 Polish_Music_Charts
 Polish_Society_of_the_Phonographic_Industry
 Polish_Wikipedia
+<<<<<<< HEAD
 PolishÐSoviet_War
+=======
+Polishâ€“Soviet_War
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Political_economy
 Political_hip_hop
 Political_philosophy
@@ -6749,7 +7401,11 @@ Portal_Awake
 Portal_Azerbaijan
 Portal_Backstreet_Boys
 Portal_Badminton
+<<<<<<< HEAD
 Portal_Bah‡'’_Faith
+=======
+Portal_BahÃ¡'Ã­_Faith
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Ballet
 Portal_Bangalore
 Portal_Bangladesh
@@ -6769,13 +7425,21 @@ Portal_Bengal
 Portal_Benin
 Portal_Berbers
 Portal_Bermuda
+<<<<<<< HEAD
 Portal_BeyoncŽ_Knowles
+=======
+Portal_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Bhutan
 Portal_Bible
 Portal_Biology
 Portal_Biotechnology
 Portal_Birds
+<<<<<<< HEAD
 Portal_Bjšrk
+=======
+Portal_BjÃ¶rk
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Bob_Dylan
 Portal_Bohol
 Portal_Bolivia
@@ -6886,7 +7550,11 @@ Portal_Cooperatives
 Portal_Cornwall
 Portal_Costa_Rica
 Portal_Country_Music
+<<<<<<< HEAD
 Portal_C™te_d'Ivoire
+=======
+Portal_CÃ´te_d'Ivoire
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Creationism
 Portal_Cricket
 Portal_Crimea
@@ -7254,7 +7922,11 @@ Portal_Morocco
 Portal_Moscow
 Portal_Motorcycle_racing
 Portal_Motorsport
+<<<<<<< HEAD
 Portal_Motšrhead
+=======
+Portal_MotÃ¶rhead
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Mountains
 Portal_Mozambique
 Portal_Mumbai
@@ -7363,7 +8035,11 @@ Portal_Pipe_organ
 Portal_Pittsburgh
 Portal_Plants
 Portal_Poetry
+<<<<<<< HEAD
 Portal_PokŽmon
+=======
+Portal_PokÃ©mon
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Poland
 Portal_Political_science
 Portal_Politics
@@ -7423,17 +8099,29 @@ Portal_Russia
 Portal_Russian_Empire
 Portal_Rwanda
 Portal_SAARC
+<<<<<<< HEAD
 Portal_SaguenayÐLac-Saint-Jean
 Portal_Sailing
 Portal_Saints
 Portal_San_Diego
 Portal_San_DiegoÐTijuana
+=======
+Portal_Saguenayâ€“Lac-Saint-Jean
+Portal_Sailing
+Portal_Saints
+Portal_San_Diego
+Portal_San_Diegoâ€“Tijuana
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_San_Francisco_Bay_Area
 Portal_Santana
 Portal_Saskatchewan
 Portal_Saudi_Arabia
 Portal_Saxony-Anhalt
+<<<<<<< HEAD
 Portal_S‹o_TomŽ_and_Pr’ncipe
+=======
+Portal_SÃ£o_TomÃ©_and_PrÃ­ncipe
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Portal_Schleswig-Holstein
 Portal_Schools
 Portal_Scientology
@@ -7693,7 +8381,11 @@ Probability_theory
 Probation
 Process_(engineering)
 Procrastination
+<<<<<<< HEAD
 Productores_de_Mœsica_de_Espa–a
+=======
+Productores_de_MÃºsica_de_EspaÃ±a
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Professional_wrestling
 Progressive_rock
 Project_Gutenberg
@@ -7775,7 +8467,11 @@ Queens_Park_Rangers_F.C._in_European_football.html
 Queluz_National_Palace
 Quiet_storm
 Quintilian
+<<<<<<< HEAD
 Quirigu‡
+=======
+QuiriguÃ¡
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Quogue,_New_York
 Quorum_of_the_Twelve
 R
@@ -7796,9 +8492,15 @@ Racing
 Racism
 Radio
 Radio_&_Records
+<<<<<<< HEAD
 Radio_(BeyoncŽ_Knowles_song)
 Radio_(Danny_Saucedo_song)
 Radio_1's_Live_Lounge_Ð_Volume_4
+=======
+Radio_(BeyoncÃ©_Knowles_song)
+Radio_(Danny_Saucedo_song)
+Radio_1's_Live_Lounge_â€“_Volume_4
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Radio_City_Music_Hall
 Radio_format
 Radio_Music_Awards
@@ -7808,7 +8510,11 @@ Radiocarbon_dating
 Radiometric_dating
 Radioscope
 Rado_graph
+<<<<<<< HEAD
 Rafael_Ben’tez
+=======
+Rafael_BenÃ­tez
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Ragga
 Ragga_jungle
 Raindrops_Keep_Fallin'_on_My_Head
@@ -7850,8 +8556,13 @@ Ray_Kennedy
 Ray_LaMontagne
 Ray_of_Light
 Ray_Stevens
+<<<<<<< HEAD
 R‡dio_Top_100_Ofici‡lna
 R‡dio_Top_100_Ofici‡ln’
+=======
+RÃ¡dio_Top_100_OficiÃ¡lna
+RÃ¡dio_Top_100_OficiÃ¡lnÃ­
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 RC_Strasbourg
 RCA_Records
 Reach_Out_(I'll_Be_There)
@@ -7888,7 +8599,11 @@ Reference.com
 Reference.com.html
 Reference_work
 Refrain
+<<<<<<< HEAD
 Reggae_en_Espa–ol
+=======
+Reggae_en_EspaÃ±ol
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Reggae_fusion
 Reggae_genres
 Reggae_in_Australia
@@ -7933,7 +8648,11 @@ Retroactive_continuity
 Reunited_(song)
 Reuters
 Revel_Atlantic_City
+<<<<<<< HEAD
 Revel_Presents__BeyoncŽ_Live
+=======
+Revel_Presents__BeyoncÃ©_Live
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Reverb
 Revised_Julian_calendar
 Revue
@@ -7978,7 +8697,11 @@ Ring_of_Fire_(song)
 Ring_the_Alarm
 Ring_theory
 Rio_Protocol
+<<<<<<< HEAD
 Riograndenser_HunsrŸckisch
+=======
+Riograndenser_HunsrÃ¼ckisch
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 RiP!__A_Remix_Manifesto
 Rita_Ora
 Rita_Rocks
@@ -8013,7 +8736,11 @@ Robert_Wise
 Roberta_Flack
 Roberta_Sklar
 Roberto_Cavalli
+<<<<<<< HEAD
 Robi_DrŠco_Rosa
+=======
+Robi_DrÃ¤co_Rosa
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Robin_Gibb
 Robot_(dance)
 Robotics
@@ -8086,7 +8813,11 @@ RSC_Anderlecht
 RSO_Records
 Rude_boy
 Rudolf_Wolters
+<<<<<<< HEAD
 Rudy_PŽrez
+=======
+Rudy_PÃ©rez
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Rule_184
 Rumours
 Run_the_World_(Girls)
@@ -8115,7 +8846,11 @@ Sacha_Skarbek
 Sade_Adu
 Safari_web_browser
 Sailing_(Christopher_Cross_song)
+<<<<<<< HEAD
 Saint_BarthŽlemy
+=======
+Saint_BarthÃ©lemy
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Saint_Helena
 Saint_Helena,_Ascension_and_Tristan_da_Cunha
 Saint_Isidore_of_Seville
@@ -8134,7 +8869,11 @@ Salt_Lake_City
 Salt_Lake_City,_Utah
 Salt_Lake_City_Weekly
 Salt_Lake_Tribune
+<<<<<<< HEAD
 Salvador_Dal’
+=======
+Salvador_DalÃ­
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Salvadoran_hip_hop
 Samarium-neodymium_dating
 Samba_reggae
@@ -8146,7 +8885,11 @@ Sampler_(musical_instrument)
 Sampling_(music)
 Samudra_Gupta
 Samuel_Adams
+<<<<<<< HEAD
 San_AndrŽs_y_Providencia
+=======
+San_AndrÃ©s_y_Providencia
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 San_Antonio_Express-News
 San_Francisco
 San_Francisco_Chronicle
@@ -8169,7 +8912,11 @@ Sarcoscypha_coccinea
 Sasha_Frere-Jones
 Saskatchewan
 Satellite_Award
+<<<<<<< HEAD
 Satellite_Award_for_Best_Supporting_Actress_Ð_Motion_Picture
+=======
+Satellite_Award_for_Best_Supporting_Actress_â€“_Motion_Picture
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Saterland_Frisian_language
 Saturday_Night's_Alright_for_Fighting
 Saturday_Night_Fever
@@ -8181,7 +8928,11 @@ Saxons
 Saxony
 Saxophone
 Say_My_Name
+<<<<<<< HEAD
 S‹o_Paulo_FC
+=======
+SÃ£o_Paulo_FC
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 SC_Braga
 Scandinavian_languages
 Scaptia_beyonceae
@@ -8303,7 +9054,11 @@ Simon_Cowell
 Simon_Reynolds
 Simple_English_Wikipedia
 Simplified_English
+<<<<<<< HEAD
 SinŽad_O'Connor
+=======
+SinÃ©ad_O'Connor
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Singapore
 Singapore_English
 Singer
@@ -8581,7 +9336,11 @@ Strobing_(dance)
 Strong_inflection
 Stronger_(What_Doesn't_Kill_You)
 Structure
+<<<<<<< HEAD
 Str¿msgodset_IF
+=======
+StrÃ¸msgodset_IF
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Stuck_in_a_Moment_You_Can't_Get_Out_Of
 Students_for_Free_Culture
 Studio_54
@@ -8608,7 +9367,11 @@ Suillus_pungens
 Suillus_salmonicolor
 Suillus_spraguei
 Sumerian_language
+<<<<<<< HEAD
 Summertime_(BeyoncŽ_Knowles_song)
+=======
+Summertime_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Sun
 Sun-Times_Media_Group
 Sun_Media
@@ -8647,7 +9410,11 @@ Sussex_dialect
 Sustainability
 Suzanne_Vega
 Sverigetopplistan
+<<<<<<< HEAD
 Svi?
+=======
+SviÃ°
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Swabian_German
 Swahili_language
 Swahili_Wikipedia
@@ -8663,7 +9430,11 @@ Swedish_Recording_Industry_Association
 Swedish_Wikipedia
 Sweet_Charity
 Sweet_Charity_(film)
+<<<<<<< HEAD
 Sweet_Dreams_(BeyoncŽ_Knowles_song)
+=======
+Sweet_Dreams_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Sweet_Music_Man
 Swimsuit_Issue
 Swing_(dance)
@@ -8687,7 +9458,11 @@ Synchronoptic_view
 Syncopated
 Syncopation
 Syncope_(phonetics)
+<<<<<<< HEAD
 Syndicat_National_de_l'ƒdition_Phonographique
+=======
+Syndicat_National_de_l'Ã‰dition_Phonographique
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Synonym
 Syntax
 Synthesizer
@@ -8698,7 +9473,11 @@ Syria
 System
 System_time
 Systemic_bias
+<<<<<<< HEAD
 ?l?sk_Wroc?aw
+=======
+ÅšlÄ…sk_WrocÅ‚aw
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 T
 T-Pain
 T-symmetry
@@ -8718,7 +9497,11 @@ Take_That
 Talakad
 Talent_manager
 Talk_Alter_ego
+<<<<<<< HEAD
 Talk_BeyoncŽ_Knowles
+=======
+Talk_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Talk_Billboard_Hot_100
 Talk_Bob_Fosse
 Talk_Bounce_music
@@ -8734,7 +9517,11 @@ Talk_Grammy_Award_for_Song_of_the_Year
 Talk_I_Am..._Sasha_Fierce
 Talk_I_Am..._Sasha_Fierce.html
 Talk_If_I_Were_a_Boy
+<<<<<<< HEAD
 Talk_Interstate_80_Business_(West_Wendover,_NevadaÐWendover,_Utah)
+=======
+Talk_Interstate_80_Business_(West_Wendover,_Nevadaâ€“Wendover,_Utah)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Talk_J-Setting
 Talk_Lead_single
 Talk_Liverpool_F.C._in_European_football
@@ -8790,6 +9577,7 @@ Telstra_v_Desktop_Marketing_Systems
 Telugu_Wikipedia
 Temperature_(song)
 Template_Academy_Award_Best_Director
+<<<<<<< HEAD
 Template_AcademyAwardBestDirector_1927Ð1940
 Template_AcademyAwardBestDirector_1941Ð1960
 Template_AcademyAwardBestDirector_1961Ð1980
@@ -8808,6 +9596,26 @@ Template_Billboard_Year-End_number_one_singles_1946Ð1959
 Template_Billboard_Year-End_number_one_singles_1960Ð1979
 Template_Billboard_Year-End_number_one_singles_1980Ð1999
 Template_Billboard_Year-End_number_one_singles_2000Ð2019
+=======
+Template_AcademyAwardBestDirector_1927â€“1940
+Template_AcademyAwardBestDirector_1941â€“1960
+Template_AcademyAwardBestDirector_1961â€“1980
+Template_AcademyAwardBestDirector_1981â€“2000
+Template_AcademyAwardBestDirector_2001â€“2020
+Template_African_Union_languages
+Template_BAFTA_Award_for_Best_Direction
+Template_BAFTA_Award_for_Best_Direction_1968â€“1984
+Template_BAFTA_Award_for_Best_Direction_1985â€“2009
+Template_BAFTA_Award_for_Best_Direction_2010â€“2034
+Template_BeyoncÃ©_Knowles
+Template_BeyoncÃ©_Knowles_singles
+Template_Billboard
+Template_Billboard_Year-End_number_one_singles
+Template_Billboard_Year-End_number_one_singles_1946â€“1959
+Template_Billboard_Year-End_number_one_singles_1960â€“1979
+Template_Billboard_Year-End_number_one_singles_1980â€“1999
+Template_Billboard_Year-End_number_one_singles_2000â€“2019
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_Bob_Fosse
 Template_Boogierock
 Template_Chronology
@@ -8817,6 +9625,7 @@ Template_Destiny's_Child
 Template_Dictionaries_of_English
 Template_Disco_music-footer
 Template_DramaDesk_Choreography
+<<<<<<< HEAD
 Template_DramaDesk_Choreography_1969Ð1975
 Template_DramaDesk_Choreography_1976Ð2000
 Template_DramaDesk_Choreography_2001Ð2025
@@ -8825,6 +9634,16 @@ Template_EmmyAward_Choreography
 Template_EmmyAward_Choreography_1950Ð1975
 Template_EmmyAward_Choreography_1976Ð2000
 Template_EmmyAward_Choreography_2001Ð2025
+=======
+Template_DramaDesk_Choreography_1969â€“1975
+Template_DramaDesk_Choreography_1976â€“2000
+Template_DramaDesk_Choreography_2001â€“2025
+Template_DramaDesk_Director
+Template_EmmyAward_Choreography
+Template_EmmyAward_Choreography_1950â€“1975
+Template_EmmyAward_Choreography_1976â€“2000
+Template_EmmyAward_Choreography_2001â€“2025
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_English_clubs_in_European_football
 Template_English_dialects_by_continent
 Template_English_official_language_clickable_map
@@ -8857,8 +9676,13 @@ Template_Number-one_singles_in_the_United_States
 Template_Official_EU_languages
 Template_Official_languages_of_South_America
 Template_Official_UN_languages
+<<<<<<< HEAD
 Template_OlivierAward_Choreographer_1991Ð2000
 Template_OlivierAward_Choreographer_2001Ð2025
+=======
+Template_OlivierAward_Choreographer_1991â€“2000
+Template_OlivierAward_Choreographer_2001â€“2025
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_Pop_music
 Template_Reba_McEntire_2000s-2010s_singles
 Template_Reggae
@@ -8868,6 +9692,7 @@ Template_Social_sciences-footer
 Template_Street_dance
 Template_Superhero_fiction
 Template_Synth_pop-footer
+<<<<<<< HEAD
 Template_talk_AcademyAwardBestDirector_1961Ð1980
 Template_talk_African_Union_languages
 Template_talk_BAFTA_Award_for_Best_Direction_1968Ð1984
@@ -8875,6 +9700,15 @@ Template_talk_BeyoncŽ_Knowles
 Template_talk_BeyoncŽ_Knowles_singles
 Template_talk_Billboard
 Template_talk_Billboard_Year-End_number_one_singles_2000Ð2019
+=======
+Template_talk_AcademyAwardBestDirector_1961â€“1980
+Template_talk_African_Union_languages
+Template_talk_BAFTA_Award_for_Best_Direction_1968â€“1984
+Template_talk_BeyoncÃ©_Knowles
+Template_talk_BeyoncÃ©_Knowles_singles
+Template_talk_Billboard
+Template_talk_Billboard_Year-End_number_one_singles_2000â€“2019
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_talk_Bob_Fosse
 Template_talk_Boogierock
 Template_talk_Chronology
@@ -8882,10 +9716,17 @@ Template_talk_Destiny's_Child
 Template_talk_Dictionaries_of_English
 Template_talk_Did_you_know
 Template_talk_Disco_music-footer
+<<<<<<< HEAD
 Template_talk_DramaDesk_Choreography_1969Ð1975
 Template_talk_DramaDesk_Choreography_1976Ð2000
 Template_talk_DramaDesk_Director
 Template_talk_EmmyAward_Choreography_1950Ð1975
+=======
+Template_talk_DramaDesk_Choreography_1969â€“1975
+Template_talk_DramaDesk_Choreography_1976â€“2000
+Template_talk_DramaDesk_Director
+Template_talk_EmmyAward_Choreography_1950â€“1975
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_talk_English_clubs_in_European_football
 Template_talk_English_dialects_by_continent
 Template_talk_English_official_language_clickable_map
@@ -8908,7 +9749,11 @@ Template_talk_Number-one_singles_in_the_United_States
 Template_talk_Official_EU_languages
 Template_talk_Official_languages_of_South_America
 Template_talk_Official_UN_languages
+<<<<<<< HEAD
 Template_talk_OlivierAward_Choreographer_2001Ð2025
+=======
+Template_talk_OlivierAward_Choreographer_2001â€“2025
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_talk_Pop_music
 Template_talk_Reba_McEntire_2000s-2010s_singles
 Template_talk_Reggae
@@ -8919,14 +9764,21 @@ Template_talk_Street_dance
 Template_talk_Superhero_fiction
 Template_talk_Synth_pop-footer
 Template_talk_Time_topics
+<<<<<<< HEAD
 Template_talk_TonyAward_Choreography_1947Ð1975
 Template_talk_TonyAward_Choreography_1976Ð2000
 Template_talk_TonyAward_MusicalDirection_1950Ð1975
+=======
+Template_talk_TonyAward_Choreography_1947â€“1975
+Template_talk_TonyAward_Choreography_1976â€“2000
+Template_talk_TonyAward_MusicalDirection_1950â€“1975
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_talk_Wikimedia_Foundation
 Template_talk_Wikipedia
 Template_talk_Wikipedias
 Template_Time_topics
 Template_TonyAward_Choreography
+<<<<<<< HEAD
 Template_TonyAward_Choreography_1947Ð1975
 Template_TonyAward_Choreography_1976Ð2000
 Template_TonyAward_Choreography_2001Ð2025
@@ -8934,6 +9786,15 @@ Template_TonyAward_MusicalDirection
 Template_TonyAward_MusicalDirection_1950Ð1975
 Template_TonyAward_MusicalDirection_1976Ð2000
 Template_TonyAward_MusicalDirection_2001Ð2025
+=======
+Template_TonyAward_Choreography_1947â€“1975
+Template_TonyAward_Choreography_1976â€“2000
+Template_TonyAward_Choreography_2001â€“2025
+Template_TonyAward_MusicalDirection
+Template_TonyAward_MusicalDirection_1950â€“1975
+Template_TonyAward_MusicalDirection_1976â€“2000
+Template_TonyAward_MusicalDirection_2001â€“2025
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Template_Wikimedia_Foundation
 Template_Wikipedia
 Template_Wikipedias
@@ -8979,7 +9840,11 @@ The_Adventure_of_English
 The_Advertiser_(Adelaide)
 The_Affairs_of_Dobie_Gillis
 The_Age
+<<<<<<< HEAD
 The_American_Cyclop¾dia
+=======
+The_American_CyclopÃ¦dia
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 The_American_Heritage_Dictionary_of_the_English_Language
 The_American_Spectator
 The_Andy_Griffith_Show
@@ -8996,8 +9861,13 @@ The_Battle_of_New_Orleans
 The_Beach_Boys
 The_Beatles
 The_Best_Man_(1999_film)
+<<<<<<< HEAD
 The_BeyoncŽ_Experience
 The_BeyoncŽ_Experience_Live
+=======
+The_BeyoncÃ©_Experience
+The_BeyoncÃ©_Experience_Live
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 The_Black_Eyed_Peas
 The_Blackbyrds
 The_BlackSheeps
@@ -9100,7 +9970,11 @@ The_New_York_Times_Company
 The_New_Yorker
 The_Notorious_B.I.G.
 The_Numismatist
+<<<<<<< HEAD
 The_Nuttall_Encyclop¾dia
+=======
+The_Nuttall_EncyclopÃ¦dia
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 The_O2_Arena_(London)
 The_Observer
 The_Official_Charts_Company
@@ -9140,7 +10014,11 @@ The_Smeezingtons
 The_Spokesman-Review
 The_Star-Ledger
 The_Star-Spangled_Banner
+<<<<<<< HEAD
 The_Star_Spangled_Banner_(BeyoncŽ_Knowles_song)
+=======
+The_Star_Spangled_Banner_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 The_Story_of_English
 The_Strand_Magazine
 The_Sugarhill_Gang
@@ -9341,7 +10219,11 @@ Tottenham_Hotspur_F.C._in_European_football
 Tottenham_Hotspur_F.C._in_European_football.html
 Tour_promoter
 Touraine_Regiment
+<<<<<<< HEAD
 TourŽ
+=======
+TourÃ©
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Tower_of_London
 Trabzonspor
 Tracklisten
@@ -9378,7 +10260,11 @@ Trinidadian_English
 Trinity_Mirror
 Trip_hop
 Triple_H
+<<<<<<< HEAD
 Triptych,_MayÐJune_1973
+=======
+Triptych,_Mayâ€“June_1973
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Trisha_Yearwood
 Triston_Palmer
 Trisyllabic_laxing
@@ -9412,7 +10298,11 @@ Turn_On_the_Radio
 Turntablism
 Tutti_Frutti_(song)
 Tuvalu
+<<<<<<< HEAD
 TŸrkiye_Top_20
+=======
+TÃ¼rkiye_Top_20
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 TV.com
 TV.com.html
 TV3_(New_Zealand)
@@ -9569,8 +10459,13 @@ Utah_State_Route_59
 Utility
 Utility_pole
 Uzbek_Wikipedia
+<<<<<<< HEAD
 òrvalsdeild
 †ber
+=======
+Ãšrvalsdeild
+Ãœber
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 V
 V-pop
 Vacuum_tube
@@ -9661,7 +10556,11 @@ Voice_of_America
 Voiceless_consonant
 Voiceless_labiovelar_approximant
 Voiceless_velar_fricative
+<<<<<<< HEAD
 VolapŸk_Wikipedia
+=======
+VolapÃ¼k_Wikipedia
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Volare_(song)
 Volume
 Voluntary_association
@@ -9767,7 +10666,11 @@ Western_culture
 Western_Ganga_Dynasty
 Western_Pacific_Railroad
 Westphalian_language
+<<<<<<< HEAD
 WestÐCentral_Canadian_English
+=======
+Westâ€“Central_Canadian_English
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 What's_Love_Got_to_Do_with_It_(song)
 What_a_Fool_Believes
 What_More_Can_I_Give
@@ -9785,8 +10688,13 @@ White_Rabbits_(band)
 Whitney_Houston
 WHQC
 WHTZ
+<<<<<<< HEAD
 Why_Don't_You_Love_Me_(BeyoncŽ_Knowles_song)
 Widzew_?—d?
+=======
+Why_Don't_You_Love_Me_(BeyoncÃ©_Knowles_song)
+Widzew_ÅÃ³dÅº
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Wiki
 Wiki_software
 Wikia
@@ -9968,7 +10876,11 @@ Wikipedia_WikiProject_Architecture
 Wikipedia_WikiProject_Arts
 Wikipedia_WikiProject_Australian_history
 Wikipedia_WikiProject_Baseball_players
+<<<<<<< HEAD
 Wikipedia_WikiProject_BeyoncŽ_Knowles
+=======
+Wikipedia_WikiProject_BeyoncÃ©_Knowles
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Wikipedia_WikiProject_Books
 Wikipedia_WikiProject_Chinese_history
 Wikipedia_WikiProject_Cities
@@ -10068,7 +10980,11 @@ Wikipedia_Wikiquette_assistance
 Wikipedia_Writing_better_articles
 Wikipedia_Your_first_article
 Wikipedia_Zero
+<<<<<<< HEAD
 Wikipedia_Ð_The_Missing_Manual
+=======
+Wikipedia_â€“_The_Missing_Manual
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Wikiquote
 WikiScanner
 Wikisource
@@ -10117,7 +11033,11 @@ Witchcraft_(song)
 Without_Me
 Wives_and_Lovers
 WKRP_in_Cincinnati
+<<<<<<< HEAD
 Wlodimir_Led—chowski
+=======
+Wlodimir_LedÃ³chowski
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Wolfgang's_Vault
 Woman_in_Love
 Womanizer_(song)
@@ -10135,7 +11055,11 @@ Word_order
 Wordnik
 Words
 Work_It_(Missy_Elliott_song)
+<<<<<<< HEAD
 Work_It_Out_(BeyoncŽ_Knowles_song)
+=======
+Work_It_Out_(BeyoncÃ©_Knowles_song)
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Work_of_art
 Workin'_Day_and_Night
 World's_Largest_Disco
@@ -10175,7 +11099,11 @@ Yellowman
 Yes-no_question
 Yeshivish
 Yesterday
+<<<<<<< HEAD
 YŽ-yŽ
+=======
+YÃ©-yÃ©
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Yiddish_language
 Yiddish_Wikipedia
 Ying_Yang_Twins
@@ -10203,7 +11131,11 @@ Young_Men_Society
 Your_Hit_Parade
 Youth_in_Revolt
 YouTube
+<<<<<<< HEAD
 YoŸ_and_I
+=======
+YoÃ¼_and_I
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
 Yuga
 Yvonne_Elliman
 Z
@@ -10223,6 +11155,12 @@ Zimbabwean_hip_hop
 Zoot_Allures
 Zydeco
 Zydeco_(dance)
+<<<<<<< HEAD
 ®
 Î
 ?,?-unsaturated_carbonyl_compound
+=======
+Ã†
+Å’
+Î‘,Î²-unsaturated_carbonyl_compound
+>>>>>>> 154824fef649dfe79d07406297a0811631ab5b05
