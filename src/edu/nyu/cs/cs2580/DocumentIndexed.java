@@ -13,22 +13,22 @@ public class DocumentIndexed extends Document {
   public DocumentIndexed(int docid) {
     super(docid);
   }
-  private int getTermTotal(){
+  public int getTermTotal(){
 	  return _termTotal;
   }
-  private void setTermTotal(int total){
+  public void setTermTotal(int total){
 	  _termTotal=total;
   }
-  private int getTermDocFreq(){
+  public int getTermDocFreq(){
 	  return _termDocFreq;
   }
-  private void setTermDocFreq(int docf){
+  public void setTermDocFreq(int docf){
 	  _termDocFreq=docf;
   }
-  private int getTermCorpusFreq(){
+  public int getTermCorpusFreq(){
 	  return _termCorpusFreq;
   }
-  private void setTermCorpusFreq(int corf){
+  public void setTermCorpusFreq(int corf){
 	  _termCorpusFreq=corf;
   }
   

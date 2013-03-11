@@ -185,7 +185,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 				doc.setTitle(line);
 			}
 			if(count==2){
-				
+				doc.setTermTotal
 			}
 				
 		}
