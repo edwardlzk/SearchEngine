@@ -45,6 +45,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
 		  for(int i=0;i<times;i++){
+			  System.out.println(i);
 			  Vector<String> files=cf.loadFile(i);
 			  for(String name:files){
 		        String filepath=corpusFile+name;
@@ -94,21 +95,13 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    //doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    // store the document in our index	        
-		    String filePath = _options._indexPrefix+"/"+fileName;
-		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-		    out.write(doc._docid+"\n");
-		    out.write(title+"\n");
-		    out.close();	
-			generateIndex(title+body,fileName);
+			generateIndex(title+body,fileName,title);
 		  } catch(Exception e){
 			  System.out.println("The file that has error");
 		  }
-		    //generateIndex(body);
-		    //System.out.println(title);
-		    //System.out.println(body);
+
 	}
-	  private void generateIndex(String content,String fileName){
+	  private void generateIndex(String content,String fileName,String title){
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
@@ -145,6 +138,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 			    // store the document in our index	        
 			    String filePath = _options._indexPrefix+"/"+fileName;
 			    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+			    out.write(title+"\n");
 			    out.write(totalcount+"\n");
 			    for(String term:t_plist.keySet())
 			    {
@@ -154,30 +148,6 @@ public class IndexerInvertedOccurrence extends Indexer{
 			    }catch(IOException e){
 			    	e.printStackTrace();	    	
 			    } 
-//		      int did=_documents.size()-1;
-//		      if (!_terms.contains(token)) {
-//		    	  _terms.add(token);
-//		    	  HashMap<Integer,Vector<Integer>> plist=new HashMap<Integer,Vector<Integer>>();
-//		    	  Vector<Integer> position=new Vector<Integer>();
-//		    	  position.add(pos);
-//		    	  plist.put(did, position);
-//		          _index.put(token, plist);
-//		      }else{
-//		    	  HashMap<Integer,Vector<Integer>> plist=_index.get(token);
-//		    	  if(plist.containsKey(did)){
-//		    		  Vector<Integer> position=plist.get(did);
-//			    	  position.add(pos);
-//			    	  plist.put(did, position);
-//			    	  _index.put(token,plist); 
-//		    	  }else{
-//		    	  Vector<Integer> position=new Vector<Integer>();
-//		    	  position.add(pos);
-//		    	  plist.put(did, position);
-//		    	  _index.put(token,plist);
-//		    	  }
-//		      }
-//		      pos++;
-
 		    return;
 }
   
