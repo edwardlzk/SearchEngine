@@ -16,6 +16,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 
 
+
 public class ProcessHtml {
 	
 	public static String process(File file)
@@ -32,7 +33,10 @@ public class ProcessHtml {
 		Matcher titleResult = title.matcher(html);
 		Matcher bodyResult = body.matcher(html);
 		
-		titleResult.find();
+		if(!titleResult.find() || !bodyResult.find()){
+			System.err.println(file.getName());
+		}
+
 		String titleString = titleResult.group(1); //process the title of the html
 		String resultTitle = titleString.replaceAll("\\&.*;"," ");
 		// replace all the non-word characters except ' and - to space
@@ -40,25 +44,38 @@ public class ProcessHtml {
 		// replace duplicate white spaces to one space
 		resultTitle = resultTitle.replaceAll("\\s+"," ");
 		
-		System.out.println(resultTitle);
+//		System.out.println(resultTitle);
 		builder.append(resultTitle);
 		// the title and body are seperated by tab
 		builder.append("\t");
-		
-		boolean found = bodyResult.find();
+
 		String bodyString = bodyResult.group(); //process the body of the html
 		// replace all the non-word characters except ' and - to space
-		String resultBody = bodyString.replaceAll("\\&.*;"," ");
-		resultBody = resultBody.replaceAll("<[/]?.*?/?>", " ");
+		String resultBody = bodyString.replaceAll("\\&.*?;"," ");
+		//replace all scripts
+		resultBody = resultBody.replaceAll("<script.*?>[\\d\\D]*?</script>"," ");
+		//replace all labels
+		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
 		
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
 		builder.append(resultBody);
-		System.out.println(resultBody);
-		return builder.toString();
+		String output = builder.toString();
+		
+		System.out.println("before stem:"+output);
+		
+		Stemmer stemmer = new Stemmer();
+		stemmer.add(output);
+		stemmer.stem();
+		
+		System.out.println("after stem:"+stemmer.toString());
+		return stemmer.toString();
 
 	}
+	
+	
+	
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -68,19 +85,20 @@ public class ProcessHtml {
 
 		Options option = new Options("conf/engine.conf");
 		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
+		ProcessHtml.process(file);
+//		File folder = new File(option._corpusPrefix+"/");
+//		
+//		File[] listOfFiles = folder.listFiles();
+//		FileOps fileOps = new FileOps("testdata/parse/");
+//		
+//		for(File f : listOfFiles){
+//			String res = ProcessHtml.process(f);
+//			fileOps.write(f.getName(), res);
+//			
+//		}
+		
+		
 
-		String res = ProcessHtml.process(file);
-		//System.out.println(res);
-		if(res != null)
-		{
-			Scanner s = new Scanner(res).useDelimiter("\t");
-			String title = s.next();
-			String body = s.next();
-			System.out.println(title);
-			System.out.println(body);
-		}
-		else
-			System.out.println(res);
 		
 	}
 
