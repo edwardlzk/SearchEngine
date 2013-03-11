@@ -64,7 +64,7 @@ public class ProcessHtml {
 		// TODO Auto-generated method stub
 
 		Options option = new Options("conf/engine.conf");
-		File file = new File("data/hw2/wiki/test.html");	
+		File file = new File("testdata/'03_Bonnie_&_Clyde");	
 
 		String res = ProcessHtml.process(file);
 		//System.out.println(res);

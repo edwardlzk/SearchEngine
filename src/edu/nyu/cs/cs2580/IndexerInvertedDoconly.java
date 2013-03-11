@@ -178,8 +178,9 @@ public class IndexerInvertedDoconly extends Indexer {
    */
   @Override
   public DocumentIndexed nextDoc(Query query, int docid) {
-	  String path="";
+	  String path="tempIndex/temp0.txt";
 	  Vector<Integer> ids=new Vector<Integer>();
+	  //System.out.println(query._tokens.size());
 	  for(int i=0;i<query._tokens.size();i++){
 	  String term="";
 	  try {
@@ -189,7 +190,7 @@ public class IndexerInvertedDoconly extends Indexer {
 			Scanner s=new Scanner(line).useDelimiter("\t");
 			if(s.hasNext()){
 				String doc=s.next();
-				if(doc==query._tokens.get(i)){   //found term
+				if(doc.equals(query._tokens.get(i))){   //found term
 					term=s.next();
 					break;
 				}
@@ -200,6 +201,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		for(String s:pos){
 			if(Integer.parseInt(s)>docid){
 				ids.add(Integer.parseInt(s));
+				break;
 			}				
 		}
 		reader.close();
@@ -216,34 +218,27 @@ public class IndexerInvertedDoconly extends Indexer {
 	   { 
 		  DocumentIndexed doc=new DocumentIndexed(ids.get(0));
 		  //read doc file to get information
+	/*	  try {
+			BufferedReader read=new BufferedReader(new FileReader(ids.get(0).toString()));
+			String content;
+			int count=0;
+			while((content=read.readLine())!=null){
+				count++;
+				if(count==1)
+				doc.setTitle(content);
+				//if(count==2)
+				//doc.termFrequency=content;
+                //look for the term and get the term information			 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		  
 		   return doc;
 	   }
 	   else{
 		  return nextDoc(query, max(ids)-1); 
 	   }
-	  
-	
-	  	  
-  /* Vector<Integer> ids=new Vector<Integer>();
-   int id;
-   int result=docid;
-   for(int i=0;i<query._tokens.size();i++){
-	 id=next(query._tokens.get(i),docid);
-	 // only add the id that exists
-	 if(id != -1 )
-		 ids.add(id);  
-   }
-   // return null if no document contains any term of the query or when couldn't find any document that contains one term
-   if(ids.size()==0 || ids.size()!=query._tokens.size()){
-	   return null;
-   }
-   else if(find(ids))
-   { 
-	   return _documents.get(ids.get(0));
-   }
-   else{
-	  return nextDoc(query, max(ids)-1); 
-   }*/
    
   }
   private boolean find(Vector<Integer> ids){
@@ -308,10 +303,13 @@ public class IndexerInvertedDoconly extends Indexer {
   public static void main(String[] args) throws IOException {
 	  Options option = new Options("./conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
-   	  index.constructIndex();
-   	  Query q=new Query("new");
-	  DocumentIndexed d=index.nextDoc(q,0);
-  
+   	  //index.constructIndex();
+   	  Query q=new Query("land landfall label");
+   	  q.processQuery();
+	  DocumentIndexed d=index.nextDoc(q,3);
+	  if(d!=null){
+	  System.out.println(d._docid);
+	  }
   }
   
 }
