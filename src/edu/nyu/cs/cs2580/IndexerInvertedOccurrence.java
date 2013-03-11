@@ -18,6 +18,8 @@ import java.util.*;
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 /**
+ * 
+ * TODO out of memory
  * @CS2580: Implement this class for HW2.
  */
 public class IndexerInvertedOccurrence extends Indexer{

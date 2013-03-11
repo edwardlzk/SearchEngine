@@ -1,10 +1,12 @@
 package edu.nyu.cs.cs2580;
 
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
 import edu.nyu.cs.cs2580.QueryHandler.CgiArguments;
 import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw1.ScoredDocumentComparator;
 import edu.nyu.cs.cs2580.DocumentIndexed;
 import edu.nyu.cs.cs2580.ScoredDocument;
 
@@ -26,18 +28,16 @@ public class RankerQueryLikelihood extends Ranker {
 
   @Override
   public Vector<ScoredDocument> runQuery(Query query, int numResults) {
-    return null;
+	  Vector < ScoredDocument > retrieval_results = new Vector < ScoredDocument > ();
+	    for (int i = 0; i < _indexer.numDocs(); ++i){
+	      retrieval_results.add(runquery(query._tokens, i));
+	    }
+	    Collections.sort(retrieval_results);
+	    return retrieval_results;
   }
   
-  public ScoredDocument runquery(String query, int did){
+  public ScoredDocument runquery(Vector<String> qv, int did){
 		
-		// Build query vector
-	    Scanner s = new Scanner(query);
-	    Vector < String > qv = new Vector < String > ();
-	    while (s.hasNext()){
-	      String term = s.next();
-	      qv.add(term);
-	    }
 	    
 	 // Get the document vector.
 	    DocumentIndexed d = (DocumentIndexed) _indexer.getDoc(did);
