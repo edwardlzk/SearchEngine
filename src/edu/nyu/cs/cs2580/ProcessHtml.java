@@ -21,32 +21,32 @@ public class ProcessHtml {
 	
 	public static String process(File file) throws IOException
 	{
-//		StringBuilder builder = new StringBuilder();
-//		String html = FileOps.readFile(file);
-
-<<<<<<< HEAD
-//		String titlePattern = "<title>(.*)</title>";
-//		String bodyPattern = "[.\\s]*<body[.\\s]*>([.\\s]*)</body>";
-//		
-//		Pattern title = Pattern.compile(titlePattern);
-//		Pattern body = Pattern.compile(bodyPattern);
-//		
-//		Matcher titleResult = title.matcher(html);
-//		Matcher bodyResult = body.matcher(html);
-//		
-//		titleResult.find();
-//		String titleString = titleResult.group(1); //process the title of the html
-		Document doc = Jsoup.parse(file,"UTF-8","");
-		if(doc.title()==null || doc.title()=="" || doc.body()==null || doc.body().text()==null || doc.body().text()=="")
-			return null;
 		StringBuilder builder = new StringBuilder();
-		
-		String titleString = doc.title();
-		titleString = titleString.replaceAll("[^\\w]", " ");
-		titleString = titleString.replaceAll("\\s+"," ");
-		builder.append(titleString);
-//		String resultTitle = titleString.replaceAll("\\&.*;"," ");
-=======
+		String html = FileOps.readFile(file);
+
+//<<<<<<< HEAD
+////		String titlePattern = "<title>(.*)</title>";
+////		String bodyPattern = "[.\\s]*<body[.\\s]*>([.\\s]*)</body>";
+////		
+////		Pattern title = Pattern.compile(titlePattern);
+////		Pattern body = Pattern.compile(bodyPattern);
+////		
+////		Matcher titleResult = title.matcher(html);
+////		Matcher bodyResult = body.matcher(html);
+////		
+////		titleResult.find();
+////		String titleString = titleResult.group(1); //process the title of the html
+//		Document doc = Jsoup.parse(file,"UTF-8","");
+//		if(doc.title()==null || doc.title()=="" || doc.body()==null || doc.body().text()==null || doc.body().text()=="")
+//			return null;
+//		StringBuilder builder = new StringBuilder();
+//		
+//		String titleString = doc.title();
+//		titleString = titleString.replaceAll("[^\\w]", " ");
+//		titleString = titleString.replaceAll("\\s+"," ");
+//		builder.append(titleString);
+////		String resultTitle = titleString.replaceAll("\\&.*;"," ");
+//=======
 		String titlePattern = "<title>(.*)</title>";
 		String bodyPattern = "<body.*>.+</body>";
 		
@@ -62,32 +62,32 @@ public class ProcessHtml {
 
 		String titleString = titleResult.group(1); //process the title of the html
 		String resultTitle = titleString.replaceAll("\\&.*;"," ");
->>>>>>> 5d9afa8f9caa412d5a0f90d40fd6cff824414104
+//>>>>>>> 5d9afa8f9caa412d5a0f90d40fd6cff824414104
 		// replace all the non-word characters except ' and - to space
 //		 resultTitle = resultTitle.replaceAll("[^\\w]", " ");
 		// replace duplicate white spaces to one space
 //		resultTitle = resultTitle.replaceAll("\\s+"," ");
 		
 //		System.out.println(resultTitle);
-<<<<<<< HEAD
-//		builder.append(resultTitle);
-		// the title and body are seperated by tab
-		builder.append("\t");
-		String resultBody = doc.body().text();
-		resultBody = resultBody.replaceAll("[^\\w]", " ");
-		resultBody = resultBody.replaceAll("\\s+"," ");
-		builder.append(resultBody);
-		
-//		boolean found = bodyResult.find();
-//		String bodyString = bodyResult.group(1); //process the body of the html
-		// replace all the non-word characters except ' and - to space
-//		String resultBody = bodyString.replaceAll("[^\\w]", " ");
-		// replace duplicate white spaces to one space
+//<<<<<<< HEAD
+////		builder.append(resultTitle);
+//		// the title and body are seperated by tab
+//		builder.append("\t");
+//		String resultBody = doc.body().text();
+//		resultBody = resultBody.replaceAll("[^\\w]", " ");
 //		resultBody = resultBody.replaceAll("\\s+"," ");
 //		builder.append(resultBody);
-//		System.out.println(resultBody);
-		return builder.toString();
-=======
+//		
+////		boolean found = bodyResult.find();
+////		String bodyString = bodyResult.group(1); //process the body of the html
+//		// replace all the non-word characters except ' and - to space
+////		String resultBody = bodyString.replaceAll("[^\\w]", " ");
+//		// replace duplicate white spaces to one space
+////		resultBody = resultBody.replaceAll("\\s+"," ");
+////		builder.append(resultBody);
+////		System.out.println(resultBody);
+//		return builder.toString();
+///=======
 		builder.append(resultTitle);
 		// the title and body are seperated by tab
 		builder.append("\t");
@@ -114,7 +114,6 @@ public class ProcessHtml {
 		
 		System.out.println("after stem:"+stemmer.toString());
 		return stemmer.toString();
->>>>>>> 5d9afa8f9caa412d5a0f90d40fd6cff824414104
 
 	}
 	
@@ -128,12 +127,9 @@ public class ProcessHtml {
 		// TODO Auto-generated method stub
 
 		Options option = new Options("conf/engine.conf");
-<<<<<<< HEAD
-		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/testdata/'03_Bonnie_&_Clyde");	
-=======
->>>>>>> 5d9afa8f9caa412d5a0f90d40fd6cff824414104
 
-		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
+		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/testdata/'03_Bonnie_&_Clyde");	
+//		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
 		ProcessHtml.process(file);
 //		File folder = new File(option._corpusPrefix+"/");
 //		

@@ -98,6 +98,14 @@ public class IndexerInvertedCompressed extends Indexer{
 			  _index.clear();
 			  _terms.clear();		  
 		  }
+		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
+		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
+		  // the first line in the corpus_statistics is the number of docs in the corpus
+		  outsta.write(_numDocs+"\n");
+		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
+		  outsta.close();
+		 
+		  
 
 	    	
   }
@@ -115,9 +123,8 @@ public class IndexerInvertedCompressed extends Indexer{
 		    // store the document in our index	        
 		    String filePath = _options._indexPrefix+"/"+fileName;
 		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-		    out.write(doc._docid);
-		    out.write("/n");
-		    out.write(title+"/n");
+		    out.write(doc._docid+"\n");
+		    out.write(title+"\n");
 		    out.close();	
 		    }catch(IOException e){
 		    	e.printStackTrace();	    	
@@ -138,6 +145,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		    while (s.hasNext()) {
 		     // the total terms in the this doc
 		      ++totalcount;
+		      ++_totalTermFrequency;
 		      String token = s.next();		      
 		      if (!_terms.contains(token)) {
 		    	  _terms.add(token);
@@ -177,7 +185,8 @@ public class IndexerInvertedCompressed extends Indexer{
 		    // store the document in our index	        
 		    String filePath = _options._indexPrefix+"/"+fileName;
 		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
-		    out.write(totalcount+"/n");		    
+		    out.write(totalcount+"\n");
+		    out.close();
 		    }catch(IOException e){
 		    	e.printStackTrace();	    	
 		    }
@@ -505,7 +514,7 @@ public class IndexerInvertedCompressed extends Indexer{
 //	 Vector<Byte> value = index.vbyteConversion(50);
 //	 for (Byte x:value)
 //	 System.out.println(x.byteValue());
-	  
+
   }
   
 }
