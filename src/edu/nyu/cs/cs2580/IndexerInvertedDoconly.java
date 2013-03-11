@@ -31,7 +31,7 @@ public class IndexerInvertedDoconly extends Indexer {
   private long totalTime = 0;
   private long time = 0;
   private Calendar cal = Calendar.getInstance();
-  
+
   // Provided for serialization
   public IndexerInvertedDoconly(){}
   
@@ -59,7 +59,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		        String content = ProcessHtml.process(file);
 		        totalTime += new Date().getTime() - time;
 		        if (content != null)
-		        	processDocument(content);
+		        	processDocument(content,name);
 	      
 			  }
 			  System.out.println("Times here : " + i);
@@ -81,9 +81,15 @@ public class IndexerInvertedDoconly extends Indexer {
 			  _index.clear();
 			  _terms.clear();
 		 }
+		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
+		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
+		  // the first line in the corpus_statistics is the number of docs in the corpus
+		  outsta.write(_numDocs+"\n");
+		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
+		  outsta.close();
 		 
   }
-  private void processDocument(String content) {
+  private void processDocument(String content,String fileName) {
 	  try{
 	    Scanner s;
 		s = new Scanner(content).useDelimiter("\t");
@@ -94,17 +100,24 @@ public class IndexerInvertedDoconly extends Indexer {
 		doc.setTitle(title);
 		_documents.add(doc);
 		++_numDocs;
-		generateIndex(title);
-		generateIndex(body);
+	    // store the document in our index	        
+	    String filePath = _options._indexPrefix+"/"+fileName;
+	    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+	    out.write(doc._docid+"\n");
+	    out.write(title+"\n");
+	    out.close();	
+		generateIndex(title+body,fileName);
 	  }
 	  catch(Exception e){
 		  System.out.println("The file that has error");
 	  }
 	   
 }
-  private void generateIndex(String content){
+  private void generateIndex(String content,String fileName){
 	  Scanner s = new Scanner(content);  // Uses white space by default.
+	  int totalcount = 0;
 	    while (s.hasNext()) {
+	      ++_totalTermFrequency;
 	      String token = s.next();
 	      // decrement the size() by 1 as the real doc id
 	      int did=_documents.size()-1;
@@ -122,6 +135,15 @@ public class IndexerInvertedDoconly extends Indexer {
 	    	  }
 	      }
 	      
+	    }
+	    try{
+	    // store the document in our index	        
+	    String filePath = _options._indexPrefix+"/"+fileName;
+	    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+	    out.write(totalcount+"\n");
+	    out.close();
+	    }catch(IOException e){
+	    	e.printStackTrace();	    	
 	    }
 	    return;
   }
@@ -372,13 +394,13 @@ public class IndexerInvertedDoconly extends Indexer {
   public static void main(String[] args) throws IOException {
 	  Options option = new Options("./conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
-   	  //index.constructIndex();
-   	  Query q=new Query("land landfall label");
-   	  q.processQuery();
-	  DocumentIndexed d=index.nextDoc(q,3);
-	  if(d!=null){
-	  System.out.println(d._docid);
-	  }
+   	  index.constructIndex();
+//   	  Query q=new Query("land landfall label");
+//   	  q.processQuery();
+//	  DocumentIndexed d=index.nextDoc(q,3);
+//	  if(d!=null){
+//	  System.out.println(d._docid);
+//	  }
   }
   
 }
