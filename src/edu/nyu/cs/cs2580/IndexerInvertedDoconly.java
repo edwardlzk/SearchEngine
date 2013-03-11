@@ -136,8 +136,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	    String line;
 	    while((line=reader.readLine())!=null){
-	    	 int termDocFren=0;
-	         int termCorpusFren=0;
+	    	 int termDocFren=1; // assume each term appear in this doc once
 	         String title="";
 	         String data="";
 	    	Scanner s=new Scanner(line).useDelimiter("\t");
@@ -145,25 +144,16 @@ public class IndexerInvertedDoconly extends Indexer {
 	    		title=s.next();
 	    		data=s.next();
 	    	}
-	    	//System.out.println(data);
-	    	String[] docs=data.split("\\|");
-	    	termDocFren=docs.length;
-	    	termCorpusFren=termDocFren;
-	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	    	System.out.println(data);
+	    	String[] docs=data.split("\\|"); //docid
+	    	
 	        for(String doc:docs){
-	    	Appenddoc.add(doc);
-	    	//termCorpusFren +=docs.length;
-	        }
-	        //termCorpusFren -= termDocFren;
-	       // System.out.println(termDocFren+" "+termCorpusFren );
-	        
-	        for(String docid : Appenddoc){
-	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+docid,true));
-	        addDoc.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
-	        addDoc.close();
+	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+doc,true));
+	        addDoc.write(title+"\t"+termDocFren+"\n");
+	        addDoc.close();   
 	        }
 	    }
-	    reader.close(); 
+	    reader.close();  
 }
   
 
@@ -260,7 +250,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	  return max;
   }
 
-  private int next(String word, int docid){
+ /* private int next(String word, int docid){
 	// Binary Search
 	if(_index.size() == 0 || !_index.containsKey(word))
 		return -1;
@@ -285,20 +275,97 @@ public class IndexerInvertedDoconly extends Indexer {
    		  }
    	  }
    		  return docIDs.get(low)>docid ? low:high;
-  }
+  }*/
+  
   @Override
   public int corpusDocFrequencyByTerm(String term) {
-    return 0;
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+		        String line;
+		         while((line=reader.readLine())!=null){
+		        	 int termDocFren=0;
+		        	 String title="";
+		        	 String data="";
+		        	 Scanner s=new Scanner(line).useDelimiter("\t");
+		        	 	while(s.hasNext()){
+		        	 		title=s.next();
+		        	 		data=s.next();
+		        	 	}
+		        if(title.equals(term)){
+		    	String[] docs=data.split("\\|");
+		    	termDocFren=docs.length;
+		        }
+		        reader.close();
+		        return termDocFren;
+		    	}
+		        reader.close();   
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		    return 0;
   }
 
   @Override
   public int corpusTermFrequency(String term) {
-    return 0;
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	        String line;
+	         while((line=reader.readLine())!=null){
+	        	 int termDocFren=0;
+	        	 int termCorpusFren=0;
+	        	 String title="";
+	        	 String data="";
+	        	 Scanner s=new Scanner(line).useDelimiter("\t");
+	        	 	while(s.hasNext()){
+	        	 		title=s.next();
+	        	 		data=s.next();
+	        	 	}
+	        if(title.equals(term)){
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	        for(String doc:docs){
+	    	String[] docid= doc.split(",");
+	    	Appenddoc.add(docid[0]);
+	    	termCorpusFren +=docid.length;
+	        }
+	        termCorpusFren -= termDocFren;
+	        reader.close();
+	        return termCorpusFren;
+	    	}
+	        }
+	        reader.close();   
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return 0;
   }
 
   @Override
   public int documentTermFrequency(String term, String url) {
-    SearchEngine.Check(false, "Not implemented!");
+	  String docpath=""+url;
+	  int result;
+	  try {
+		BufferedReader reader = new BufferedReader(new FileReader(docpath));
+		String line;
+		int count=0;
+		while((line=reader.readLine())!=null){
+			count++;
+			if(count>2){
+				String[] terms=line.split("\t");
+				if(terms[0].equals(term)){
+					result=Integer.parseInt(terms[1]);
+					reader.close();
+					return result;
+				}
+			}
+		}
+		reader.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     return 0;
   }
  
