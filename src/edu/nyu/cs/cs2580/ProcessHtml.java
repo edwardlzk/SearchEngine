@@ -84,6 +84,7 @@ public class ProcessHtml {
 		// TODO Auto-generated method stub
 
 		Options option = new Options("conf/engine.conf");
+
 		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
 		ProcessHtml.process(file);
 //		File folder = new File(option._corpusPrefix+"/");
@@ -98,7 +99,6 @@ public class ProcessHtml {
 //		}
 		
 		
-
 		
 	}
 
