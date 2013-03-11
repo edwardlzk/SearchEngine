@@ -40,7 +40,7 @@ public class RankerQueryLikelihood extends Ranker {
 	    }
 	    
 	 // Get the document vector.
-	    Document d = _indexer.getDoc(did);
+	    DocumentIndexed d = (DocumentIndexed) _indexer.getDoc(did);
 	    
 	    double score = 0.0;
 	    
@@ -48,8 +48,9 @@ public class RankerQueryLikelihood extends Ranker {
 	    for(int i = 0; i<qv.size(); i++){
 	    	
 	    	String currentTerm = qv.get(i);
+	    	Integer id=new Integer(d._docid);
 	    	double globleLikelihood = (double)_indexer.corpusTermFrequency(currentTerm) / (double)_indexer.totalTermFrequency();
-	    	double documentLikelihood = (double)d.getLocalTermFrequency(currentTerm) / (double)d.getTotalTerms();
+	    	double documentLikelihood = (double)_indexer.documentTermFrequency(currentTerm,id.toString()) / (double)d.getTermTotal();
 	    	
 	    	
 	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
@@ -57,7 +58,7 @@ public class RankerQueryLikelihood extends Ranker {
 	    
 	    
 //	    System.out.println(did + " "+score);
-		return new ScoredDocument(did, d.get_title_string(), Math.pow(Math.E, score));
+		return new ScoredDocument(d, Math.pow(Math.E, score));
 	}
   
 }
