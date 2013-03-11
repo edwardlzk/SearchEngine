@@ -1,11 +1,13 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -126,28 +128,42 @@ public class IndexerInvertedDoconly extends Indexer {
   
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
-	    String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String docFile = _options._indexPrefix+"/";
+	 
 	    System.out.println("Load index from: " + indexFile);
-
-	    ObjectInputStream reader =
-	        new ObjectInputStream(new FileInputStream(indexFile));
-	    IndexerInvertedDoconly loaded = (IndexerInvertedDoconly) reader.readObject();
-	    this._documents = loaded._documents;
-	    // Compute numDocs and totalTermFrequency b/c Indexer is not serializable.
-	    this._numDocs = _documents.size();
-	    //for (Integer freq : loaded._termCorpusFrequency.values()) {
-	      //this._totalTermFrequency += freq;
-	    //}
-	    //this._dictionary = loaded._dictionary;
-	    this._terms = loaded._terms;
-	    //this._termCorpusFrequency = loaded._termCorpusFrequency;
-	    //this._termDocFrequency = loaded._termDocFrequency;
 	    
-	    // ************load the index
-	    this._index=loaded._index;
-	    reader.close();
-
-	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
+	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
+	    String line;
+	    while((line=reader.readLine())!=null){
+	    	 int termDocFren=0;
+	         int termCorpusFren=0;
+	         String title="";
+	         String data="";
+	    	Scanner s=new Scanner(line).useDelimiter("\t");
+	    	while(s.hasNext()){
+	    		title=s.next();
+	    		data=s.next();
+	    	}
+	    	//System.out.println(data);
+	    	String[] docs=data.split("\\|");
+	    	termDocFren=docs.length;
+	    	termCorpusFren=termDocFren;
+	    	Vector<String> Appenddoc=new Vector<String>(); //docs need to update
+	        for(String doc:docs){
+	    	Appenddoc.add(doc);
+	    	//termCorpusFren +=docs.length;
+	        }
+	        //termCorpusFren -= termDocFren;
+	       // System.out.println(termDocFren+" "+termCorpusFren );
+	        
+	        for(String docid : Appenddoc){
+	        BufferedWriter addDoc=new BufferedWriter(new FileWriter(docFile+docid,true));
+	        addDoc.write(title+"\t"+termDocFren+"\t"+termCorpusFren+"\n");
+	        addDoc.close();
+	        }
+	    }
+	    reader.close(); 
 }
   
 
@@ -161,8 +177,54 @@ public class IndexerInvertedDoconly extends Indexer {
    * In HW2, you should be using {@link DocumentIndexed}
    */
   @Override
-  public Document nextDoc(Query query, int docid) {
-   Vector<Integer> ids=new Vector<Integer>();
+  public DocumentIndexed nextDoc(Query query, int docid) {
+	  String path="";
+	  Vector<Integer> ids=new Vector<Integer>();
+	  for(int i=0;i<query._tokens.size();i++){
+	  String term="";
+	  try {
+		BufferedReader reader=new BufferedReader(new FileReader(path));
+		String line;
+		while((line=reader.readLine())!=null){
+			Scanner s=new Scanner(line).useDelimiter("\t");
+			if(s.hasNext()){
+				String doc=s.next();
+				if(doc==query._tokens.get(i)){   //found term
+					term=s.next();
+					break;
+				}
+			}
+		}
+		
+		String[] pos=term.split("\\|");  //get all docids that have term
+		for(String s:pos){
+			if(Integer.parseInt(s)>docid){
+				ids.add(Integer.parseInt(s));
+			}				
+		}
+		reader.close();
+	     } catch (Exception e) {
+		 e.printStackTrace();
+	    }
+	  }
+	  
+	  if(ids.size()==0 || ids.size()!=query._tokens.size()){
+		   return null;
+	   }
+	  
+	  else if(find(ids))
+	   { 
+		  DocumentIndexed doc=new DocumentIndexed(ids.get(0));
+		  //read doc file to get information
+		   return doc;
+	   }
+	   else{
+		  return nextDoc(query, max(ids)-1); 
+	   }
+	  
+	
+	  	  
+  /* Vector<Integer> ids=new Vector<Integer>();
    int id;
    int result=docid;
    for(int i=0;i<query._tokens.size();i++){
@@ -181,7 +243,7 @@ public class IndexerInvertedDoconly extends Indexer {
    }
    else{
 	  return nextDoc(query, max(ids)-1); 
-   }
+   }*/
    
   }
   private boolean find(Vector<Integer> ids){
@@ -244,29 +306,12 @@ public class IndexerInvertedDoconly extends Indexer {
   }
  
   public static void main(String[] args) throws IOException {
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
+	  Options option = new Options("./conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
    	  index.constructIndex();
-//	  Query query = new Query("the free");
-//	  query.processQuery();
-//	  try {
-//		index.loadIndex();
-//		Document nextdoc = index.nextDoc(query, 8);
-//		
-//		if(nextdoc!=null)
-//			System.out.println(nextdoc._docid);
-//		else
-//			System.out.println("Null");
-//		
-		
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	} catch (ClassNotFoundException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
-	  
+   	  Query q=new Query("new");
+	  DocumentIndexed d=index.nextDoc(q,0);
+  
   }
   
 }
