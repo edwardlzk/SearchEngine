@@ -1,11 +1,13 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -48,49 +50,59 @@ public class IndexerInvertedCompressed extends Indexer{
 		  int times = cf.writeTimes();
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
+		//  FileOutputStream fos = null;
+		 
 		  for(int i=0;i<times;i++){
 			  Vector<String> files=cf.loadFile(i);
+			 
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content);
+		        	processDocument(content,name);
 	      
 			  }
+			  
 			  String name="temp"+i+".txt";
+			 // fos = new  FileOutputStream(_options._indexPrefix+name);
 			  Map<String, String> content = new HashMap<String,String>();
-			  
-			  
+			  for(String term:_index.keySet())
+			  {
+				  StringBuilder builder = new StringBuilder();
+				  for(Vector<Byte> bytes:_index.get(term))
+				  {
+					 // first append the docid
+					  int n = bytesInTitle(bytes);
+					  for(int j=0;j<n;j++)
+						//  fos.write(bytes.get(j));
+						 builder.append((byte)bytes.get(j));
+					  // then append the position counts
+					  int counts = countVectorListNumber(bytes) - 1;
+					  Vector<Byte> v_counts = vbyteConversion(counts);
+					  for(Byte count:v_counts)
+						  builder.append((byte)count);
+						 // fos.write(count);
+					  // last append the all the positions
+					  for(int k=n; k< bytes.size();k++)
+					  {
+						  builder.append((byte)bytes.get(k));
+						//  fos.write(bytes.get(k));
+					  }
+				  }
+				  
+				  content.put(term, builder.toString());
+			  }
+			//  fos.close();
+		      filewriter.write(name, content);
+			  _index.clear();
+			  _terms.clear();		  
 		  }
-//	    Vector<Integer> numlist = null;
-//	    int counter=0;
-//	    for(int i=0;i<_terms.size();i++){
-//	    	System.out.print(_terms.get(i)+":");
-//	    	Vector<Vector<Byte>> plist = _index.get(_terms.get(i));
-//	    	counter=0;
-//	    	for(Vector<Byte> enlist:plist){
-//	    		counter++;
-//	    		try {
-//					numlist = extractNumbers(enlist);
-//					System.out.print("(");
-//		    		for(int m:numlist)
-//		    		{
-//		    			System.out.print(m+",");
-//		    		}
-//		    		System.out.print(")");    		
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//	    		
-//	    	}
-//	    	System.out.println(counter);
-//	    }
+
 	    	
   }
   
-	  private void processDocument(String content) throws IOException{
+	  private void processDocument(String content,String fileName) throws IOException{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
@@ -99,18 +111,33 @@ public class IndexerInvertedCompressed extends Indexer{
 		    doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
+		    try{
+		    // store the document in our index	        
+		    String filePath = _options._indexPrefix+"/"+fileName;
+		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+		    out.write(doc._docid);
+		    out.write("/n");
+		    out.write(title+"/n");
+		    out.close();	
+		    }catch(IOException e){
+		    	e.printStackTrace();	    	
+		    }
+		    generateIndex(title+body,fileName);
 		   // generateIndex(title+body);
-		    generateIndex(title);
-		    generateIndex(body);
+		    
+		  //  generateIndex(body);
 		    //System.out.println(title);
 		    //System.out.println(body);
 	}
 	  
-	  private void generateIndex(String content) throws IOException{
+	  private void generateIndex(String content,String fileName) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
+		  int totalcount = 0;
 		  int did=_documents.size()-1;
 		    while (s.hasNext()) {
+		     // the total terms in the this doc
+		      ++totalcount;
 		      String token = s.next();		      
 		      if (!_terms.contains(token)) {
 		    	  _terms.add(token);
@@ -146,7 +173,14 @@ public class IndexerInvertedCompressed extends Indexer{
 		      }
 		      pos++;
 		      }
-		      
+		    try{
+		    // store the document in our index	        
+		    String filePath = _options._indexPrefix+"/"+fileName;
+		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+		    out.write(totalcount+"/n");		    
+		    }catch(IOException e){
+		    	e.printStackTrace();	    	
+		    }
 		    return;
 }
  // Convert the docid and the position values
@@ -175,8 +209,35 @@ public class IndexerInvertedCompressed extends Indexer{
 	  return res;
 	  
   }
+  // calculate how many numbers in the list, 
+  // eg after decoding the values in the list is  1 3 15 4 6
+  // we should return 5
+  public int countVectorListNumber(Vector<Byte> list)
+  {
+	  int res =0;
+	  for(Byte x: list)
+	  {
+		  if((x&(1<<7))>0)
+			  ++res;
+	  }
+	  return res;
+  }
+  // calculate the number of bytes for the title
+   static int bytesInTitle(Vector<Byte> list)
+  {
+	  int i = 1;
+	  for(int j=1;j<list.size();j++)
+	  {
+		  if((list.get(j)&(1<<7))>0)
+			  break;
+		  else
+			  i++;
+	  }
+	  return i;
+  }
+  
  // Convert an integer to a byte vector
-  private Vector<Byte> vbyteConversion(int num)
+  public Vector<Byte> vbyteConversion(int num)
   {
 	  Vector<Byte> num_to_bytes = new Vector<Byte>();
 	  boolean firstByte = true;
@@ -197,7 +258,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  return num_to_bytes;
   }
   // the vbyte are in reverse order, so the first byte in the vbyte is the Least significant byte
-	  private int convertVbyteToNum(Vector<Byte> vbyte)
+	  public int convertVbyteToNum(Vector<Byte> vbyte)
 	  {
 		  if (vbyte == null)
 			  return -1;
@@ -210,14 +271,6 @@ public class IndexerInvertedCompressed extends Indexer{
 		  return res;
 	  }
 
-//  // Need to add the vetor byte in reverse order
-//  private void addNumToVector(Vector<Byte> list,Vector<Byte> toBeAdd)
-//  {
-//	  for(int i=toBeAdd.size()-1;i>=0;i--)
-//	  {
-//		  list.add(toBeAdd.get(i));
-//	  }
-//  }
   // extract the docId for encoded list
   private int extractDocId(Vector<Byte> enposition) throws IOException
   {
@@ -238,7 +291,7 @@ public class IndexerInvertedCompressed extends Indexer{
   
   
   // extract all the docIDs that contains the term
-  private Vector<Integer> extractAlldids(String term)
+  public Vector<Integer> extractAlldids(String term)
   {
 	  if (!_index.containsKey(term))
 		  return null;
@@ -447,32 +500,11 @@ public class IndexerInvertedCompressed extends Indexer{
   {
 	  
 	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
-	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
+	 IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
-	  Query query = new Query("Bonnie Clyde");
-	  query.processQuery();
-	  
-	  try {
-		index.loadIndex();
-		Document nextdoc = index.nextDoc(query, 7);
-		
-		if(nextdoc!=null)
-			{
-				System.out.println(nextdoc._docid);
-			}
-		else
-			System.out.println("Null");
-		
-		int x = index.nextPhrase(query,3,0);
-		System.out.println("The next position is "+x);
-		
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+//	 Vector<Byte> value = index.vbyteConversion(50);
+//	 for (Byte x:value)
+//	 System.out.println(x.byteValue());
 	  
   }
   
