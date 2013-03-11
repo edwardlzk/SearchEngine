@@ -1,11 +1,13 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -48,7 +50,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  int times = cf.writeTimes();
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
-		  FileOutputStream fos = null;
+		//  FileOutputStream fos = null;
 		 
 		  for(int i=0;i<times;i++){
 			  Vector<String> files=cf.loadFile(i);
@@ -58,7 +60,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content);
+		        	processDocument(content,name);
 	      
 			  }
 			  
@@ -100,7 +102,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	    	
   }
   
-	  private void processDocument(String content) throws IOException{
+	  private void processDocument(String content,String fileName) throws IOException{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
@@ -109,18 +111,33 @@ public class IndexerInvertedCompressed extends Indexer{
 		    doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
+		    try{
+		    // store the document in our index	        
+		    String filePath = _options._indexPrefix+"/"+fileName;
+		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+		    out.write(doc._docid);
+		    out.write("/n");
+		    out.write(title+"/n");
+		    out.close();	
+		    }catch(IOException e){
+		    	e.printStackTrace();	    	
+		    }
+		    generateIndex(title+body,fileName);
 		   // generateIndex(title+body);
-		    generateIndex(title+body);
+		    
 		  //  generateIndex(body);
 		    //System.out.println(title);
 		    //System.out.println(body);
 	}
 	  
-	  private void generateIndex(String content) throws IOException{
+	  private void generateIndex(String content,String fileName) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
+		  int totalcount = 0;
 		  int did=_documents.size()-1;
 		    while (s.hasNext()) {
+		     // the total terms in the this doc
+		      ++totalcount;
 		      String token = s.next();		      
 		      if (!_terms.contains(token)) {
 		    	  _terms.add(token);
@@ -156,7 +173,14 @@ public class IndexerInvertedCompressed extends Indexer{
 		      }
 		      pos++;
 		      }
-		      
+		    try{
+		    // store the document in our index	        
+		    String filePath = _options._indexPrefix+"/"+fileName;
+		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
+		    out.write(totalcount+"/n");		    
+		    }catch(IOException e){
+		    	e.printStackTrace();	    	
+		    }
 		    return;
 }
  // Convert the docid and the position values
