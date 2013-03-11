@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
+ * TODO merge sort doc id
  * 
  * @author edwardlzk
  *
@@ -125,6 +126,7 @@ public class FileOps {
 	
 	/**
 	 * Write content to a file, if the file exist, it will OVERWRITE the file.
+	 * TODO delete temp file
 	 * @param name	filename
 	 * @param content	file content
 	 */
@@ -156,6 +158,8 @@ public class FileOps {
 		PriorityQueue<String> heap = new PriorityQueue<String>();
 		Map<String, LinkedList<BufferedReader>> readerMap = new HashMap<String, LinkedList<BufferedReader>>();
 		Map<BufferedReader, String> valueMap = new HashMap<BufferedReader, String>();
+		//Map the reader to its position;
+		Map<BufferedReader, Integer> readerSequence = new HashMap<BufferedReader, Integer>();
 		// Write current line
 		File file = new File(base+output);
 		// if file doesnt exists, then create it
@@ -170,6 +174,7 @@ public class FileOps {
 		BufferedReader[] readers = new BufferedReader[tempFiles.length];
 		for(int i = 0; i<tempFiles.length; i++){
 			readers[i] = new BufferedReader(new FileReader(base + tempFiles[i]));
+			readerSequence.put(readers[i], i);
 			String first;
 			if((first = readers[i].readLine()) != null){
 				String[] line = first.split("\t");
@@ -195,8 +200,14 @@ public class FileOps {
 			currentLine.delete(0, currentLine.length());//clear the StringBuilder
 			currentLine.append(current).append("\t");
 			LinkedList<BufferedReader> relatedReader = readerMap.get(current);
+			TreeSet<Integer> readerNum = new TreeSet<Integer>();
 			for(BufferedReader b : relatedReader){
+				readerNum.add(readerSequence.get(b));
+			}
+			for(int i : readerNum){
+				BufferedReader b = readers[i];
 				currentLine.append(valueMap.get(b)).append(delimiter);
+				
 				String newLine;
 				if((newLine = b.readLine())!=null){
 					String[] newLineValues = newLine.split("\t");
