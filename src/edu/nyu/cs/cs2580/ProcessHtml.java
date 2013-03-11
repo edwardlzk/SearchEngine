@@ -18,41 +18,54 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 public class ProcessHtml {
 	
-	public static String process(File file)
+	public static String process(File file) throws IOException
 	{
-		StringBuilder builder = new StringBuilder();
-		String html = FileOps.readFile(file);
+//		StringBuilder builder = new StringBuilder();
+//		String html = FileOps.readFile(file);
 
-		String titlePattern = "<title>(.*)</title>";
-		String bodyPattern = ".*<body[^>]*>(.*)</body>";
+//		String titlePattern = "<title>(.*)</title>";
+//		String bodyPattern = "[.\\s]*<body[.\\s]*>([.\\s]*)</body>";
+//		
+//		Pattern title = Pattern.compile(titlePattern);
+//		Pattern body = Pattern.compile(bodyPattern);
+//		
+//		Matcher titleResult = title.matcher(html);
+//		Matcher bodyResult = body.matcher(html);
+//		
+//		titleResult.find();
+//		String titleString = titleResult.group(1); //process the title of the html
+		Document doc = Jsoup.parse(file,"UTF-8","");
+		if(doc.title()==null || doc.title()=="" || doc.body()==null || doc.body().text()==null || doc.body().text()=="")
+			return null;
+		StringBuilder builder = new StringBuilder();
 		
-		Pattern title = Pattern.compile(titlePattern);
-		Pattern body = Pattern.compile(bodyPattern);
-		
-		Matcher titleResult = title.matcher(html);
-		Matcher bodyResult = body.matcher(html);
-		
-		titleResult.find();
-		String titleString = titleResult.group(1); //process the title of the html
-		String resultTitle = titleString.replaceAll("\\&.*;"," ");
+		String titleString = doc.title();
+		titleString = titleString.replaceAll("[^\\w]", " ");
+		titleString = titleString.replaceAll("\\s+"," ");
+		builder.append(titleString);
+//		String resultTitle = titleString.replaceAll("\\&.*;"," ");
 		// replace all the non-word characters except ' and - to space
-		 resultTitle = resultTitle.replaceAll("[^\\w]", " ");
+//		 resultTitle = resultTitle.replaceAll("[^\\w]", " ");
 		// replace duplicate white spaces to one space
-		resultTitle = resultTitle.replaceAll("\\s+"," ");
+//		resultTitle = resultTitle.replaceAll("\\s+"," ");
 		
-		System.out.println(resultTitle);
-		builder.append(resultTitle);
+//		System.out.println(resultTitle);
+//		builder.append(resultTitle);
 		// the title and body are seperated by tab
 		builder.append("\t");
-		
-		boolean found = bodyResult.find();
-		String bodyString = bodyResult.group(1); //process the body of the html
-		// replace all the non-word characters except ' and - to space
-		String resultBody = bodyString.replaceAll("[^\\w]", " ");
-		// replace duplicate white spaces to one space
+		String resultBody = doc.body().text();
+		resultBody = resultBody.replaceAll("[^\\w]", " ");
 		resultBody = resultBody.replaceAll("\\s+"," ");
 		builder.append(resultBody);
-		System.out.println(resultBody);
+		
+//		boolean found = bodyResult.find();
+//		String bodyString = bodyResult.group(1); //process the body of the html
+		// replace all the non-word characters except ' and - to space
+//		String resultBody = bodyString.replaceAll("[^\\w]", " ");
+		// replace duplicate white spaces to one space
+//		resultBody = resultBody.replaceAll("\\s+"," ");
+//		builder.append(resultBody);
+//		System.out.println(resultBody);
 		return builder.toString();
 
 	}
@@ -64,7 +77,7 @@ public class ProcessHtml {
 		// TODO Auto-generated method stub
 
 		Options option = new Options("conf/engine.conf");
-		File file = new File("data/hw2/wiki/test.html");	
+		File file = new File("/Users/Wen/Documents/workspace2/SearchEngine/testdata/'03_Bonnie_&_Clyde");	
 
 		String res = ProcessHtml.process(file);
 		//System.out.println(res);
