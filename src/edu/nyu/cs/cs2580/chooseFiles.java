@@ -8,7 +8,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public class chooseFiles {
 	Options _options;
 	int total=0;//file number
-	int div=200;//how many files to process one time
+	int div=1000;//how many files to process one time
 
 	public chooseFiles(Options options){
 		_options=options;
