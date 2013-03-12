@@ -27,92 +27,6 @@ public class IndexerInvertedOccurrence extends Indexer {
 
 	public IndexerInvertedOccurrence() {
 	}
-<<<<<<< HEAD
-	  private void generateIndex(String content,String title){
-		  Scanner s = new Scanner(content);  // Uses white space by default.
-		  int pos=1;
-		  int totalcount = 0;
-		  HashMap<String,Vector<Integer>> t_plist = new HashMap<String,Vector<Integer>>();
-	      Vector<Integer> t_poslist = null;
-	      int did = _documents.size()-1;
-		    while (s.hasNext()) {
-		      ++_totalTermFrequency;
-		      ++ totalcount;
-		      String token = s.next();
-		      if(!t_plist.containsKey(token)){
-		    	  t_poslist  = new Vector<Integer> ();
-		    	  t_plist.put(token,t_poslist);
-		      }
-		      t_poslist = t_plist.get(token);
-		      t_poslist.add(pos);
-		      ++pos;
-		    }
-		    for(String term:t_plist.keySet())
-		    {
-		    	if(!_index.containsKey(term)){
-		    		HashMap<Integer,Vector<Integer>> n_list = new HashMap<Integer,Vector<Integer>>();
-		    		n_list.put(did, t_plist.get(term));
-		    		_index.put(term, n_list);
-		    	}
-		    	else{
-		    		HashMap<Integer,Vector<Integer>> plist = _index.get(term);
-		    		plist.put(did, t_plist.get(term));
-		    	}
-		    		
-		    }
-		    try{
-			    // store the document in our index	        
-			    String filePath = _options._indexPrefix+"/"+did;
-			    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-			    out.write(title+"\n");
-			    out.write(totalcount+"\n");
-			    for(String term:t_plist.keySet())
-			    {
-			    	out.write(term+"\t"+t_plist.get(term).size()+"\n");
-			    }
-			    out.close();
-			    }catch(IOException e){
-			    	e.printStackTrace();	    	
-			    } 
-		    return;
-}
-  
-  
-  
-  @Override
-  public void loadIndex() throws IOException, ClassNotFoundException {
-	  String indexFile = _options._indexPrefix + "/statistics";
-	  String docFile = _options._indexPrefix+"/";
-	 
-	    System.out.println("Load index from: " + indexFile);
-	    BufferedReader reader = new BufferedReader(new FileReader(indexFile));
-	    String line =null;
-	    if((line=reader.readLine())!=null)
-	    	this._numDocs = Integer.parseInt(line);
-	    if((line=reader.readLine())!=null)
-	    	this._totalTermFrequency =  Integer.parseInt(line);
-	    reader.close();
-	    System.out.println("Number of docs: "+this._numDocs);
-	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
-	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
-	    	
-  }
-
-
-  @Override
-  public DocumentIndexed getDoc(int docid) {
-	DocumentIndexed doc=new DocumentIndexed(docid);
-	String docpath=""+docid;
-	System.out.println(docpath);
-    try {
-		BufferedReader reader=new BufferedReader(new FileReader(docpath));
-		String line;
-		int count=0;
-		while((line=reader.readLine())!=null){
-			count++;
-			if(count==1){
-				doc.setTitle(line);
-=======
 
 	public IndexerInvertedOccurrence(Options options) {
 		super(options);
@@ -138,7 +52,6 @@ public class IndexerInvertedOccurrence extends Indexer {
 				String content = ProcessHtml.process(file);
 				if (content != null)
 					processDocument(content);
->>>>>>> 62fd57163192f059ab4cef0f42364f5d6a59c421
 			}
 			String name = "temp" + i + ".txt";
 			tempFiles[i] = name;
