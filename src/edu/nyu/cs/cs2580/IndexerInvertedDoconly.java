@@ -172,7 +172,7 @@ public class IndexerInvertedDoconly extends Indexer {
   @Override
   public DocumentIndexed getDoc(int docid) {
 	  DocumentIndexed doc=new DocumentIndexed(docid);
-		String docpath=""+docid;
+		String docpath=_options._indexPrefix +"/"+docid;
 		System.out.println(docpath);
 	    try {
 			BufferedReader reader=new BufferedReader(new FileReader(docpath));
@@ -291,7 +291,7 @@ public class IndexerInvertedDoconly extends Indexer {
   
   @Override
   public int corpusDocFrequencyByTerm(String term) {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/merge.txt";
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 		        String line;
@@ -320,20 +320,19 @@ public class IndexerInvertedDoconly extends Indexer {
 
   @Override
   public int corpusTermFrequency(String term) {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  if(queryCache.containsKey(term)){
+		  return queryCache.get(term);
+	  }
+	  int total = 0;
+	  String indexFile = _options._indexPrefix + "/merge.txt";
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	        String line;
 	         while((line=reader.readLine())!=null){
 	        	 int termDocFren=0;
 	        	 int termCorpusFren=0;
-	        	 String title="";
-	        	 String data="";
-	        	 Scanner s=new Scanner(line).useDelimiter("\t");
-	        	 	while(s.hasNext()){
-	        	 		title=s.next();
-	        	 		data=s.next();
-	        	 	}
+	        	 String title=line.split("\t")[0];
+	        	 String data=line.split("\t")[1];
 	        if(title.equals(term)){
 	    	String[] docs=data.split("\\|");
 	    	termDocFren=docs.length;
@@ -344,15 +343,16 @@ public class IndexerInvertedDoconly extends Indexer {
 	    	termCorpusFren +=docid.length;
 	        }
 	        termCorpusFren -= termDocFren;
-	        reader.close();
-	        return termCorpusFren;
+	        total = termCorpusFren;;
 	    	}
 	        }
 	        reader.close();   
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    return 0;
+		
+		queryCache.put(term, total);
+	    return total;
   }
 
   @Override
@@ -360,7 +360,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	  String docpath=""+url;
 	  int result;
 	  try {
-		BufferedReader reader = new BufferedReader(new FileReader(docpath));
+		BufferedReader reader = new BufferedReader(new FileReader(_options._indexPrefix +"/"+docpath));
 		String line;
 		int count=0;
 		while((line=reader.readLine())!=null){
@@ -394,6 +394,12 @@ public class IndexerInvertedDoconly extends Indexer {
 //	  System.out.println(d._docid);
 //	  }
   }
+
+@Override
+public int nextPhrase(Query phrase, int doc, int pos) {
+	// TODO Auto-generated method stub
+	return 0;
+}
   
 }
   

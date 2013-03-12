@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import edu.nyu.cs.cs2580.QueryHandler.CgiArguments;
 import edu.nyu.cs.cs2580.SearchEngine.Options;
-import edu.nyu.cs.cs2580.hw1.ScoredDocumentComparator;
 import edu.nyu.cs.cs2580.DocumentIndexed;
 import edu.nyu.cs.cs2580.ScoredDocument;
 
@@ -32,8 +31,6 @@ public class RankerQueryLikelihood extends Ranker {
 
   @Override
   public Vector<ScoredDocument> runQuery(Query query, int numResults) {
-	  //split the terms and queries
-	  query.processQuery();
   
 	  Vector < ScoredDocument > retrieval_results = new Vector < ScoredDocument > ();
 	  
@@ -69,6 +66,7 @@ public class RankerQueryLikelihood extends Ranker {
 	    	
 	    	String currentTerm = qv.get(i);
 	    	
+	    	
 	    	double globleLikelihood, documentLikelihood;
 	    	
 	    	//Determine if currentTerm is phrase or term
@@ -80,11 +78,23 @@ public class RankerQueryLikelihood extends Ranker {
 	    	}
 	    	else{
 	    		//It is a term
-		    	globleLikelihood = (double)_indexer.corpusTermFrequency(currentTerm) / (double)_indexer.totalTermFrequency();
-		    	documentLikelihood = (double)_indexer.documentTermFrequency(currentTerm,String.valueOf(did)) / (double)d.getTermTotal();
+	    		double corpusTermFreq = (double)_indexer.corpusTermFrequency(currentTerm);
+	    		System.out.println(corpusTermFreq);
+	    		double totalTermFreq = (double) _indexer.totalTermFrequency();
+	    		System.out.println(totalTermFreq);
+	    		double docTermFreq =  (double)_indexer.documentTermFrequency(currentTerm,String.valueOf(did));
+	    		System.out.println(docTermFreq);
+	    		double docTotal = (double)d.getTermTotal();
+	    		System.out.println(docTotal);
+		    	globleLikelihood = corpusTermFreq / totalTermFreq;
+		    	System.out.println("term "+currentTerm+" global frequency is "+globleLikelihood);
+		    	documentLikelihood =  docTermFreq/ docTotal;
+		    	System.out.println("term "+currentTerm+" local frequency is "+documentLikelihood);
 	    	}
 	    	
 	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
+	    	
+	    	
 	    }
 	    
 	    
@@ -134,4 +144,7 @@ public class RankerQueryLikelihood extends Ranker {
 	  return sum;
 	  
   }
+  
+  
+  
 }
