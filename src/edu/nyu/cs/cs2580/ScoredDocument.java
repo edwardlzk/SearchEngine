@@ -35,6 +35,6 @@ class ScoredDocument implements Comparable<ScoredDocument> {
     if (this._score == o._score) {
       return 0;
     }
-    return (this._score > o._score) ? 1 : -1;
+    return (this._score > o._score) ? -1 : 1;
   }
 }

@@ -229,10 +229,10 @@ public class IndexerInvertedCompressed extends Indexer{
 		    return;
 }
  // Convert the docid and the position values
-  private Vector<Integer> extractNumbers(Vector<Byte> poslist) throws IOException
+  private Vector<Integer> extractNumbers(Vector<Byte> poslist)
   {
 	  if(poslist == null || poslist.size()==0)
-		  throw new IOException("List is null, no information can be extracted");
+		  throw new IllegalArgumentException("List is null, no information can be extracted");
 	  Vector<Integer> res = new Vector<Integer>();
 	  Vector<Byte> curNum = new Vector<Byte>();
 	  curNum.add(poslist.firstElement()); // the first byte of a number always starts with MSB=1
@@ -487,7 +487,7 @@ public class IndexerInvertedCompressed extends Indexer{
   }
 
   
-  public int nextPhrase(Query query, int docid, int pos) throws IOException{
+  public int nextPhrase(Query query, int docid, int pos){
 	  Document idVerify=nextDoc(query,docid-1);
 	  if(!idVerify.equals(_documents.get(docid))){
 		  System.out.println("Enter here");
@@ -519,7 +519,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	 return true;
   }
   // the next occurrence of the term in docid after pos 
-  private int next_pos(String word,int docid,int pos) throws IOException{
+  private int next_pos(String word,int docid,int pos){
 	  if(!_index.containsKey(word))
 		  return -1;
 	  Vector<Integer> docIDs=extractAlldids(word);
@@ -534,7 +534,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }
 	  }
 	  if(offset==-1)
-			 throw new IOException("This docid doesn't contain this term");
+			 throw new IllegalArgumentException("This docid doesn't contain this term");
 	  Vector<Byte> poslist = _index.get(word).get(offset);
 	  // extract the id and all the positions in that id that the term occurs
 	  Vector<Integer> enlist = extractNumbers(poslist);

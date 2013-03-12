@@ -231,6 +231,12 @@ public class FileOps {
 		}
 		
 		bufferWritter.close();
+		
+		//Delete all temporary files
+		for(String tFile : tempFiles){
+			File currentFile = new File(base + tFile);
+			currentFile.delete();
+		}
 	}
 	
 }

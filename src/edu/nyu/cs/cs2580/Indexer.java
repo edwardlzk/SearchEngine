@@ -29,6 +29,11 @@ public abstract class Indexer {
   // Subclasses should populate those fields properly.
   protected int _numDocs = 0;
   protected long _totalTermFrequency = 0;
+  
+//Maximum capacity of cached terms
+	int max_cap = 500;
+
+	LRUMap<String, Integer> queryCache = new LRUMap<String, Integer>(5, max_cap);
 
   // Provided for serialization.
   public Indexer() { }
@@ -106,6 +111,8 @@ public abstract class Indexer {
 
   // Number of documents in the corpus.
   public final int numDocs() { return _numDocs; }
+  
+  public abstract int nextPhrase(Query phrase, int doc, int pos);
   // Number of term occurrences in the corpus. If a term appears 10 times, it
   // will be counted 10 times.
   public final long totalTermFrequency() { return _totalTermFrequency; }
