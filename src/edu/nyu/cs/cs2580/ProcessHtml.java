@@ -66,7 +66,7 @@ public class ProcessHtml {
 		builder.append(resultBody);
 		String output = builder.toString();
 		
-		System.out.println("before stem:"+output);
+//		System.out.println("before stem:"+output);
 		
 		Stemmer stemmer = new Stemmer();
 		stemmer.add(output);

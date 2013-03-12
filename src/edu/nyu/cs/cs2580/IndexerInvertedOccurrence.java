@@ -163,6 +163,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 	    reader.close();
 	    System.out.println("Number of docs: "+this._numDocs);
 	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
+	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
 	    	
   }
 

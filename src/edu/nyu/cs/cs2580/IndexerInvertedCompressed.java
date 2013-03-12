@@ -2,6 +2,7 @@ package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,12 +30,11 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class IndexerInvertedCompressed extends Indexer{
   private final int vmax = 128;
+//  private final byte[] newline = "\n".getBytes("UTF-8");
   
   // the first number in the vector<Byte> is the doc id, the second number is the number of word occurrence, 
   // then follows the specific position number
   private HashMap<String, Vector<Vector<Byte>>> _index=new HashMap<String,Vector<Vector<Byte>>>();
-	  //all unique terms
-  private Vector<String> _terms = new Vector<String>();
 	  //Stores all Document in memory.
   private Vector<DocumentIndexed> _documents = new Vector<DocumentIndexed>();
   public IndexerInvertedCompressed(){}
@@ -48,95 +48,99 @@ public class IndexerInvertedCompressed extends Indexer{
   public void constructIndex() throws IOException {
 	    String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
-	
 		  chooseFiles cf=new chooseFiles(_options);
 		  int times = cf.writeTimes();
 		  System.out.println(times);
 		  FileOps filewriter = new FileOps(_options._indexPrefix+"/");
-		  FileOutputStream fos = null;
-		 
+		  FileOutputStream fos = null;		 
 		  for(int i=0;i<times;i++){
-			  Vector<String> files=cf.loadFile(i);
-			 
+			  Vector<String> files=cf.loadFile(i);		 
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content,name);
-	      
-			  }
-			  
+		        	processDocument(content);  
+			  }		  
 			  String name="temp"+i+".txt";
-			  fos = new  FileOutputStream(_options._indexPrefix+name);
-			  Map<String, String> content = new HashMap<String,String>();
+			  fos = new  FileOutputStream(_options._indexPrefix+"/"+name);
 			  for(String term:_index.keySet())
 			  {
-				  StringBuilder builder = new StringBuilder();
+				  // convert the term to its hashcode and convert it to vector<byte>
+				  int termhash = term.hashCode();
+				  byte[] v_termhash = vbyteConversionToArray(termhash);
+				  fos.write(v_termhash);
+				  // the total bytes for a term includes all the docs that contains this term also include the byte count for each doc
+				  int tot_bytes = 0;
+				  // record the total number of bytes for each doc and its position list 
+				  Vector<Integer> doc_tot_len = new Vector<Integer>();			  
 				  for(Vector<Byte> bytes:_index.get(term))
 				  {
-					 // first append the docid
-					  int n = bytesInTitle(bytes);
-					  byte[] title = new byte[n];
-//					  for(int j=0;j<n;j++)
-//						//  fos.write(bytes.get(j));
-//						 builder.append((byte)bytes.get(j));
-					  
-					  for(int j = 0; j<n; j++){
-						  title[j] = bytes.get(j);
-					  }
-					  
-					  fos.write(title);
-					  
-					  // then append the position counts
-					  int counts = countVectorListNumber(bytes) - 1;
-					  Vector<Byte> v_counts = vbyteConversion(counts);
-					  byte[] v_counts_array = new byte[v_counts.size()];
-					  for(int k = 0; k<v_counts.size(); k++){
-						  v_counts_array[k] = v_counts.get(k);
-					  }
-					  
-					  fos.write(v_counts_array);
-					  
-					  byte[] pos = new byte[bytes.size()-n];
-					  int index = 0;
-					  for(int k = n; k<bytes.size(); k++)
-						  pos[index++] = bytes.get(k);
-					  
-//					  builder.append(pos);
-					  fos.write(pos);
-					  
-//					  for(Byte count:v_counts)
-//						  builder.append((byte)count);
-						 // fos.write(count);
-					  // last append the all the positions
-//					  for(int k=n; k< bytes.size();k++)
-//					  {
-//						  builder.append((byte)bytes.get(k));
-//						//  fos.write(bytes.get(k));
-//					  }
+					  doc_tot_len.add(bytes.size());
+					// updates the total bytes count for all the doc ids and position list
+					  tot_bytes += bytes.size();
 				  }
-				  
-				  content.put(term, builder.toString());
+				  // convert the total number of bytes to Vector of bytes
+				  Vector<byte[]> v_doc_len = new Vector<byte[]>();
+				  for(int int_doc:doc_tot_len)
+				  {
+					 byte[] v_int_doc = vbyteConversionToArray(int_doc);
+					// add the count to the total bytes;
+					 tot_bytes += v_int_doc.length;
+					 v_doc_len.add(v_int_doc);
+				  }
+				  // convert the total number bytes to byte[] and write it to the file
+				  byte[] v_tot = vbyteConversionToArray(tot_bytes);
+				  fos.write(v_tot);
+				  // write the byte array into the file for each doc
+				  for(int k=0;k<_index.get(term).size();k++)
+				  {
+					 // first append the bytes count for each doc, which is stored in v_doc_len
+					  fos.write(v_doc_len.get(k));
+					  // then write the doc id and its position list
+					  byte[] all_doc = new byte[_index.get(term).get(k).size()];
+					  for(int j=0;j<_index.get(term).get(k).size();++j)
+						  all_doc[j] = _index.get(term).get(k).get(j);
+					  fos.write(all_doc);
+				  }				  
 			  }
-			//  fos.close();
-//		      filewriter.write(name, content);
-			  _index.clear();
-			  _terms.clear();		  
+			  fos.close();
+			  _index.clear();  
 		  }
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
-		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
-		  // the first line in the corpus_statistics is the number of docs in the corpus
-		  outsta.write(_numDocs+"\n");
-		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
-		  outsta.close();
-		 
-		  
-
-	    	
+		  FileOutputStream fos_corpus = new FileOutputStream(corpus_statistics);
+		  // first write the num of Docs to the file
+		  byte[] v_num_ar = vbyteConversionToArray(this._numDocs);
+		  fos_corpus.write(v_num_ar);
+		  // write the total term frequency to the file
+		  Vector<Byte> tot_arr = this.vbyteConversion(this._totalTermFrequency);
+		  byte[] v_tot_arr = new byte[tot_arr.size()];
+		  for(int j=0;j<tot_arr.size();++j)
+			  v_tot_arr[j] = tot_arr.get(j);
+		  fos_corpus.write(v_tot_arr);
+		  fos_corpus.close();
   }
-  
-	  private void processDocument(String content,String fileName) throws IOException{
+  @Override
+  public void loadIndex() throws IOException, ClassNotFoundException {
+	  String indexFile = _options._indexPrefix+"/" + "statistics";
+	    System.out.println("Load index from: " + indexFile);
+	    FileInputStream s = new FileInputStream(indexFile);
+	    Vector<Byte> sta = new Vector<Byte>();
+	    int cur = 0;
+	    while((cur=s.read())!=-1)
+	    	{	
+	    		 sta.add((byte)cur);   	 
+	    	}
+	    s.close();
+	    Vector<Integer> sta_num = extractNumbers(sta);
+	    this._numDocs = sta_num.get(0);
+	    this._totalTermFrequency = sta_num.get(1);
+	    System.out.println("Number of docs: "+this._numDocs);
+	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
+	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
+  }
+
+  	private void processDocument(String content) throws IOException{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
@@ -145,77 +149,83 @@ public class IndexerInvertedCompressed extends Indexer{
 		    doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    try{
-		    // store the document in our index	        
-		    String filePath = _options._indexPrefix+"/"+fileName;
-		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-		    out.write(doc._docid+"\n");
-		    out.write(title+"\n");
-		    out.close();	
-		    }catch(IOException e){
-		    	e.printStackTrace();	    	
-		    }
-		    generateIndex(title+body,fileName);
-		   // generateIndex(title+body);
-		    
-		  //  generateIndex(body);
-		    //System.out.println(title);
-		    //System.out.println(body);
+		    generateIndex(title+body,title);
 	}
-	  
-	  private void generateIndex(String content,String fileName) throws IOException{
+/*
+ *  In each doc we generated, the first term is the doc title in hashcode
+ *  the second term is the total term counts
+ *  then term, count .....	  
+ */
+	  private void generateIndex(String content,String title) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
 		  int did=_documents.size()-1;
+		  HashMap<String,Vector<Byte>> plist = new HashMap<String,Vector<Byte>>();
+		  // first convert doc_id to the Vector<Byte>
+		  Vector<Byte> v_did = vbyteConversion(did);
+		  Vector<Byte> enposition = null;
 		    while (s.hasNext()) {
 		     // the total terms in the this doc
 		      ++totalcount;
 		      ++_totalTermFrequency;
-		      String token = s.next();		      
-		      if (!_terms.contains(token)) {
-		    	  _terms.add(token);
-		    	  Vector<Vector<Byte>> plist = new Vector<Vector<Byte>>();
-		    	  Vector<Byte> enposition = new Vector<Byte>();
-		    	  // first convert doc_id to the Vector<Byte>
-		    	  Vector<Byte> v_did = vbyteConversion(did);
-		    	  // add the doc_id to the enposition
+		      String token = s.next();	
+		      if (!plist.containsKey(token)) {
+		    	  enposition = new Vector<Byte>();
+		    	  // the term first time occurs, add the doc_id to the enposition
 		    	  enposition.addAll(v_did);
 		    	  // Then convert the position to the Vector<Byte>
 		    	  Vector<Byte> v_pos = vbyteConversion(pos);
 		    	  // add the v_pos to the enposition
 		    	  enposition.addAll(v_pos);
-		    	  // add the enposition to plist
-		    	  plist.add(enposition);
-		          _index.put(token, plist);
+		    	  // add put the token and enposition to plist
+		    	  plist.put(token,enposition);
 		      }else{
-		    	  Vector<Vector<Byte>> plist=_index.get(token);
-		    	  // check if the term is the first appears in this doc, if yes, we need to encode the docid
-		    	  int predid = extractDocId(plist.lastElement());
-		    	  Vector<Byte> enposition = null;
-		    	  // term first time occurs in this doc, encode the docid
-		    	  if(predid != did)
-		    	  {
-		    		  enposition = new Vector<Byte>();
-		    		  Vector<Byte> v_did = vbyteConversion(did);
-		    		  enposition.addAll(v_did);
-		    		  plist.add(enposition);
-		    	  }
-		    	  enposition = plist.lastElement();
+		    	  enposition = plist.get(token);
+		    	  // add the position to the plist
 		    	  Vector<Byte> v_pos = vbyteConversion(pos);
 		    	  enposition.addAll(v_pos);
 		      }
-		      pos++;
-		      }
-		    try{
-		    // store the document in our index	        
-		    String filePath = _options._indexPrefix+"/"+fileName;
-		    BufferedWriter out = new BufferedWriter(new FileWriter(filePath,true));
-		    out.write(totalcount+"\n");
-		    out.close();
-		    }catch(IOException e){
-		    	e.printStackTrace();	    	
+		      ++pos;
 		    }
+		   // add the plist to the index
+		    for(String term:plist.keySet())
+		    {
+		    	if(!_index.containsKey(term)){
+		    		Vector<Vector<Byte>> nlist = new Vector<Vector<Byte>>();
+		    		nlist.add(plist.get(term));
+		    		_index.put(term, nlist);
+		    	}
+		    	else{
+		        	Vector<Vector<Byte>> nlist = _index.get(term);
+		        	nlist.add(plist.get(term));
+		    	}	    		
+		    }
+		    try{
+			    // store the document in our index	        
+			    String filePath = _options._indexPrefix+"/"+did;
+			    FileOutputStream fos = new FileOutputStream(filePath);
+			    int t_title = title.hashCode();
+			    byte[] v_t_title = vbyteConversionToArray(t_title);
+			    fos.write(v_t_title);
+			    // then write the total term in this document
+			    byte[] v_totcount = vbyteConversionToArray(totalcount);
+			    fos.write(v_totcount);
+			    for(String term:plist.keySet())
+			    {
+			    	// first write the term in hashcode to the file
+			    	int hash_term = term.hashCode();
+			    	byte[] v_hash_term = vbyteConversionToArray(hash_term);
+			    	fos.write(v_hash_term);
+			    	// count how many times the term occurs in this document and write to the file
+			    	int termcounts = countVectorListNumber(plist.get(term))-1;
+			    	byte[] v_counts = vbyteConversionToArray(termcounts);
+			    	fos.write(v_counts);	    	
+			    }
+			    fos.close();
+			    }catch(IOException e){
+			    	e.printStackTrace();	    	
+			    } 
 		    return;
 }
  // Convert the docid and the position values
@@ -292,6 +302,56 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  return num_to_bytes;
   }
+  public byte[] vbyteConversionToArray(int num)
+  {
+	  if(num == 0){
+		  byte[] res = new byte[1];
+		  res[0] = (byte)(1<<7);
+		  return res;
+	  }
+	  int count = 0;
+	  int temp = num;
+	  boolean firstByte = true;
+	  while(temp>0){
+		  ++ count;
+		  temp = temp >> 7;
+	  }
+	  byte[] res = new byte[count];
+	  int i =0;
+	  while(num > 0){
+		  byte bytenum = (byte)(num % vmax);
+		  num = num >> 7;
+		  if (firstByte)
+		  {
+			  // indicate the end of a byte, set the hightest bit to 1
+			  bytenum |= 1 << 7;
+			  firstByte = false;
+		  }
+		  res[i++] = bytenum;	  
+	  }
+	  return res;
+  }
+//Convert an long to a byte vector
+ public Vector<Byte> vbyteConversion(long num)
+ {
+	  Vector<Byte> num_to_bytes = new Vector<Byte>();
+	  boolean firstByte = true;
+	  if(num == 0)
+		  num_to_bytes.add((byte)(1<<7));
+	  while(num>0)
+	  {
+		  byte bytenum = (byte)(num % vmax);
+		  num = num >> 7;
+		  if (firstByte)
+		  {
+			  // indicate the end of a byte, set the hightest bit to 1
+			  bytenum |= 1 << 7;
+			  firstByte = false;
+		  }
+		  num_to_bytes.add(bytenum);	  
+	  }
+	  return num_to_bytes;
+ }
   // the vbyte are in reverse order, so the first byte in the vbyte is the Least significant byte
 	  public int convertVbyteToNum(Vector<Byte> vbyte)
 	  {
@@ -346,32 +406,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		}
 		return docIDs;
   }
-  @Override
-  public void loadIndex() throws IOException, ClassNotFoundException {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
-	    System.out.println("Load index from: " + indexFile);
-
-	    ObjectInputStream reader =
-	        new ObjectInputStream(new FileInputStream(indexFile));
-	    IndexerInvertedCompressed loaded = (IndexerInvertedCompressed) reader.readObject();
-
-	    this._documents = loaded._documents;
-	    // Compute numDocs and totalTermFrequency b/c Indexer is not serializable.
-	    this._numDocs = _documents.size();
-	    //for (Integer freq : loaded._termCorpusFrequency.values()) {
-	      //this._totalTermFrequency += freq;
-	    //}
-	    //this._dictionary = loaded._dictionary;
-	    this._terms = loaded._terms;
-	    //this._termCorpusFrequency = loaded._termCorpusFrequency;
-	    //this._termDocFrequency = loaded._termDocFrequency;
-	    // ************load the index
-	    this._index=loaded._index;
-	    reader.close();
-
-	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
-  }
-
+ 
   @Override
   public Document getDoc(int docid) {
     SearchEngine.Check(false, "Do NOT change, not used for this Indexer!");
@@ -533,14 +568,10 @@ public class IndexerInvertedCompressed extends Indexer{
   }
   public static void main(String[] args) throws Exception
   {
-	  
 	  Options option = new Options("conf/engine.conf");
 	 IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
-//	 Vector<Byte> value = index.vbyteConversion(50);
-//	 for (Byte x:value)
-//	 System.out.println(x.byteValue());
-
+	  index.loadIndex();
   }
   
 }
