@@ -384,8 +384,8 @@ public class IndexerInvertedDoconly extends Indexer {
   public static void main(String[] args) throws IOException {
 	  Options option = new Options("conf/engine.conf");
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
-   	  //index.constructIndex();
-   	  index.loadIndex();
+   	  index.constructIndex();
+//   	  index.loadIndex();
 //   	  Query q=new Query("land landfall label");
 //   	  q.processQuery();
 //	  DocumentIndexed d=index.nextDoc(q,3);
