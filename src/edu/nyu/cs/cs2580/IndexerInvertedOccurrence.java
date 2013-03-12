@@ -56,7 +56,24 @@ public class IndexerInvertedOccurrence extends Indexer{
 			  Map<String, String> content=new HashMap<String,String>();
 		      for(String term:_index.keySet()){
 		    	  StringBuilder value=new StringBuilder();
-		    	  for(Integer did:_index.get(term).keySet())
+		    	  
+		    	  Set<Integer> keys=_index.get(term).keySet();
+		    	  Integer[] did=new Integer[keys.size()];
+		    	  int count=0;
+		    	  for(Integer key:keys){
+		    		  did[count++]=key;
+		    	  }
+		    	  Arrays.sort(did);
+		    	  for(count=0;count<did.length;count++){
+		    		  value.append(did[count]).append(",");
+		    		  for(int p:_index.get(term).get(did[count])){
+		    			  value.append(p).append(",");
+		    		  }
+		    		  value.deleteCharAt(value.length()-1);
+		    		  value.append("|"); 
+		    	  }
+		    	  
+		    /*	  for(Integer did:_index.get(term).keySet())
 		    	  {
 		    		  value.append(did).append(",");
 		    		  for(int p:_index.get(term).get(did)){
@@ -64,7 +81,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    		  }
 		    		  value.deleteCharAt(value.length()-1);
 		    		  value.append("|"); 		  
-		    	  }
+		    	  }*/
 		    	  value.deleteCharAt(value.length()-1);
 		    	  content.put(term, value.toString());
 	      }
@@ -75,7 +92,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		  BufferedWriter outsta = new BufferedWriter(new FileWriter(corpus_statistics));
 		  // the first line in the corpus_statistics is the number of docs in the corpus
 		  outsta.write(_numDocs+"\n");
-		  outsta.write(String.valueOf(_totalTermFrequency)+"\n");
+		  outsta.write(_totalTermFrequency+"\n");
 		  outsta.close();
 		  filewriter.merge(tempFiles, "merge.txt", "|");
 	    
@@ -126,6 +143,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		    	else{
 		    		HashMap<Integer,Vector<Integer>> plist = _index.get(term);
 		    		plist.put(did, t_plist.get(term));
+		    		_index.put(term, plist);
 		    	}
 		    		
 		    }
@@ -198,7 +216,7 @@ public class IndexerInvertedOccurrence extends Indexer{
   @Override
   public DocumentIndexed nextDoc(Query query, int docid) {
 	  DocumentIndexed doc=new DocumentIndexed(docid);
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/merge.txt";
 	  HashMap<String, Vector<Integer>> terms=new HashMap<String, Vector<Integer>>();	//term and its position
 	    try {
 			BufferedReader reader=new BufferedReader(new FileReader(indexFile));
@@ -226,8 +244,10 @@ public class IndexerInvertedOccurrence extends Indexer{
 		int result;
 		int id;
 		for(String term:query._tokens){
+			if(terms.get(term)!=null){
 			 id=next(term,docid, terms.get(term));	
 			 ids.add(id);  
+			}
 		}
 		   if(ids.size()!=query._tokens.size()) //no doc includes all the terms
 			   return null;
@@ -294,10 +314,10 @@ public class IndexerInvertedOccurrence extends Indexer{
 		 id=next_pos(query._tokens.get(i),docid,pos);
 		 ids.add(id);  
 	   }
-	   for(int k:ids){
-	   if(k==-1)
+	   
+	   if(ids.contains(-1))
 		   return -1;
-		}
+		
 	   int j=0;
 	   for(;j<ids.size()-1;j++){
 		   if((ids.get(j)+1)!=ids.get(j+1)){
@@ -311,7 +331,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 		   return nextPhrase(query,docid,ids.get(ids.size()-1));
   }
   private int next_pos(String word,int docid,int pos){
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/merge.txt";
 	    try {
 			BufferedReader reader=new BufferedReader(new FileReader(indexFile));
 			String line;
@@ -322,10 +342,10 @@ public class IndexerInvertedOccurrence extends Indexer{
 					for(String s:positions.split("\\|")){
 						if(docid==Integer.parseInt((s.split(","))[0])){ //found docid
 							String[] allpos=s.split(",");
-							for(String sp:allpos){  //get all pos in the doc
-								if(Integer.parseInt(sp)>pos){
+							for(int i=1;i<allpos.length;i++){  //get all pos in the doc
+								if(Integer.parseInt(allpos[i])>pos){
 									reader.close();
-									return Integer.parseInt(sp);
+									return Integer.parseInt(allpos[i]);
 								} //found the pos and return
 							} //end for loop for all pos for one term in one doc
 						}
@@ -372,7 +392,7 @@ public class IndexerInvertedOccurrence extends Indexer{
 
   @Override
   public int corpusTermFrequency(String term) {
-	  String indexFile = _options._indexPrefix + "/corpus.idx";
+	  String indexFile = _options._indexPrefix + "/merge.txt";
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(indexFile));
 	        String line;
@@ -433,30 +453,23 @@ public class IndexerInvertedOccurrence extends Indexer{
     return 0;
   }
   public static void main(String[] args) throws IOException, ClassNotFoundException {
-	  Options option = new Options("/Users/Wen/Documents/workspace2/SearchEngine/conf/engine.conf");
+	  Options option = new Options("conf/engine.conf");
 	  IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
-	  index.constructIndex();
+	  //index.constructIndex();
 	  index.loadIndex();
- //  	  index.constructIndex();
-//	  Query query = new Query("the free");
-//	  query.processQuery();
-//	  try {
-//		index.loadIndex();
-//		Document nextdoc = index.nextDoc(query, 8);
-//		
-//		if(nextdoc!=null)
-//			System.out.println(nextdoc._docid);
-//		else
-//			System.out.println("Null");
-//		
+  	  
+	  Query query = new Query("zwang zwanzig zwei");
+	  query.processQuery();
+	 
 		
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	} catch (ClassNotFoundException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
+		Document nextdoc = index.nextDoc(query, 4122);
+		System.out.println(index.nextPhrase(query,6032, 0));
+		
+		if(nextdoc!=null)
+			System.out.println(nextdoc._docid);
+		else
+			System.out.println("Null");
+		
 	  
   }
 }

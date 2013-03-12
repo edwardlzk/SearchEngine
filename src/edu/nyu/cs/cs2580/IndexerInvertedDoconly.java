@@ -386,6 +386,7 @@ public class IndexerInvertedDoconly extends Indexer {
 	  IndexerInvertedDoconly index = new IndexerInvertedDoconly(option);
    	  index.constructIndex();
 //   	  index.loadIndex();
+
 //   	  Query q=new Query("land landfall label");
 //   	  q.processQuery();
 //	  DocumentIndexed d=index.nextDoc(q,3);
