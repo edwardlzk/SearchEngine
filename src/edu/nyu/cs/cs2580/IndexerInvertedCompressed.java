@@ -873,13 +873,13 @@ public class IndexerInvertedCompressed extends Indexer{
 	  {
 		  scan = new Scanner(line).useDelimiter("\t");
 		  did = Integer.valueOf(scan.next());
-		  String title = scan.next();
-		  String URL = scan.next();
-		  if(URL.equals(url))
+//		  String title = scan.next();
+//		  String URL = scan.next();
+		  if(String.valueOf(did).equals(url))
 			  break;	  
 	  }
 	  if(did == -1)
-		  return -1;
+		  return 0;
 	  String filename = _options._indexPrefix+"/"+did;
 	  FileInputStream s = new FileInputStream(filename);
 	  int cur =0;
@@ -908,7 +908,7 @@ public class IndexerInvertedCompressed extends Indexer{
 							  return this.convertVbyteToNum(res);
 						  }						  
 					  }
-					  return -1;
+					  return 0;
 				  }
 				  tr.clear();
 			   }
@@ -920,7 +920,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	  return -1;
+	  return 0;
   }
   public static void main(String[] args) throws Exception
   {
@@ -928,7 +928,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 	  index.loadIndex();
-	  System.out.println(index.documentTermFrequency("test", "test3"));
+	  System.out.println(index.documentTermFrequency("another","0"));
 	  
 
 	  
