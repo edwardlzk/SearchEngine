@@ -899,6 +899,7 @@ public class IndexerInvertedCompressed extends Indexer{
 					  }
 					  return -1;
 				  }
+				  tr.clear();
 			   }
 		  }
 		  
@@ -916,7 +917,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 	  index.loadIndex();
-	  System.out.println(index.documentTermFrequency("this", "test1.txt"));
+	  System.out.println(index.documentTermFrequency("test", "test3"));
 	  
 
 	  
