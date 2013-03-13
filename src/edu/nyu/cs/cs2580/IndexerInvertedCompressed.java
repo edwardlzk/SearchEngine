@@ -400,8 +400,9 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  public long convertVbyteToNumLong(Vector<Byte> vbyte)
 	  {
+		  
 		  Collections.reverse(vbyte);
-		  if (vbyte == null)
+		  if (vbyte == null || vbyte.size() == 0)
 			  return -1;
 		  long res=0;
 		  res += (long) (vbyte.get(0) & ((1<<7)-1)) ;
@@ -726,7 +727,7 @@ public class IndexerInvertedCompressed extends Indexer{
 				  termRelatedPos.add(b);
 			  
 			  //Now get next term and value
-			  long nextTerm = convertVbyteToNum(getNextChunk(f));
+			  long nextTerm = convertVbyteToNumLong(getNextChunk(f));
 			  if(nextTerm != -1){
 				  if(inputMap.containsKey(nextTerm)){
 					  inputMap.get(nextTerm).add(f);
@@ -775,9 +776,72 @@ public class IndexerInvertedCompressed extends Indexer{
 		return currentChunk;
 	  }
 	  
+	  private Vector<Vector<Byte>> getChunks(byte[] input){
+		  Vector<Byte> currentChunk = new Vector<Byte>();
+		  Vector<Vector<Byte>> ret = new Vector<Vector<Byte>>();
+		  byte current;
+		  int index = 0;
+			while(index < input.length){
+				current = input[index++];
+				currentChunk.add((byte)current);
+				if((current & (1<<7)) > 0){
+					//the current byte is the ending byte
+					ret.add(currentChunk);
+					currentChunk = new Vector<Byte>();
+				}
+			}
+		return ret;
+	  }
 	  
 
-	  private Map<Integer, Vector<Integer>> getTerm(long termHash);
+	  
+	  /**
+	   * Get the term information from compressed file
+	   * @param termHash
+	   * @return
+	   */
+	  private Map<Integer, Vector<Integer>> getTerm(long termHash){
+			
+		  
+		  Map<Integer, Vector<Integer>> ret = new HashMap<Integer, Vector<Integer>>();
+		  
+			try {
+				FileInputStream fis = new FileInputStream(baseName + mergefile);
+				
+				long currentTerm;
+				while((currentTerm = convertVbyteToNumLong(getNextChunk(fis)))!= -1){
+					//Loop when we have following terms
+					int length = convertVbyteToNum(getNextChunk(fis));
+					if(currentTerm != termHash){
+						//skip this term
+						fis.skip((long)length);
+					}
+					else{
+						while(length > 0){
+							Vector<Byte> lengthByte = getNextChunk(fis);
+							int docLength = convertVbyteToNum(lengthByte);
+							byte[] doc = new byte[docLength];
+							fis.read(doc);
+							Vector<Vector<Byte>> chunks = getChunks(doc);
+							int docId = convertVbyteToNum(chunks.get(0));
+							Vector<Integer> positions = new Vector<Integer>();
+							for(int i = 1; i<chunks.size(); i++){
+								positions.add(convertVbyteToNum(chunks.get(i)));
+							}
+							//Add the doc and positions to the map
+							ret.put(docId, positions);
+							length-=(docLength + lengthByte.size());
+						}
+					}
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+	  }
 
 	  
 
@@ -853,12 +917,9 @@ public class IndexerInvertedCompressed extends Indexer{
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 	  index.loadIndex();
-//	  DocumentIndexed doc = (DocumentIndexed) index.getDoc(0);
-//	  System.out.println(doc.getTitle());
-//	  System.out.println(doc.getTermTotal());
-//	  System.out.println(doc.getUrl());
-	 System.out.println(index.documentTermFrequency("test","test1.txt"));
 	  
+	  
+
 	  
 //	  String[] corpus = {"test", "1","this","is","another","2","real","3"};
 //	  String tempFile = option._indexPrefix+"/"+"idToTitle";
