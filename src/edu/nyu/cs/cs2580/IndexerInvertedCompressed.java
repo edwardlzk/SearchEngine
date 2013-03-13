@@ -71,48 +71,22 @@ public class IndexerInvertedCompressed extends Indexer{
 			  }		  
 			  String name="temp"+i+".txt";
 			  fos = new  FileOutputStream(_options._indexPrefix+"/"+name);
+			  Map<Long,Vector<Byte>> map = new HashMap<Long,Vector<Byte>>();
 			  for(String term:_index.keySet())
 			  {
 				  // convert the term to its hashcode and convert it to vector<byte>
 				  long termhash = (long)term.hashCode()+(long)con;
 				  System.out.println("Store hash code for term: "+ term+"  codeterm is: "+termhash);
-				  byte[] v_termhash = vbyteConversionToArray(termhash);
-				  fos.write(v_termhash);
-				  // the total bytes for a term includes all the docs that contains this term also include the byte count for each doc
-				  int tot_bytes = 0;
-				  // record the total number of bytes for each doc and its position list 
-				  Vector<Integer> doc_tot_len = new Vector<Integer>();			  
+				  Vector<Byte> finalbytes = new Vector<Byte>();
 				  for(Vector<Byte> bytes:_index.get(term))
 				  {
-					  doc_tot_len.add(bytes.size());
-					// updates the total bytes count for all the doc ids and position list
-					  tot_bytes += bytes.size();
+					  int count = bytes.size();
+					  finalbytes.addAll(vbyteConversion(count));
+					  finalbytes.addAll(bytes);
 				  }
-				  // convert the total number of bytes to Vector of bytes
-				  Vector<byte[]> v_doc_len = new Vector<byte[]>();
-				  for(int int_doc:doc_tot_len)
-				  {
-					 byte[] v_int_doc = vbyteConversionToArray(int_doc);
-					// add the count to the total bytes;
-					 tot_bytes += v_int_doc.length;
-					 v_doc_len.add(v_int_doc);
-				  }
-				  // convert the total number bytes to byte[] and write it to the file
-				  byte[] v_tot = vbyteConversionToArray(tot_bytes);
-				  fos.write(v_tot);
-				  // write the byte array into the file for each doc
-				  for(int k=0;k<_index.get(term).size();k++)
-				  {
-					 // first append the bytes count for each doc, which is stored in v_doc_len
-					  fos.write(v_doc_len.get(k));
-					  // then write the doc id and its position list
-					  byte[] all_doc = new byte[_index.get(term).get(k).size()];
-					  for(int j=0;j<_index.get(term).get(k).size();++j)
-						  all_doc[j] = _index.get(term).get(k).get(j);
-					  fos.write(all_doc);
-				  }				  
+				  map.put(termhash, finalbytes);
+				  finalbytes.clear();
 			  }
-			  fos.close();
 			  _index.clear();  
 		  }
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
