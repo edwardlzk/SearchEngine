@@ -545,7 +545,7 @@ public class IndexerInvertedCompressed extends Indexer{
   
   private int next(String word, int docid){
 	// Binary Search
-	Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode());
+	Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode()+(long)con);
 	if(res.size()==0)
 		return -1;
 	TreeSet<Integer> keySet = new TreeSet<Integer>(res.keySet());
@@ -603,7 +603,7 @@ public class IndexerInvertedCompressed extends Indexer{
   }
   // the next occurrence of the term in docid after pos 
   private int next_pos(String word,int docid,int pos){
-	  Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode());
+	  Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode()+(long)con);
 	  if(res.size()==0)
 		  return -1;
 	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
@@ -614,13 +614,13 @@ public class IndexerInvertedCompressed extends Indexer{
   
   @Override
   public int corpusDocFrequencyByTerm(String term) {
-	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode());
+	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode()+(long)con);
 	  return res.size();
   }
 
   @Override
   public int corpusTermFrequency(String term) {
-	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode());
+	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode()+(long)con);
 	  int total=0;
 	  for(int did:res.keySet())
 	  {
@@ -885,7 +885,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  {
 			  bycur=(byte)cur;
 			  tr.add(bycur);
-			  if((bycur&(1<<7))==0){
+			  if((bycur&(1<<7))>0){
 				  long termhash = this.convertVbyteToNumLong(tr);
 				  if(termhash==checktermhash)
 				  {
@@ -895,8 +895,7 @@ public class IndexerInvertedCompressed extends Indexer{
 						  res.add(bycur);
 						  if((bycur & (1<<7))>0){
 							  return this.convertVbyteToNum(res);
-						  }
-							  
+						  }						  
 					  }
 					  return -1;
 				  }
@@ -917,7 +916,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 	  index.loadIndex();
-	  
+	  System.out.println(index.documentTermFrequency("this", "test1.txt"));
 	  
 
 	  
