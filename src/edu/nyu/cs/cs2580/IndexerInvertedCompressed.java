@@ -79,7 +79,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			  {
 				  // convert the term to its hashcode and convert it to vector<byte>
 				  long termhash = (long)term.hashCode()+(long)con;
-				  System.out.println("Store hash code for term: "+ term+"  codeterm is: "+termhash);
+//				  System.out.println("Store hash code for term: "+ term+"  codeterm is: "+termhash);
 				  Vector<Byte> finalbytes = new Vector<Byte>();
 				  for(Vector<Byte> bytes:_index.get(term))
 				  {
@@ -93,6 +93,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			  write(name,baseName, map);
 			  map.clear();
 			  _index.clear();  
+			  System.out.println(i);
 		  }
 		 
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
@@ -620,12 +621,17 @@ public class IndexerInvertedCompressed extends Indexer{
 
   @Override
   public int corpusTermFrequency(String term) {
+	  if (queryCache.containsKey(term)) {
+			return queryCache.get(term);
+		}
 	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode());
 	  int total=0;
 	  for(int did:res.keySet())
 	  {
 		  total += res.get(did).size();
 	  }
+	  
+	  queryCache.put(term, total);
 	  return total;
   }
   
@@ -756,6 +762,11 @@ public class IndexerInvertedCompressed extends Indexer{
 		  fos.write(result);
 	  }
 	  fos.close();
+	  //Delete all temporary files
+	  for(String tFile : tempFiles){
+			File currentFile = new File(base + tFile);
+			currentFile.delete();
+		}
   }
 	  
 	  private Vector<Byte> getNextChunk(FileInputStream fis){
@@ -916,7 +927,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  Options option = new Options("conf/engine.conf");
 	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
-	  index.loadIndex();
+//	  index.loadIndex();
 	  
 	  
 
