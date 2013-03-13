@@ -58,6 +58,10 @@ public class IndexerInvertedCompressed extends Indexer{
   public void constructIndex() throws IOException {
 	    String corpusFile = _options._corpusPrefix+"/";
 	    System.out.println("Construct index from: " + corpusFile);
+	    String path = _options._indexPrefix+"/"+"idToTitle";
+		  File idfile = new File(path);
+		  if(idfile.exists())
+			  idfile.delete();
 		  chooseFiles cf=new chooseFiles(_options);
 		  int times = cf.writeTimes();
 		  System.out.println(times);
@@ -114,6 +118,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  System.out.println(files[count]);
 		  }
 		  merge(files, mergefile, baseName);
+		  
   }
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
