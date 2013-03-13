@@ -1,0 +1,2 @@
+1. We assume the URL parameter in the function (public int documentTermFrequency(String term, String url)) to be our doc id. 
+2. We implement phrase ranker to be our favourite ranker.
