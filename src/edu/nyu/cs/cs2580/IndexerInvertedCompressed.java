@@ -797,7 +797,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  while((line=reader.readLine())!=null)
 	  {
 		  scan = new Scanner(line).useDelimiter("\t");
-		  did = scan.nextInt();
+		  did = Integer.valueOf(scan.next());
 		  String title = scan.next();
 		  String URL = scan.next();
 		  if(URL.equals(url))
