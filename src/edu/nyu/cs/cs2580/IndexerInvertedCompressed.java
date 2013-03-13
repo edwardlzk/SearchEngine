@@ -637,13 +637,45 @@ public class IndexerInvertedCompressed extends Indexer{
   public int corpusTermFrequency(String term) {
     return 0;
   }
+  
+  private void write(String output, String base, Map<Long, Vector<Byte>> content){
+	  try{
+	  
+	  
+	  File file = new File(base+output);
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		FileOutputStream fos = new FileOutputStream(base + output);
+		Set<Long> keySet = new TreeSet<Long>(content.keySet());
+		for(long i : keySet){
+			//First write the term hash
+			fos.write(vbyteConversionToArray(i));
+			Vector<Byte> termPos = content.get(i);
+			//Write size of positions
+			fos.write(vbyteConversionToArray(termPos.size()));
+			byte[] termPosContent = new byte[termPos.size()];
+			for(int j = 0; i<termPos.size(); j++){
+				termPosContent[j] = termPos.get(j);
+			}
+			//write position content
+			fos.write(termPosContent);
+		}
+		
+	  }catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  }
 
   
   
   private void merge(String[] tempFiles, String output, String base) throws IOException{
 	  FileInputStream[] fis = new FileInputStream[tempFiles.length];
-	  PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
-	  Map<Integer, LinkedList<FileInputStream>> inputMap = new HashMap<Integer, LinkedList<FileInputStream>>();
+	  PriorityQueue<Long> heap = new PriorityQueue<Long>();
+	  Map<Long, LinkedList<FileInputStream>> inputMap = new HashMap<Long, LinkedList<FileInputStream>>();
 	  Map<FileInputStream, Integer> inputSeq = new HashMap<FileInputStream, Integer>();
 	  Map<FileInputStream, byte[]> valueMap = new HashMap<FileInputStream, byte[]>();
 	  
@@ -660,7 +692,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  fis[i] = new FileInputStream(base + tempFiles[i]);
 		  inputSeq.put(fis[i], i);
 		  //get term hash
-		  int termHash = convertVbyteToNum(getNextChunk(fis[i]));
+		  long termHash = convertVbyteToNumLong(getNextChunk(fis[i]));
 		  if(termHash == -1){
 			  continue;
 		  }
@@ -682,7 +714,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  
 	  //Pop the smallest
-	  Integer current;
+	  long current;
 	  
 	  while(heap.size() > 0){
 		  current = heap.poll();
@@ -704,7 +736,7 @@ public class IndexerInvertedCompressed extends Indexer{
 				  termRelatedPos.add(b);
 			  
 			  //Now get next term and value
-			  int nextTerm = convertVbyteToNum(getNextChunk(f));
+			  long nextTerm = convertVbyteToNum(getNextChunk(f));
 			  if(nextTerm != -1){
 				  if(inputMap.containsKey(nextTerm)){
 					  inputMap.get(nextTerm).add(f);
@@ -732,6 +764,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }
 		  fos.write(result);
 	  }
+	  fos.close();
   }
 	  
 	  private Vector<Byte> getNextChunk(FileInputStream fis){
