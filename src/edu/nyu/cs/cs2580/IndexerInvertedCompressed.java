@@ -785,7 +785,6 @@ public class IndexerInvertedCompressed extends Indexer{
 		return currentChunk;
 	  }
 	  
-	  
   
   
   /**
