@@ -35,7 +35,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  * TODO compress method
  */
 public class IndexerInvertedCompressed extends Indexer{
-  private final int vmax = 128;
+  private static final int vmax = 128;
+  private static final int con = Integer.MAX_VALUE;
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
   // the first number in the vector<Byte> is the doc id, the second number is the number of word occurrence, 
@@ -73,7 +74,8 @@ public class IndexerInvertedCompressed extends Indexer{
 			  for(String term:_index.keySet())
 			  {
 				  // convert the term to its hashcode and convert it to vector<byte>
-				  int termhash = term.hashCode();
+				  long termhash = (long)term.hashCode()+(long)con;
+				  System.out.println("Store hash code for term: "+ term+"  codeterm is: "+termhash);
 				  byte[] v_termhash = vbyteConversionToArray(termhash);
 				  fos.write(v_termhash);
 				  // the total bytes for a term includes all the docs that contains this term also include the byte count for each doc
@@ -158,7 +160,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		    generateIndex(title+body,title);
 	}
 /*
- *  In each doc we generated, the first term is the doc title in hashcode
+ *  <In each doc we generated, the first term is the doc title in hashcode>
  *  the second term is the total term counts
  *  then term, count .....	  
  */
@@ -211,16 +213,16 @@ public class IndexerInvertedCompressed extends Indexer{
 			    // store the document in our index	        
 			    String filePath = _options._indexPrefix+"/"+did;
 			    FileOutputStream fos = new FileOutputStream(filePath);
-			    int t_title = title.hashCode();
-			    byte[] v_t_title = vbyteConversionToArray(t_title);
-			    fos.write(v_t_title);
+//			    int t_title = title.hashCode();
+//			    byte[] v_t_title = vbyteConversionToArray(t_title);
+//			    fos.write(v_t_title);
 			    // then write the total term in this document
 			    byte[] v_totcount = vbyteConversionToArray(totalcount);
 			    fos.write(v_totcount);
 			    for(String term:plist.keySet())
 			    {
 			    	// first write the term in hashcode to the file
-			    	int hash_term = term.hashCode();
+			    	long hash_term = (long)term.hashCode()+(long)con;
 			    	byte[] v_hash_term = vbyteConversionToArray(hash_term);
 			    	fos.write(v_hash_term);
 			    	// count how many times the term occurs in this document and write to the file
@@ -229,40 +231,43 @@ public class IndexerInvertedCompressed extends Indexer{
 			    	fos.write(v_counts);	    	
 			    }
 			    fos.close();
+			    String path = _options._indexPrefix+"/"+"idToTitle";
+			    File file = new File(path);
+				// if file doesnt exists, then create it
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+			    BufferedWriter out = new BufferedWriter(new FileWriter(path,true));
+			    out.append(title+"\t"+did+"\n");
+			    out.close();    
 			    }catch(IOException e){
 			    	e.printStackTrace();	    	
 			    } 
 		    return;
 }
- // Convert the docid and the position values
+ // @tested Convert the docid and the position values
   private Vector<Integer> extractNumbers(Vector<Byte> poslist)
   {
 	  if(poslist == null || poslist.size()==0)
 		  throw new IllegalArgumentException("List is null, no information can be extracted");
 	  Vector<Integer> res = new Vector<Integer>();
 	  Vector<Byte> curNum = new Vector<Byte>();
-	  curNum.add(poslist.firstElement()); // the first byte of a number always starts with MSB=1
-	  for(int i=1;i<poslist.size();i++)
+	  for(int i=0;i<poslist.size();i++)
 	  {
-		  if((poslist.get(i)&(1<<7))>0) // starts a new number
+		  curNum.add(poslist.get(i));
+		  if((poslist.get(i)&(1<<7))>0) // ends of the current number
 		  {
 			  int num = convertVbyteToNum(curNum);
 			  res.add(num);
 			  curNum.clear();
-			  curNum.add(poslist.get(i));
 		  }
-		  else
-			  curNum.add(poslist.get(i));
 	  }
-	  int num = convertVbyteToNum(curNum); // add the last number in the list
-	  curNum.clear();
-	  res.add(num); 
-	  return res;
-	  
+	  return res;	  
   }
   // calculate how many numbers in the list, 
   // eg after decoding the values in the list is  1 3 15 4 6
   // we should return 5
+  //@tested
   public int countVectorListNumber(Vector<Byte> list)
   {
 	  int res =0;
@@ -273,21 +278,20 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  return res;
   }
-  // calculate the number of bytes for the title
+  // @tested calculate the number of bytes for the title
    static int bytesInTitle(Vector<Byte> list)
   {
-	  int i = 1;
-	  for(int j=1;j<list.size();j++)
+	  int i = 0;
+	  for(int j=0;j<list.size();j++)
 	  {
+		  ++i;
 		  if((list.get(j)&(1<<7))>0)
 			  break;
-		  else
-			  i++;
 	  }
 	  return i;
   }
   
- // Convert an integer to a byte vector
+ // @Tested Convert an integer to a byte vector
   public Vector<Byte> vbyteConversion(int num)
   {
 	  
@@ -307,8 +311,10 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }
 		  num_to_bytes.add(bytenum);	  
 	  }
+	  Collections.reverse(num_to_bytes);
 	  return num_to_bytes;
   }
+  //@tested
   public byte[] vbyteConversionToArray(int num)
   {
 	  if(num == 0){
@@ -334,11 +340,43 @@ public class IndexerInvertedCompressed extends Indexer{
 			  bytenum |= 1 << 7;
 			  firstByte = false;
 		  }
-		  res[i++] = bytenum;	  
+		  res[count-1-i] = bytenum;
+		  i++;
 	  }
 	  return res;
   }
-//Convert an long to a byte vector
+  //@tested
+  public byte[] vbyteConversionToArray(long num)
+  {
+	  if(num == 0){
+		  byte[] res = new byte[1];
+		  res[0] = (byte)(1<<7);
+		  return res;
+	  }
+	  int count = 0;
+	  long temp = num;
+	  boolean firstByte = true;
+	  while(temp>0){
+		  ++ count;
+		  temp = temp >> 7;
+	  }
+	  byte[] res = new byte[count];
+	  int i =0;
+	  while(num > 0){
+		  byte bytenum = (byte)(num % vmax);
+		  num = num >> 7;
+		  if (firstByte)
+		  {
+			  // indicate the end of a byte, set the hightest bit to 1
+			  bytenum |= 1 << 7;
+			  firstByte = false;
+		  }
+		  res[count-1-i] = bytenum;
+		  i++;
+	  }
+	  return res;
+  }
+//@tested Convert an long to a byte vector
  public Vector<Byte> vbyteConversion(long num)
  {
 	  Vector<Byte> num_to_bytes = new Vector<Byte>();
@@ -357,11 +395,13 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }
 		  num_to_bytes.add(bytenum);	  
 	  }
+	  Collections.reverse(num_to_bytes);
 	  return num_to_bytes;
  }
-  // the vbyte are in reverse order, so the first byte in the vbyte is the Least significant byte
+  // @tested
 	  public int convertVbyteToNum(Vector<Byte> vbyte)
 	  {
+		  Collections.reverse(vbyte);
 		  if (vbyte == null || vbyte.size() == 0)
 			  return -1;
 		  int res=0;
@@ -372,21 +412,53 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }		  
 		  return res;
 	  }
-
-  // extract the docId for encoded list
+	  public long convertVbyteToNumLong(Vector<Byte> vbyte)
+	  {
+		  Collections.reverse(vbyte);
+		  if (vbyte == null)
+			  return -1;
+		  long res=0;
+		  res += (long) (vbyte.get(0) & ((1<<7)-1)) ;
+		  for(int i=1;i<vbyte.size();i++)
+		  {
+			  res+=vbyte.get(i)*((long)Math.pow(vmax, i));
+		  }		  
+		  return res;
+	  }
+ // @tested decode the byte array to a number 
+	  public int convertVbyteToNum(byte[] vbyte)
+	  {
+		  if(vbyte.length == 0)
+			  return -1;
+		  int res = 0;
+		  res += (long)(vbyte[vbyte.length-1] & ((1<<7)-1));
+		  for(int i=vbyte.length-2;i>=0;--i)
+			  res+=vbyte[i]*((int)Math.pow(vmax, (vbyte.length-1-i)));
+		  return res;
+	  }
+	  public long convertVbyteToNumLong(byte[] vbyte)
+	  {
+		  if(vbyte.length == 0)
+			  return -1;
+		  long res = 0;
+		  res += (long)(vbyte[vbyte.length-1] & ((1<<7)-1));
+		  for(int i=vbyte.length-2;i>=0;--i)
+			  res+=vbyte[i]*((long)Math.pow(vmax, (vbyte.length-1-i)));
+		  return res;
+	  }
+  // @tested extract the docId for encoded list
   private int extractDocId(Vector<Byte> enposition) throws IOException
   {
 	  if(enposition==null || enposition.size()==0)
 		  throw new IOException("There is no doc id inside the encoded list");
 	  Vector<Byte> did = new Vector<Byte>();
-	  // a number contains at least one end byte
-	  did.add(enposition.firstElement());
-	  for(int i=1;i<enposition.size();i++)
+	  for(int i=0;i<enposition.size();i++)
 	  {
-		  // test if the current byte is the start byte of another number
+		  did.add(enposition.get(i));	
+		  // test if the current byte is the end byte of the number
 		  if((enposition.get(i)&(1<<7))>0)
 			  break;
-		  did.add(enposition.get(i));	  
+		    
 	  }
 	  return convertVbyteToNum(did) ;
   }
@@ -693,9 +765,111 @@ public class IndexerInvertedCompressed extends Indexer{
   public static void main(String[] args) throws Exception
   {
 	  Options option = new Options("conf/engine.conf");
-	 IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
+	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
 	  index.constructIndex();
 	  index.loadIndex();
+	  String[] corpus = {"test", "1","this","is","another","2","real","3"};
+	  String tempFile = option._indexPrefix+"/"+"idToTitle";
+	    BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+	    String line =null;
+	    while((line = reader.readLine())!=null)
+	    {
+	    	Scanner sca = new Scanner(line).useDelimiter("\t");
+	    	if(sca.hasNext())
+	    		System.out.print("Title is: "+sca.next()+"  ");
+	    	if(sca.hasNext())
+	    		System.out.print("Did is "+sca.next());
+	    	System.out.println();
+	    }
+	    for(String str:corpus)
+	    {
+	    	System.out.println("The hash code for term "+str+" is "+((long)(str.hashCode()+(long)con)));
+	    }
+	  FileInputStream s = new FileInputStream(option._indexPrefix+"/"+"temp0.txt");
+	    Vector<Byte> sta = new Vector<Byte>();
+	    HashMap<Long,Vector<Vector<Integer>>> res = new HashMap<Long,Vector<Vector<Integer>>>();
+	    int cur = 0;
+	   
+	    boolean flag = true;
+	    while((cur=s.read())!=-1)
+	    	{	
+	    		byte curbyte = (byte) cur;
+	    		// extract the term
+	    		while((curbyte & (1 << 7))==0) // stop when reach the end of the current byte;
+	    		{
+	    			sta.add(curbyte);
+	    			curbyte = (byte)s.read();
+	    		}
+	    		sta.add(curbyte); // add the end byte of the number
+	    		long hashterm = index.convertVbyteToNumLong(sta);
+	    		System.out.println("Recovered: hashterm   "+hashterm);
+	    	//	System.out.println("Term hashcode is: "+hashterm);
+	    		sta.clear();
+	    		// extract the total bytes count
+	    		while((cur = s.read())!=1)
+	    		{
+	    		   curbyte = (byte) cur;
+	    		   sta.add(curbyte);
+	    		   if((curbyte & (1<<7))>0)
+	    			   break;		
+	    		}
+	    		int totalbytes =  index.convertVbyteToNum(sta);
+	    		System.out.println("Here: totalbytes"+totalbytes);
+	    		sta.clear();
+	    		// extract all the docs that contains this term
+	    		int i=0;
+	    		while(i<totalbytes)
+	    		{
+	    			// the first number is the bytes counts for this 
+	    			while((cur = s.read())!=1)
+		    		{
+	    			   ++i;
+		    		   curbyte = (byte) cur;
+		    		   sta.add(curbyte);
+		    		   if((curbyte & (1<<7))>0) 
+		    				   break;
+		    		}
+	    			int didcounts = index.convertVbyteToNum(sta);
+	    			System.out.println("Here: didcounts"+didcounts);
+	    			sta.clear();
+	    	        int j=0;
+	    			while(j<didcounts&&(cur = s.read())!=1)
+		    		{
+	    			   ++i;
+	    			   ++j;
+		    		   curbyte = (byte) cur;
+	    			   sta.add(curbyte);
+		    		}	    			
+	    			Vector<Integer> list= index.extractNumbers(sta);
+	    			// the first time we are meet this term, means we are processing the first doc that has the term
+	    			if(!res.containsKey(hashterm))
+	    			{
+	    				Vector<Vector<Integer>> first = new Vector<Vector<Integer>>();
+	    				res.put(hashterm, first);
+	    			}
+	    			Vector<Vector<Integer>> second = res.get(hashterm);
+	    			second.add(list);
+	    			sta.clear();
+	    		}
+	    	}
+	    s.close();
+	   
+	    for(long hterm:res.keySet())
+	    {
+	    	System.out.print(hterm+": ");
+	    	for(Vector<Integer> li:res.get(hterm))
+	    	{
+	    		System.out.print("[");
+	    		for(Integer t:li)
+	    		{
+	    			System.out.print(t+",");
+	    		}
+	    		System.out.print("]");
+	    	}
+	    	System.out.println();
+	    }
+	 
+			  
   }
   
 }
