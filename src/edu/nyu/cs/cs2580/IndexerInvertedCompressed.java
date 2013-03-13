@@ -776,12 +776,11 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  
 	  
-  private Map<Integer, Vector<Integer>> getTerm(long termHash)
-  {
-	  return new HashMap<Integer,Vector<Integer>>();
-  }
+
+	  private Map<Integer, Vector<Integer>> getTerm(long termHash);
+
 	  
-  
+
   
   /**
    * @CS2580: Implement this for bonus points.
