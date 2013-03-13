@@ -37,6 +37,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public class IndexerInvertedCompressed extends Indexer{
   private static final int vmax = 128;
   private static final int con = Integer.MAX_VALUE;
+  private static final String mergefile = "index.txt";
+  private static String baseName;
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
   // the first number in the vector<Byte> is the doc id, the second number is the number of word occurrence, 
@@ -48,6 +50,7 @@ public class IndexerInvertedCompressed extends Indexer{
   
   public IndexerInvertedCompressed(Options options) {
     super(options);
+    baseName = _options._indexPrefix+"/";
     System.out.println("Using Indexer: " + this.getClass().getSimpleName());
   }
 
@@ -67,10 +70,10 @@ public class IndexerInvertedCompressed extends Indexer{
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content);  
+		        	processDocument(content,name);  
 			  }		  
 			  String name="temp"+i+".txt";
-			  fos = new  FileOutputStream(_options._indexPrefix+"/"+name);
+//			  fos = new  FileOutputStream(_options._indexPrefix+"/"+name);
 			  Map<Long,Vector<Byte>> map = new HashMap<Long,Vector<Byte>>();
 			  for(String term:_index.keySet())
 			  {
@@ -84,11 +87,14 @@ public class IndexerInvertedCompressed extends Indexer{
 					  finalbytes.addAll(vbyteConversion(count));
 					  finalbytes.addAll(bytes);
 				  }
-				  map.put(termhash, finalbytes);
-				  finalbytes.clear();
+				  
+					  map.put(termhash, finalbytes);
 			  }
+			  write(name,baseName, map);
+			  map.clear();
 			  _index.clear();  
 		  }
+		 
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
 		  FileOutputStream fos_corpus = new FileOutputStream(corpus_statistics);
 		  // first write the num of Docs to the file
@@ -101,6 +107,12 @@ public class IndexerInvertedCompressed extends Indexer{
 			  v_tot_arr[j] = tot_arr.get(j);
 		  fos_corpus.write(v_tot_arr);
 		  fos_corpus.close();
+		  String[] files=new String[times];
+		  for(int count=0;count<times;count++){
+		  files[count]="temp"+count+".txt";
+		  System.out.println(files[count]);
+		  }
+		  merge(files, mergefile, baseName);
   }
   @Override
   public void loadIndex() throws IOException, ClassNotFoundException {
@@ -122,7 +134,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
   }
 
-  	private void processDocument(String content) throws IOException{
+  	private void processDocument(String content,String docname) throws IOException{
 		    Scanner s = new Scanner(content).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
@@ -131,14 +143,14 @@ public class IndexerInvertedCompressed extends Indexer{
 		    doc.setTitle(title);
 		    _documents.add(doc);
 		    ++_numDocs;
-		    generateIndex(title+body,title);
+		    generateIndex(title+body,title,docname);
 	}
 /*
  *  <In each doc we generated, the first term is the doc title in hashcode>
  *  the second term is the total term counts
  *  then term, count .....	  
  */
-	  private void generateIndex(String content,String title) throws IOException{
+	  private void generateIndex(String content,String title,String docname) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
@@ -212,7 +224,7 @@ public class IndexerInvertedCompressed extends Indexer{
 					file.createNewFile();
 				}
 			    BufferedWriter out = new BufferedWriter(new FileWriter(path,true));
-			    out.append(title+"\t"+did+"\n");
+			    out.append(did+"\t"+title+"\t"+docname+"\n");
 			    out.close();    
 			    }catch(IOException e){
 			    	e.printStackTrace();	    	
@@ -462,7 +474,39 @@ public class IndexerInvertedCompressed extends Indexer{
  
   @Override
   public Document getDoc(int docid) {
-    SearchEngine.Check(false, "Do NOT change, not used for this Indexer!");
+	DocumentIndexed doc = new DocumentIndexed(docid);
+    String tempFile = _options._indexPrefix+"/"+docid;
+    int cur =0;
+    try {
+		FileInputStream s = new FileInputStream(_options._indexPrefix+"/"+docid);
+		byte b_cur;
+		Vector<Byte> v_termTotal = new Vector<Byte>();
+		while((cur=s.read())!=-1)
+			{
+				b_cur = (byte) cur;
+				v_termTotal.add(b_cur);
+				if((b_cur & (1<<7))>0)
+					break;
+			}
+		doc.setTermTotal(convertVbyteToNum(v_termTotal));
+		s.close();
+		BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+		String line = null;
+		Scanner scan =null;
+		while((line = reader.readLine())!=null){
+			scan = new Scanner(line).useDelimiter("\t");
+	    	int id	= Integer.valueOf(scan.next());
+	    	if(id == docid){
+	    		doc.setTitle(scan.next());
+	    		doc.setUrl(scan.next());
+	    		break;
+	    	}
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    
     return null;
   }
 
@@ -631,7 +675,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			//Write size of positions
 			fos.write(vbyteConversionToArray(termPos.size()));
 			byte[] termPosContent = new byte[termPos.size()];
-			for(int j = 0; i<termPos.size(); j++){
+			for(int j = 0; j<termPos.size(); j++){
 				termPosContent[j] = termPos.get(j);
 			}
 			//write position content
@@ -760,6 +804,8 @@ public class IndexerInvertedCompressed extends Indexer{
 	  }
 	  
 	  
+	//  private Map<Integer, Vector<Integer>> getTerm(long termHash);
+	  
   
   
   /**
@@ -783,16 +829,16 @@ public class IndexerInvertedCompressed extends Indexer{
 	    {
 	    	Scanner sca = new Scanner(line).useDelimiter("\t");
 	    	if(sca.hasNext())
-	    		System.out.print("Title is: "+sca.next()+"  ");
+	    		System.out.print("Did is: "+sca.next()+"  ");
 	    	if(sca.hasNext())
-	    		System.out.print("Did is "+sca.next());
+	    		System.out.print("Title is "+sca.next());
 	    	System.out.println();
 	    }
 	    for(String str:corpus)
 	    {
 	    	System.out.println("The hash code for term "+str+" is "+((long)(str.hashCode()+(long)con)));
 	    }
-	  FileInputStream s = new FileInputStream(option._indexPrefix+"/"+"temp0.txt");
+	  FileInputStream s = new FileInputStream(option._indexPrefix+"/"+"temp2.txt");
 	    Vector<Byte> sta = new Vector<Byte>();
 	    HashMap<Long,Vector<Vector<Integer>>> res = new HashMap<Long,Vector<Vector<Integer>>>();
 	    int cur = 0;
