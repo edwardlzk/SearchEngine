@@ -13,12 +13,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
@@ -284,6 +290,7 @@ public class IndexerInvertedCompressed extends Indexer{
  // Convert an integer to a byte vector
   public Vector<Byte> vbyteConversion(int num)
   {
+	  
 	  Vector<Byte> num_to_bytes = new Vector<Byte>();
 	  boolean firstByte = true;
 	  if(num == 0)
@@ -355,7 +362,7 @@ public class IndexerInvertedCompressed extends Indexer{
   // the vbyte are in reverse order, so the first byte in the vbyte is the Least significant byte
 	  public int convertVbyteToNum(Vector<Byte> vbyte)
 	  {
-		  if (vbyte == null)
+		  if (vbyte == null || vbyte.size() == 0)
 			  return -1;
 		  int res=0;
 		  res += (int) (vbyte.get(0) & ((1<<7)-1)) ;
@@ -559,6 +566,123 @@ public class IndexerInvertedCompressed extends Indexer{
     return 0;
   }
 
+  
+  
+  private void merge(String[] tempFiles, String output, String base) throws IOException{
+	  FileInputStream[] fis = new FileInputStream[tempFiles.length];
+	  PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
+	  Map<Integer, LinkedList<FileInputStream>> inputMap = new HashMap<Integer, LinkedList<FileInputStream>>();
+	  Map<FileInputStream, Integer> inputSeq = new HashMap<FileInputStream, Integer>();
+	  Map<FileInputStream, byte[]> valueMap = new HashMap<FileInputStream, byte[]>();
+	  
+	  File file = new File(base+output);
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		FileOutputStream fos = new FileOutputStream(base + output);
+	  
+	//construct the heap
+	  for(int i = 0; i<tempFiles.length; i++){
+		  fis[i] = new FileInputStream(base + tempFiles[i]);
+		  inputSeq.put(fis[i], i);
+		  //get term hash
+		  int termHash = convertVbyteToNum(getNextChunk(fis[i]));
+		  if(termHash == -1){
+			  continue;
+		  }
+		  //update the inputMap
+		  if(inputMap.containsKey(termHash)){
+			  inputMap.get(termHash).add(fis[i]);
+		  }
+		  else{
+			  LinkedList<FileInputStream> newInputList = new LinkedList<FileInputStream>();
+			  newInputList.add(fis[i]);
+			  inputMap.put(termHash, newInputList);
+			  heap.offer(termHash);
+		  }
+		  //store the compressed value of this term.
+		  int byteLength = convertVbyteToNum(getNextChunk(fis[i]));
+		  byte[] currentValue = new byte[byteLength];
+		  fis[i].read(currentValue);
+		  valueMap.put(fis[i], currentValue);
+	  }
+	  
+	  //Pop the smallest
+	  Integer current;
+	  
+	  while(heap.size() > 0){
+		  current = heap.poll();
+		  //write the term hash first
+		  fos.write(vbyteConversionToArray(current));
+		  //get related reader
+		  LinkedList<FileInputStream> relatedInput = inputMap.get(current);
+		  TreeSet<Integer> inputNum = new TreeSet<Integer>();
+		  for(FileInputStream f : relatedInput){
+			  inputNum.add(inputSeq.get(f));
+		  }
+		  List<Byte> termRelatedPos = new ArrayList<Byte>();
+		  for(int i : inputNum){
+			  FileInputStream f = fis[i];
+
+			  byte[] value = valueMap.get(f);
+			  //Add the bytes to list
+			  for(byte b : value)
+				  termRelatedPos.add(b);
+			  
+			  //Now get next term and value
+			  int nextTerm = convertVbyteToNum(getNextChunk(f));
+			  if(nextTerm != -1){
+				  if(inputMap.containsKey(nextTerm)){
+					  inputMap.get(nextTerm).add(f);
+				  }
+				  else{
+					  LinkedList<FileInputStream> newInputList = new LinkedList<FileInputStream>();
+					  newInputList.add(f);
+					  inputMap.put(nextTerm, newInputList);
+					  heap.offer(nextTerm);
+				  }
+				  //store the compressed value of this term.
+				  int byteLength = convertVbyteToNum(getNextChunk(f));
+				  byte[] nextValue = new byte[byteLength];
+				  f.read(nextValue);
+				  valueMap.put(f, nextValue);
+			  }
+		  }
+		  inputMap.remove(current);
+		  //write the total number
+		  fos.write(vbyteConversionToArray(termRelatedPos.size()));
+		  //Write the following bytes
+		  byte[] result = new byte[termRelatedPos.size()];
+		  for(int i = 0; i<termRelatedPos.size(); i++){
+			  result[i] = termRelatedPos.get(i);
+		  }
+		  fos.write(result);
+	  }
+  }
+	  
+	  private Vector<Byte> getNextChunk(FileInputStream fis){
+		  Vector<Byte> currentChunk = new Vector<Byte>();
+		  int current;
+		  try {
+			while((current = fis.read())!=-1){
+				  currentChunk.add((byte)current);
+				  if((current & (1<<7)) > 0){
+					  //the current byte is the ending byte
+					  break;
+				  }
+			  }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return currentChunk;
+	  }
+	  
+	  
+  
+  
   /**
    * @CS2580: Implement this for bonus points.
    */
