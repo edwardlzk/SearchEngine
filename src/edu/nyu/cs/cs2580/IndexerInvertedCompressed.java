@@ -37,7 +37,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public class IndexerInvertedCompressed extends Indexer{
   private static final int vmax = 128;
   private static final int con = Integer.MAX_VALUE;
-  private static final String mergefile = "index.txt";
+  private static final String mergefile = "index.idx";
   private static String baseName;
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
