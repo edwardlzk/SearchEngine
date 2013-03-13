@@ -479,7 +479,7 @@ public class IndexerInvertedCompressed extends Indexer{
     String tempFile = _options._indexPrefix+"/"+docid;
     int cur =0;
     try {
-		FileInputStream s = new FileInputStream(_options._indexPrefix+"/"+docid);
+		FileInputStream s = new FileInputStream(tempFile);
 		byte b_cur;
 		Vector<Byte> v_termTotal = new Vector<Byte>();
 		while((cur=s.read())!=-1)
@@ -491,15 +491,21 @@ public class IndexerInvertedCompressed extends Indexer{
 			}
 		doc.setTermTotal(convertVbyteToNum(v_termTotal));
 		s.close();
-		BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+		BufferedReader reader = new BufferedReader(new FileReader(_options._indexPrefix+"/"+"idToTitle"));
 		String line = null;
 		Scanner scan =null;
 		while((line = reader.readLine())!=null){
 			scan = new Scanner(line).useDelimiter("\t");
 	    	int id	= Integer.valueOf(scan.next());
 	    	if(id == docid){
-	    		doc.setTitle(scan.next());
-	    		doc.setUrl(scan.next());
+	    		String x = scan.next();
+	    		System.out.println("Title is "+x);
+	    		doc.setTitle(x);
+	    		System.out.println("Title is "+doc.getTitle());
+	    		String y = scan.next();
+	    		doc.setUrl(y);
+	    		System.out.println("Url is "+y);
+	    		System.out.println("Url is "+doc.getUrl());
 	    		break;
 	    	}
 		}
@@ -508,7 +514,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			e.printStackTrace();
 		}
     
-    return null;
+    return doc;
   }
 
   /**
@@ -518,7 +524,6 @@ public class IndexerInvertedCompressed extends Indexer{
   public Document nextDoc(Query query, int docid) {
 	  Vector<Integer> ids=new Vector<Integer>();
 	   int id;
-	   int result=docid;
 	   for(int i=0;i<query._tokens.size();i++){
 		 id=next(query._tokens.get(i),docid);
 		 // only add the id that exists
@@ -531,7 +536,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	   }
 	   else if(find(ids))
 	   { 
-		   return _documents.get(ids.get(0));
+		   return getDoc(ids.get(0));
 	   }
 	   else{
 		  return nextDoc(query, max(ids)-1); 
@@ -540,32 +545,13 @@ public class IndexerInvertedCompressed extends Indexer{
   
   private int next(String word, int docid){
 	// Binary Search
-	if(_index.size() == 0 || !_index.containsKey(word))
+	Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode());
+	if(res.size()==0)
 		return -1;
-	Vector<Integer> docIDs = extractAlldids(word);
-	int high=docIDs.size()-1;
-	if(docIDs.lastElement() <= docid)
-		return -1;
-	if(docIDs.get(0) > docid){
-		return docIDs.get(0);
-	}
-	int result=binarySearch(word,1,high,docid,docIDs);
-	return  docIDs.get(result); 	  
-}
-  
-  private int binarySearch(String word, int low, int high, int docid, Vector<Integer> docIDs){
- 	  	while(high-low>1){
- 		  int mid=(low+high) >>> 1;
- 		  if(docIDs.get(mid)<=docid){
- 			  low=mid+1;
- 		  }else{
- 			  high=mid;
- 		  }
- 	  }
- 		  return docIDs.get(low)>docid ? low:high;
-}
- 
-  
+	TreeSet<Integer> keySet = new TreeSet<Integer>(res.keySet());
+	Integer nextdoc = keySet.higher(docid);
+    return nextdoc==null? -1:nextdoc;
+} 
   private boolean find(Vector<Integer> ids){
 	  int first=ids.get(0);
 	  for(int i=1;i<ids.size();i++){
@@ -584,10 +570,9 @@ public class IndexerInvertedCompressed extends Indexer{
 	  return max;
   }
 
-  
   public int nextPhrase(Query query, int docid, int pos){
 	  Document idVerify=nextDoc(query,docid-1);
-	  if(!idVerify.equals(_documents.get(docid))){
+	  if(!idVerify.equals(getDoc(docid))){
 		  System.out.println("Enter here");
 		  return -1;
 	  }
@@ -618,43 +603,30 @@ public class IndexerInvertedCompressed extends Indexer{
   }
   // the next occurrence of the term in docid after pos 
   private int next_pos(String word,int docid,int pos){
-	  if(!_index.containsKey(word))
+	  Map<Integer,Vector<Integer>> res = getTerm((long)word.hashCode());
+	  if(res.size()==0)
 		  return -1;
-	  Vector<Integer> docIDs=extractAlldids(word);
-	  int offset=-1;
-	  for(int i=0;i<docIDs.size();i++)
-	  {
-		 // find the offset of the docid in the list
-		  if(docIDs.get(i)==docid)
-		  {
-			offset=i;
-			break;
-		  }
-	  }
-	  if(offset==-1)
-			 throw new IllegalArgumentException("This docid doesn't contain this term");
-	  Vector<Byte> poslist = _index.get(word).get(offset);
-	  // extract the id and all the positions in that id that the term occurs
-	  Vector<Integer> enlist = extractNumbers(poslist);
-	  if(enlist.lastElement()<=pos)
-		  return -1;
-	  for(int j=1;j<enlist.size();j++)
-	  {
-		  if(enlist.get(j)>pos)
-			  return enlist.get(j);
-	  }
-		 return -1;
+	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
+	  Integer nextpos = posSet.higher(pos);
+	  return nextpos==null? -1:nextpos;
 }
   
   
   @Override
   public int corpusDocFrequencyByTerm(String term) {
-    return 0;
+	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode());
+	  return res.size();
   }
 
   @Override
   public int corpusTermFrequency(String term) {
-    return 0;
+	  Map<Integer,Vector<Integer>> res = getTerm((long)term.hashCode());
+	  int total=0;
+	  for(int did:res.keySet())
+	  {
+		  total += res.get(did).size();
+	  }
+	  return total;
   }
   
   private void write(String output, String base, Map<Long, Vector<Byte>> content){
@@ -821,6 +793,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		return ret;
 	  }
 	  
+
 	  
 	  /**
 	   * Get the term information from compressed file
@@ -869,6 +842,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			
 			return ret;
 	  }
+
 	  
 
   
@@ -877,7 +851,65 @@ public class IndexerInvertedCompressed extends Indexer{
    */
   @Override
   public int documentTermFrequency(String term, String url) {
-    return 0;
+	  long checktermhash = (long)term.hashCode()+(long)con;
+	  try {
+	  String tempFile = _options._indexPrefix+"/"+"idToTitle";
+	  BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+	  String line = null;
+	  Scanner scan = null;
+	  int did = -1;
+		  while((line=reader.readLine())!=null)
+	  {
+		  scan = new Scanner(line).useDelimiter("\t");
+		  did = scan.nextInt();
+		  String title = scan.next();
+		  String URL = scan.next();
+		  if(URL.equals(url))
+			  break;	  
+	  }
+	  if(did == -1)
+		  return -1;
+	  String filename = _options._indexPrefix+"/"+did;
+	  FileInputStream s = new FileInputStream(filename);
+	  int cur =0;
+	  Vector<Byte> tr = new Vector<Byte>();
+	  while((cur=s.read())!=-1)
+	  {
+		  // first number is the total term count;
+		  byte bycur = (byte) cur;
+		  while((bycur & (1<<7))==0) {
+			  bycur = (byte)s.read();
+		  }
+		  // then is the term --> count
+		  while((cur=s.read())!=-1)
+		  {
+			  bycur=(byte)cur;
+			  tr.add(bycur);
+			  if((bycur&(1<<7))==0){
+				  long termhash = this.convertVbyteToNumLong(tr);
+				  if(termhash==checktermhash)
+				  {
+					  Vector<Byte> res = new Vector<Byte>();
+					  while((cur=s.read())!=-1){
+						  bycur = (byte)cur;
+						  res.add(bycur);
+						  if((bycur & (1<<7))>0){
+							  return this.convertVbyteToNum(res);
+						  }
+							  
+					  }
+					  return -1;
+				  }
+			   }
+		  }
+		  
+	  }
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  return -1;
   }
   public static void main(String[] args) throws Exception
   {
@@ -886,7 +918,8 @@ public class IndexerInvertedCompressed extends Indexer{
 	  index.constructIndex();
 	  index.loadIndex();
 	  
-	  Map<Integer, Vector<Integer>> map = index.getTerm(2151040145L);
+	  
+
 	  
 //	  String[] corpus = {"test", "1","this","is","another","2","real","3"};
 //	  String tempFile = option._indexPrefix+"/"+"idToTitle";
