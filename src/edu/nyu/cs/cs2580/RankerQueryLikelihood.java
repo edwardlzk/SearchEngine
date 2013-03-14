@@ -50,7 +50,8 @@ public class RankerQueryLikelihood extends Ranker {
 	      retrieval_results.add(runquery(query._tokens, i));
 	    }
 	    Collections.sort(retrieval_results);
-	    return retrieval_results;
+	    
+	    return (Vector<ScoredDocument>) retrieval_results.subList(0, numResults);
   }
   
   public ScoredDocument runquery(Vector<String> qv, int did){
