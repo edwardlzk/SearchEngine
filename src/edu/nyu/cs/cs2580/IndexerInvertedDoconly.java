@@ -56,8 +56,8 @@ public class IndexerInvertedDoconly extends Indexer {
 		        	processDocument(content,name);
 	      
 			  }
-			  System.out.println("Times here : " + i);
-			  System.out.println("processes:" + totalTime);
+			 // System.out.println("Times here : " + i);
+			  //System.out.println("processes:" + totalTime);
 			  String name="temp"+i+".txt";
 			  Map<String, String> content = new HashMap<String,String>();
 			  for(String term:_index.keySet())

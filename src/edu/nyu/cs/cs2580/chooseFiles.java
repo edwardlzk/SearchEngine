@@ -8,7 +8,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public class chooseFiles {
 	Options _options;
 	int total=0;//file number
-	int div=300;//how many files to process one time
+	int div=200;//how many files to process one time
 
 	public chooseFiles(Options options){
 		_options=options;
@@ -16,8 +16,16 @@ public class chooseFiles {
 	public int writeFileName(){
 		String corpusFile = _options._corpusPrefix+"/";	
 	    File folder = new File(corpusFile);
+	    File tempFolder = new File(_options._tempFolder);
 	    File[] listOfFiles = folder.listFiles();
-	   
+	    if (!tempFolder.exists()) {
+			if (tempFolder.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+	    
 	    String tempFile = _options._tempFolder + "/filenames.txt";
         
 	    try {
