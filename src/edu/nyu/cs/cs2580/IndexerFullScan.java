@@ -236,10 +236,4 @@ class IndexerFullScan extends Indexer implements Serializable {
     return retval;
   }
 
-@Override
-public int nextPhrase(Query phrase, int doc, int pos) {
-	// TODO Auto-generated method stub
-	return 0;
-}
-
 }

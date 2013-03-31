@@ -12,9 +12,12 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  * 
  * In HW1: instructor's {@link IndexerFullScan} is provided as is.
  * 
- * In HW2: student will implement {@link IndexerInvertedDoconly},
+ * In HW2: students will implement {@link IndexerInvertedDoconly},
  * {@link IndexerInvertedOccurrence}, and {@link IndexerInvertedCompressed}.
  * See comments below for more info.
+ * 
+ * In HW3: students will incorporate the corpus analysis and log mining results
+ * into indexing process through {@link CorpusAnalyzer} and {@link LogMiner}.
  *
  * @author congyu
  * @author fdiaz
@@ -23,17 +26,16 @@ public abstract class Indexer {
   // Options to configure each concrete Indexer, do not serialize.
   protected Options _options = null;
 
+  // CorpusAnalyzer and LogMinder that support the indexing process.
+  protected CorpusAnalyzer _corpusAnalyzer = null;
+  protected LogMiner _logMiner = null;
+
   // In-memory data structures populated once for each server. Those fields
   // are populated during index loading time and must not be modified during
   // serving unless they are made thread-safe. For comments, see APIs below.
   // Subclasses should populate those fields properly.
   protected int _numDocs = 0;
   protected long _totalTermFrequency = 0;
-  
-//Maximum capacity of cached terms
-	int max_cap = 500;
-
-	LRUMap<String, Integer> queryCache = new LRUMap<String, Integer>(5, max_cap);
 
   // Provided for serialization.
   public Indexer() { }
@@ -41,6 +43,8 @@ public abstract class Indexer {
   // The real constructor
   public Indexer(Options options) {
     _options = options;
+    _corpusAnalyzer = CorpusAnalyzer.Factory.getCorpusAnalyzerByOption(options);
+    _logMiner = LogMiner.Factory.getLogMinerByOption(options);
   }
 
   // APIs for document retrieval.
@@ -82,7 +86,10 @@ public abstract class Indexer {
    * The index must reside at the directory of index_prefix, no other data can
    * be stored (either in a hidden file or in a temporary directory). We will
    * construct your index on one machine and move the index to a different
-   * machine for serving, so do NOT try to play tricks. 
+   * machine for serving, so do NOT try to play tricks.
+   *
+   * In HW3: leverage load() functions from both {@link CorpusAnalyzer} and
+   * {@link LogMiner}.
    */
   public abstract void constructIndex() throws IOException;
 
@@ -111,8 +118,6 @@ public abstract class Indexer {
 
   // Number of documents in the corpus.
   public final int numDocs() { return _numDocs; }
-  
-  public abstract int nextPhrase(Query phrase, int doc, int pos);
   // Number of term occurrences in the corpus. If a term appears 10 times, it
   // will be counted 10 times.
   public final long totalTermFrequency() { return _totalTermFrequency; }
