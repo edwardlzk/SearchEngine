@@ -29,6 +29,11 @@ public abstract class Indexer {
   // CorpusAnalyzer and LogMinder that support the indexing process.
   protected CorpusAnalyzer _corpusAnalyzer = null;
   protected LogMiner _logMiner = null;
+  
+//Maximum capacity of cached terms
+	int max_cap = 500;
+
+	LRUMap<String, Integer> queryCache = new LRUMap<String, Integer>(5, max_cap);
 
   // In-memory data structures populated once for each server. Those fields
   // are populated during index loading time and must not be modified during
@@ -118,6 +123,9 @@ public abstract class Indexer {
 
   // Number of documents in the corpus.
   public final int numDocs() { return _numDocs; }
+  
+  
+  public abstract int nextPhrase(Query phrase, int doc, int pos);
   // Number of term occurrences in the corpus. If a term appears 10 times, it
   // will be counted 10 times.
   public final long totalTermFrequency() { return _totalTermFrequency; }
