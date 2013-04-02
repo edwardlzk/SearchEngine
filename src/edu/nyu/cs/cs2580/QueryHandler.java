@@ -31,6 +31,8 @@ class QueryHandler implements HttpHandler {
     public String _query = "";
     // How many results to return
     private int _numResults = 10;
+    private int _numterms;
+    private int _numdocs;
     
     // The type of the ranker we will be using.
     public enum RankerType {
@@ -82,6 +84,18 @@ class QueryHandler implements HttpHandler {
           } catch (IllegalArgumentException e) {
             // Ignored, search engine should never fail upon invalid user input.
           }
+        } else if(key.equals("numdocs")){
+        	try{
+        		_numdocs = Integer.parseInt(val);
+            } catch (NumberFormatException e) {
+                // Ignored, search engine should never fail upon invalid user input.
+            }
+        } else if(key.equals("numterms")){
+        	try{
+        		_numterms = Integer.parseInt(val);
+            } catch (NumberFormatException e) {
+                // Ignored, search engine should never fail upon invalid user input.
+            }        	
         }
       }  // End of iterating over params
     }
@@ -135,11 +149,11 @@ class QueryHandler implements HttpHandler {
     if (uriPath == null || uriQuery == null) {
       respondWithMsg(exchange, "Something wrong with the URI!");
     }
-    if (!uriPath.equals("/search")) {
+    if (!uriPath.equals("/search") && !uriPath.equals("/prf")) {
       respondWithMsg(exchange, "Only /search is handled!");
     }
     System.out.println("Query: " + uriQuery);
-
+ 
     // Process the CGI arguments.
     CgiArguments cgiArgs = new CgiArguments(uriQuery);
     if (cgiArgs._query.isEmpty()) {
@@ -159,6 +173,16 @@ class QueryHandler implements HttpHandler {
     processedQuery.processQuery();
 
     // Ranking.
+    // if the uri is prf, we only need #numdocs top scored documents
+    if(uriPath.equals("/prf")){
+    	Vector<ScoredDocument> scoredDocs =
+    	        ranker.runQuery(processedQuery, cgiArgs._numdocs);
+    	Prf prf = new Prf(scoredDocs,cgiArgs._numterms,SearchEngine.OPTIONS);
+    	prf.processDocs(); 
+    	System.out.println("Enter here");
+   	}
+    // else process the normal ranking
+    else{
     Vector<ScoredDocument> scoredDocs =
         ranker.runQuery(processedQuery, cgiArgs._numResults);
     StringBuffer response = new StringBuffer();
@@ -174,6 +198,7 @@ class QueryHandler implements HttpHandler {
     }
     respondWithMsg(exchange, response.toString());
     System.out.println("Finished query: " + cgiArgs._query);
+  }
   }
 }
 
