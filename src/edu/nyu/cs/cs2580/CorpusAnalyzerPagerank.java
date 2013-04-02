@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,6 +16,9 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	
+	private String graphPath = "graph";
+	
+	private Map<String, Integer> ids;
 	
   public CorpusAnalyzerPagerank(Options options) {
     super(options);
@@ -43,18 +47,41 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
   public void prepare() throws IOException {
     System.out.println("Preparing " + this.getClass().getName());
     
+    File graph = new File(_options._tempFolder + "/" + graphPath);
     
+    //Delete last result
+    if(graph.exists()){
+    	graph.delete();
+    }
+    
+    String corpusFile = _options._corpusPrefix + "/";
+	  File folder = new File(corpusFile);
+	  File[] files = folder.listFiles();
+    //Get id definition of these documents
+	  this.ids = getDocIds(files);
+	  //Get links from each document, construct the graph
+	  for(File f : files){
+		  StringBuilder sb = new StringBuilder();
+		  List<String> links = ProcessHtml.parseLink(f);
+		  sb.append(ids.get(f.getName())).append("\t");
+		  for(String l : links){
+			  if(ids.containsKey(l)){
+				  sb.append(ids.get(l)).append("|");
+			  }
+		  }
+		  if(sb.charAt(sb.length()-1)=='|'){
+			  sb.deleteCharAt(sb.length()-1);
+		  }
+		  FileOps.append(graph, sb.toString());
+	  }
+	  
     
     return;
   }
 
   
-  private Map<String, Integer> getDocIds(){
-	  String corpusFile = _options._corpusPrefix + "/";
-	  File folder = new File(corpusFile);
-	  File[] files = folder.listFiles();
-	    
-	    
+  private Map<String, Integer> getDocIds(File[] files){
+	 
 	  Map<String, Integer> ret = new HashMap<String, Integer>();
 	  //Sort the file in proper order
 	  Arrays.sort(files, new FileComparator());
@@ -64,6 +91,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	  }
 	  return ret;
   }
+  
   
   /**
    * This function computes the PageRank based on the internal graph generated
@@ -104,11 +132,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	try {
 		option = new Options("conf/engine.conf");
 		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
-		Map<String, Integer> maps = pagerank.getDocIds();
-		Set<String> keys = new TreeSet<String>(maps.keySet());
-		for(String s : keys){
-			System.out.println(s);
-		}
+		pagerank.prepare();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
