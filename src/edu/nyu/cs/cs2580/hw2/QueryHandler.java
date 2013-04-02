@@ -137,42 +137,44 @@ class QueryHandler implements HttpHandler {
     if (!uriPath.equals("/search")) {
       respondWithMsg(exchange, "Only /search is handled!");
     }
-    System.out.println("Query: " + uriQuery);
+  
+    	System.out.println("Query: " + uriQuery);
 
-    // Process the CGI arguments.
-    CgiArguments cgiArgs = new CgiArguments(uriQuery);
-    if (cgiArgs._query.isEmpty()) {
-      respondWithMsg(exchange, "No query is given!");
-    }
+    	// Process the CGI arguments.
+    	CgiArguments cgiArgs = new CgiArguments(uriQuery);
+    	if (cgiArgs._query.isEmpty()) {
+    		respondWithMsg(exchange, "No query is given!");
+    	}
 
-    // Create the ranker.
-    Ranker ranker = Ranker.Factory.getRankerByArguments(
-        cgiArgs, SearchEngine.OPTIONS, _indexer);
-    if (ranker == null) {
-      respondWithMsg(exchange,
-          "Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
-    }
+    	// Create the ranker.
+    	Ranker ranker = Ranker.Factory.getRankerByArguments(
+    					cgiArgs, SearchEngine.OPTIONS, _indexer);
+    	if (ranker == null) {
+    		respondWithMsg(exchange,
+    				"Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
+    	}
 
-    // Processing the query.
-    Query processedQuery = new QueryPhrase(cgiArgs._query);
-    processedQuery.processQuery();
+    	// Processing the query.
+    	Query processedQuery = new QueryPhrase(cgiArgs._query);
+    	processedQuery.processQuery();
 
-    // Ranking.
-    Vector<ScoredDocument> scoredDocs =
-        ranker.runQuery(processedQuery, cgiArgs._numResults);
-    StringBuffer response = new StringBuffer();
-    switch (cgiArgs._outputFormat) {
-    case TEXT:
-      constructTextOutput(scoredDocs, response);
-      break;
-    case HTML:
-      // @CS2580: Plug in your HTML output
-      break;
-    default:
-      // nothing
-    }
-    respondWithMsg(exchange, response.toString());
-    System.out.println("Finished query: " + cgiArgs._query);
+    	// Ranking.
+    	Vector<ScoredDocument> scoredDocs =
+    			ranker.runQuery(processedQuery, cgiArgs._numResults);
+    	StringBuffer response = new StringBuffer();
+    	switch (cgiArgs._outputFormat) {
+    	case TEXT:
+    		constructTextOutput(scoredDocs, response);
+    		break;
+    	case HTML:
+    		// @CS2580: Plug in your HTML output
+    		break;
+    	default:
+    		// nothing
+    	}
+    	respondWithMsg(exchange, response.toString());
+    	System.out.println("Finished query: " + cgiArgs._query);
+    
   }
 }
 
