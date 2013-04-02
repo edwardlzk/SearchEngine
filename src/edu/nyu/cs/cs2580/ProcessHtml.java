@@ -84,9 +84,14 @@ public class ProcessHtml {
 		
 		List<String> ret = new ArrayList<String>();
 		
-		String regex = "<a";
+		String regex = "<a\\s+href=[\"\']([^\"]*?)[\"\'].*?>.*?</a>";
+		Pattern linkPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+		Matcher linkMatcher = linkPattern.matcher(html);
+		while(linkMatcher.find()){
+			ret.add(linkMatcher.group(1));
+		}
 		
-		return null;
+		return ret;
 	}
 	
 	/**
@@ -98,20 +103,14 @@ public class ProcessHtml {
 
 		Options option = new Options("conf/engine.conf");
 
-		File file = new File("testdata/'03_Bonnie_&_Clyde");	
+		File file = new File("data/wiki/Junior_Reid");
 //		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
-		ProcessHtml.process(file);
-//		File folder = new File(option._corpusPrefix+"/");
-//		
-//		File[] listOfFiles = folder.listFiles();
-//		FileOps fileOps = new FileOps("testdata/parse/");
-//		
-//		for(File f : listOfFiles){
-//			String res = ProcessHtml.process(f);
-//			fileOps.write(f.getName(), res);
-//			
-//		}
+		List<String> links = ProcessHtml.parseLink(file);
+
 		
+		for(String s : links){
+			System.out.println(s);
+		}
 		
 		
 	}
