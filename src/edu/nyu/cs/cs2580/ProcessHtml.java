@@ -2,6 +2,8 @@ package edu.nyu.cs.cs2580;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,7 +79,15 @@ public class ProcessHtml {
 
 	}
 	
-	
+	public static List<String> parseLink(File file) throws IOException{
+		String html = FileOps.readFile(file);
+		
+		List<String> ret = new ArrayList<String>();
+		
+		String regex = "<a";
+		
+		return null;
+	}
 	
 	/**
 	 * @param args

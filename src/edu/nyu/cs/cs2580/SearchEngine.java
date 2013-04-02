@@ -1,6 +1,7 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -65,6 +66,9 @@ public class SearchEngine {
 
     // The specific LogMiner to be used.
     public String _logMinerType = null;
+    
+ // Additional group specific configuration can be added below.
+    public String _tempFolder = null;
 
     /**
      * Constructor for options.
@@ -97,6 +101,18 @@ public class SearchEngine {
       Check(_logPrefix != null, "Missing option: log_prefix!");
       _indexPrefix = options.get("index_prefix");
       Check(_indexPrefix != null, "Missing option: index_prefix!");
+      
+   // add the temp location
+      _tempFolder = options.get("temp_location");
+      Check(_tempFolder != null, "Missing option: temp_location!");
+      File tempFolder = new File(_tempFolder);
+      if (!tempFolder.exists()) {
+			if (tempFolder.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
 
       // Populate specific options.
       _indexerType = options.get("indexer_type");
