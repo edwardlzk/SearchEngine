@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,9 +58,30 @@ public class FileOps {
 	
 	
 	
-//	public static void append(File file, String line){
-//		BufferedReader input = new BufferedReader(new FileReader(file));
-//	}
+	public static void append(File file, String line){
+		try {
+			//if file doesnt exists, then create it
+    		if(!file.exists()){
+    			file.createNewFile();
+    		}
+    		
+			FileWriter fileWritter = new FileWriter(file,true);
+	      BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+	      
+	      bufferWritter.write(line);
+	      bufferWritter.write(System.getProperty("line.separator"));
+	      bufferWritter.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
 	
 	public String read(String name) {
 		
