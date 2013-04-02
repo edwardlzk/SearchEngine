@@ -1,6 +1,8 @@
 package edu.nyu.cs.cs2580;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
+
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
@@ -8,7 +10,14 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  * @CS2580: Implement this class for HW3.
  */
 public class LogMinerNumviews extends LogMiner {
-
+  
+  protected HashMap<String, Integer> numviews=new HashMap<String, Integer>();
+  // #views and its position according to decreasing order
+  protected HashMap<Integer, Integer> rank=new HashMap<Integer, Integer>();
+	
+  public LogMinerNumviews(){
+	  super();
+  }
   public LogMinerNumviews(Options options) {
     super(options);
   }
@@ -28,8 +37,67 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public void compute() throws IOException {
-    System.out.println("Computing using " + this.getClass().getName());
-    return;
+	  
+	  String dirpath="./wiki/";
+	  File folder = new File(dirpath);
+	  File[] listOfFiles = folder.listFiles();
+	  Arrays.sort(listOfFiles);
+	  for (File file : listOfFiles) {
+	        if (file.isFile()) {
+	        	String name=file.getName();
+	        	numviews.put(name,0);
+	        }
+	  }
+	  
+	  String path="./data/log/20130301-160000.log";
+		BufferedReader reader=new BufferedReader(new FileReader(path));
+		String line;
+		while(((line=reader.readLine())!= null)){
+			Scanner s=new Scanner(line);
+			while(s.hasNext()){
+				if(s.next().equals("en")){
+					String doc=s.next();
+					if(numviews.containsKey(doc)){
+						try{
+						int num=Integer.parseInt(s.next());
+						numviews.put(doc,num);
+						rank.put(num,0);
+						}catch(Exception e){
+						}
+					}
+					
+				}
+			}
+		}
+		reader.close();
+		
+		 // sort #views 
+		 Set<Integer> rkeys=rank.keySet();
+		  ArrayList<Integer> srKey=new ArrayList<Integer>(rkeys);
+		  Collections.sort(srKey);
+	      int r=1;
+		  for(int k=srKey.size()-1;k>=0;k--){
+			  rank.put(srKey.get(k),r++);  
+		  }
+		 rank.put(0,r);	
+		 for(int i:rank.keySet())
+		 System.out.println(i+":"+rank.get(i));
+		 
+	// write to output file
+	String wpath="./data/temp/numviews.txt";
+	BufferedWriter writer=new BufferedWriter(new FileWriter(wpath));
+	
+	 Set<String> keys=numviews.keySet();
+	  ArrayList<String> sortedKey=new ArrayList<String>(keys);
+	  Collections.sort(sortedKey);
+
+	  for(String k:sortedKey){
+		  String s=k+":"+rank.get(numviews.get(k))+"\n";
+		  writer.write(s);
+	  }
+		
+	 writer.close();
+     return;
   }
 
   /**
@@ -42,5 +110,12 @@ public class LogMinerNumviews extends LogMiner {
   public Object load() throws IOException {
     System.out.println("Loading using " + this.getClass().getName());
     return null;
+  }
+  
+  
+  public static void main(String[] args) throws IOException{
+	  LogMinerNumviews ln=new LogMinerNumviews();
+	  ln.compute();
+	  
   }
 }
