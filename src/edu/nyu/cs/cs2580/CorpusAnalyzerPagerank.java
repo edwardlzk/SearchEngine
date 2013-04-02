@@ -1,6 +1,12 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
@@ -8,6 +14,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  * @CS2580: Implement this class for HW3.
  */
 public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
+	
+	
   public CorpusAnalyzerPagerank(Options options) {
     super(options);
   }
@@ -34,9 +42,29 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
   @Override
   public void prepare() throws IOException {
     System.out.println("Preparing " + this.getClass().getName());
+    
+    
+    
     return;
   }
 
+  
+  private Map<String, Integer> getDocIds(){
+	  String corpusFile = _options._corpusPrefix + "/";
+	  File folder = new File(corpusFile);
+	  File[] files = folder.listFiles();
+	    
+	    
+	  Map<String, Integer> ret = new HashMap<String, Integer>();
+	  //Sort the file in proper order
+	  Arrays.sort(files, new FileComparator());
+	  int id = 0;
+	  for(File f : files){
+		  ret.put(f.getName(), id++);
+	  }
+	  return ret;
+  }
+  
   /**
    * This function computes the PageRank based on the internal graph generated
    * by the {@link prepare} function, and stores the PageRank to be used for
@@ -53,6 +81,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
   @Override
   public void compute() throws IOException {
     System.out.println("Computing using " + this.getClass().getName());
+    
+    
     return;
   }
 
@@ -66,5 +96,24 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
   public Object load() throws IOException {
     System.out.println("Loading using " + this.getClass().getName());
     return null;
+  }
+  
+  
+  public static void main(String[] args){
+	  Options option;
+	try {
+		option = new Options("conf/engine.conf");
+		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
+		Map<String, Integer> maps = pagerank.getDocIds();
+		Set<String> keys = new TreeSet<String>(maps.keySet());
+		for(String s : keys){
+			System.out.println(s);
+		}
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  
+	  
   }
 }
