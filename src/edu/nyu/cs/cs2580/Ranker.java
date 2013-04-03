@@ -73,8 +73,7 @@ public abstract class Ranker {
         // Plug in your cosine Ranker
         break;
       case QL:
-        // Plug in your QL Ranker
-        break;
+    	  return new RankerQueryLikelihood(options, arguments, indexer);
       case PHRASE:
         // Plug in your phrase Ranker
         break;
