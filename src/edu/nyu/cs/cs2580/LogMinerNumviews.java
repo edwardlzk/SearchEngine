@@ -38,7 +38,7 @@ public class LogMinerNumviews extends LogMiner {
   @Override
   public void compute() throws IOException {
 	  
-	  String dirpath="./wiki/";
+	  String dirpath="./data/wiki";
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
 	  Arrays.sort(listOfFiles);

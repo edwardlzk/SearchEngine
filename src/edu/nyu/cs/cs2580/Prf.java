@@ -1,6 +1,7 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Vector;
 
 import edu.nyu.cs.cs2580.ScoredDocument;
@@ -20,7 +22,8 @@ public class Prf {
 	private Vector<ScoredDocument> scoredDocs;
 	private Map<String,Integer> term_count;
 	private Options op;
-	private String prefix = op._indexPrefix+"/";
+	private String corpus_prefix = op._corpusPrefix+"/";
+	private String index_prefix = op._indexPrefix+"/";
 	private int totaltermscount;
 	public Prf(Vector<ScoredDocument> scoredDocs,int numterms,Options op) {
 		// TODO Auto-generated constructor stub
@@ -31,23 +34,50 @@ public class Prf {
 	public void processDocs() throws IOException{
 		term_count = new HashMap<String,Integer>();
 		BufferedReader reader = null;
+		Map<String,String> fileNames = new HashMap<String,String>();
 		for(ScoredDocument doc:scoredDocs){
-			// scan each document and find it's terms and the term frequency and store it in map
 			String[] docLine = doc.asTextResult().split("\t");
-			// docLine[0] is the docid
-			reader = new BufferedReader(new FileReader(this.prefix+docLine[0]));
-			String line;
-			reader.readLine(); // skip the first line which contains the title
-			this.totaltermscount = this.totaltermscount + Integer.parseInt(reader.readLine()); // sum up all the term counts in all docs
-			while ((line = reader.readLine()) != null) {		
-				String[] contents = line.split("\t");
-				// contents[0] is the term, contents[1] is the frequency
-				if(!term_count.containsKey(contents[0])){
-					term_count.put(contents[0], 0);
-				}
-				term_count.put(contents[0], Integer.parseInt(contents[1])+term_count.get(contents[0]));
+			fileNames.put(docLine[0], null);
+		}
+		String line = null;
+		reader = new BufferedReader(new FileReader(this.index_prefix+"/idToTitle"));
+		// search the idToTitle file to find the corresponding file names for those ids
+		while((line=reader.readLine())!=null){
+			String[] linecontents = line.split("\t");
+			if(fileNames.containsKey(linecontents[0])){
+				fileNames.put(linecontents[0], linecontents[2]);
 			}
-			reader.close();
+		}
+		for(String filename:fileNames.values()){
+			// read the original file
+			String content = ProcessHtml.process(new File(this.corpus_prefix+filename));
+			Scanner s;
+			s = new Scanner(content).useDelimiter("\t");
+			String title = s.next();
+			String body = s.next();
+			s.close();
+			Scanner s2 = new Scanner(title);
+			// process the title
+			while (s2.hasNext()) {
+				String term = s2.next();
+				this.totaltermscount++;
+				if(!term_count.containsKey(term)){
+					term_count.put(term, 0);
+				}
+				term_count.put(term, term_count.get(term)+1);
+			}
+			 s2.close();
+		   // process the body
+			s2 = new Scanner(body);
+			while(s2.hasNext()){
+				String term = s2.next();
+				this.totaltermscount++;
+				if(!term_count.containsKey(term)){
+					term_count.put(term, 0);
+				}
+				term_count.put(term, term_count.get(term)+1);
+			}
+			s2.close();
 		}
 		term_count = sortMap();
 		printResult(term_count,this.totaltermscount);

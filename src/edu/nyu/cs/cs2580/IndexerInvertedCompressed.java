@@ -223,6 +223,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			    	fos.write(v_counts);	    	
 			    }
 			    fos.close();
+			    // idToTitle is actually id to original FileName
 			    String path = _options._indexPrefix+"/"+"idToTitle";
 			    File file = new File(path);
 				// if file doesnt exists, then create it
