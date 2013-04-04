@@ -17,30 +17,21 @@ public class Spearman {
 //		return re;
 //	}
 	
-	private int preread(String path) throws IOException{
-		BufferedReader pr=new BufferedReader(new FileReader(path));
-		String line;
-		int count=0;
-		while((line=pr.readLine())!=null){
-			count++;
-		}
-		pr.close();
-		return count;
-	}
 	
 	
-	private double calCoe(String[] path, int n) throws IOException{
+	private double calCoe(String[] path) throws IOException{
 		
 		BufferedReader pr=new BufferedReader(new FileReader(path[0]));
 		BufferedReader nv=new BufferedReader(new FileReader(path[1]));
 		String line1,line2;
 		double temp=0.0;
+		int n=0;
 		int x,y;
 		while((line1=pr.readLine())!=null&&(line2=nv.readLine())!=null){
 			x=Integer.decode(line1.split(":")[1]);
 			y=Integer.decode(line2.split(":")[1]);
 			temp+=(x-y)*(x-y);
-			
+			n++;
 		}
 		double re;
 		re=1-6*temp/(n*(n*n-1));
@@ -86,8 +77,7 @@ public class Spearman {
 		}
 		else{
 			Spearman s=new Spearman();
-			int n=s.preread(args[0]);
-			System.out.println(s.calCoe(args,n));
+			System.out.println(s.calCoe(args));
 		}
 	}
 }
