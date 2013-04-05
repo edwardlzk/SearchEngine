@@ -19,23 +19,27 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 public class Prf {
 	private int numterms;
-	private Vector<ScoredDocument> scoredDocs;
+	private Vector<ScoredDocument> scoredDocs = null;
 	private Map<String,Integer> term_count;
-	private Options op;
-	private String corpus_prefix = op._corpusPrefix+"/";
-	private String index_prefix = op._indexPrefix+"/";
+	private Options op = null;
+	private String corpus_prefix = null;
+	private String index_prefix = null;
 	private int totaltermscount;
 	public Prf(Vector<ScoredDocument> scoredDocs,int numterms,Options op) {
 		// TODO Auto-generated constructor stub
 		this.scoredDocs = scoredDocs;
 		this.numterms = numterms;
 		this.op = op;
+		corpus_prefix = op._corpusPrefix+"/";
+		index_prefix = op._indexPrefix+"/";
 	}
-	public void processDocs() throws IOException{
+	public void processDocs(StringBuilder builder) throws IOException{
+		
 		term_count = new HashMap<String,Integer>();
 		BufferedReader reader = null;
 		Map<String,String> fileNames = new HashMap<String,String>();
 		for(ScoredDocument doc:scoredDocs){
+			System.out.println(doc.asTextResult());
 			String[] docLine = doc.asTextResult().split("\t");
 			fileNames.put(docLine[0], null);
 		}
@@ -80,13 +84,18 @@ public class Prf {
 			s2.close();
 		}
 		term_count = sortMap();
-		printResult(term_count,this.totaltermscount);
+		Iterator<String> x = term_count.keySet().iterator();
+		for(int i=0;i<10;i++){
+			String term = x.next();
+			System.out.println(term+"\t"+term_count.get(term));
+		}
+		printResult(term_count,this.totaltermscount,builder);
 		
 	}
 	private LinkedHashMap<String,Integer> sortMap(){
 			List<String> mapKeys = new ArrayList(term_count.keySet());
 			List<Integer> mapValues = new ArrayList(term_count.values());
-			Collections.sort(mapValues);
+			Collections.sort(mapValues,Collections.reverseOrder());
 			Collections.sort(mapKeys);
 			
 			LinkedHashMap sortedMap = new LinkedHashMap();
@@ -108,15 +117,18 @@ public class Prf {
 		    }
 
 		}
+//			System.out.println("Sorted Map size is: "+sortedMap.size());
 		return sortedMap;	
 	}
-	private void printResult(Map<String,Integer> percentage,int totaltermscount){
+	private void printResult(Map<String,Integer> percentage,int totaltermscount,StringBuilder builder){
 		Iterator<String> key = percentage.keySet().iterator();
 		double normal = 0.0;
-		for(int i=0;i<this.numterms;++i){
+		for(int i=0;i<this.numterms;i++){
 			if(!key.hasNext())
+			{
 				break;
-			double freq = percentage.get(key) / (double)totaltermscount;
+			}
+			double freq = percentage.get(key.next()) / (double)totaltermscount;
 			normal = normal + freq;
 		}
 		key = percentage.keySet().iterator();
@@ -124,16 +136,22 @@ public class Prf {
 			if(!key.hasNext())
 				break;
 			String term = key.next();
-			double freq = percentage.get(key) / (double)totaltermscount;
-			System.out.println(term+"\t"+freq/normal);
+			System.out.println(term+":\t"+ percentage.get(term));
+			double freq = percentage.get(term) / (double)totaltermscount;
+			builder.append(term+"\t"+freq/normal+"\n");
 		}
 		
 	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+//		Vector<ScoredDocument> scoredDocs = null;
+//		int numterms = 0;
+//		Options op = null;
+//		Prf p = new Prf(scoredDocs,numterms,op);
 		
 	}
 

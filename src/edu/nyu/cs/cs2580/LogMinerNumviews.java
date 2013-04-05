@@ -108,8 +108,9 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public Object load() throws IOException {
-    System.out.println("Loading using " + this.getClass().getName());
-    return null;
+    //System.out.println("Loading using " + this.getClass().getName());
+    //return null;
+	  return new HashMap<String,Integer>();
   }
   
   
