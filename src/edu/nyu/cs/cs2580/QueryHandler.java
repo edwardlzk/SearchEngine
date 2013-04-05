@@ -177,12 +177,17 @@ class QueryHandler implements HttpHandler {
     if(uriPath.equals("/prf")){
     	Vector<ScoredDocument> scoredDocs =
     	        ranker.runQuery(processedQuery, cgiArgs._numdocs);
+    	System.out.println("Option name: "+ SearchEngine.OPTIONS._corpusPrefix);
+    	System.out.println("CGIARGS: "+cgiArgs._numterms);
     	Prf prf = new Prf(scoredDocs,cgiArgs._numterms,SearchEngine.OPTIONS);
-    	prf.processDocs(); 
-    	System.out.println("Enter here");
+    	StringBuilder response = new StringBuilder();
+    	prf.processDocs(response); 
+    	respondWithMsg(exchange, response.toString());
+    	System.out.println("Finished query: " + cgiArgs._query);
    	}
     // else process the normal ranking
     else{
+    System.out.println("Enter query part");
     Vector<ScoredDocument> scoredDocs =
         ranker.runQuery(processedQuery, cgiArgs._numResults);
     StringBuffer response = new StringBuffer();
@@ -198,7 +203,7 @@ class QueryHandler implements HttpHandler {
     }
     respondWithMsg(exchange, response.toString());
     System.out.println("Finished query: " + cgiArgs._query);
-  }
+    }
   }
 }
 
