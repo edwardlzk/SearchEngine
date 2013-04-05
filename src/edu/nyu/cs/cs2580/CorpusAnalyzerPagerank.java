@@ -1,6 +1,8 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	
 	private String graphPath = "graph";
+	private String pageRankPath = "pageRank";
+	private final double lamda = 0.9;
+	private final int iteration = 2;
 	
 	private Map<String, Integer> ids;
 	
@@ -59,8 +64,10 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	  File[] files = folder.listFiles();
     //Get id definition of these documents
 	  this.ids = getDocIds(files);
+	  FileOps.append(graph, this.ids.size()+"");
 	  //Get links from each document, construct the graph
 	  for(File f : files){
+//		  corpusSize++;
 		  StringBuilder sb = new StringBuilder();
 		  List<String> links = ProcessHtml.parseLink(f);
 		  sb.append(ids.get(f.getName())).append("\t");
@@ -103,14 +110,68 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
    * becomes part of the index and can be used for ranking in serve mode. Thus,
    * you should store the whatever is needed inside the same directory as
    * specified by _indexPrefix inside {@link _options}.
+   * 
+   * Note: the function should be called after prepare
    *
    * @throws IOException
    */
   @Override
   public void compute() throws IOException {
     System.out.println("Computing using " + this.getClass().getName());
+    //Read the graph
+    File graph = new File(_options._tempFolder + "/" + graphPath);
+    BufferedReader input = new BufferedReader(new FileReader(graph));
+    int corpusSize = Integer.parseInt(input.readLine());
     
     
+    //construct matrix
+    double[][] matrix = new double[corpusSize][corpusSize];
+    //initiate the page rank vector as all 1
+    double[] pageRank = new double[corpusSize];
+    for(int i = 0; i<pageRank.length; i++)
+    	pageRank[i] = 1.0;
+    
+    
+    String line = null; // not declared within while loop
+		while ((line = input.readLine()) != null) {
+			String[] lineElem = line.split("\t");
+			if(lineElem.length!=2){
+				//Documents with no out links.
+				continue;
+			}
+			int currentDoc = Integer.parseInt(lineElem[0]);
+			String[] connected = lineElem[1].split("\\|");
+			for(String c : connected){
+				int currentConnected = Integer.parseInt(c);
+				//Store the value as M^T
+				double value = (double)1 / (double)connected.length;
+				matrix[currentConnected][currentDoc] = value;
+			}
+		}
+		input.close();
+		
+    //Do Iterations
+		for(int i = 0;i<iteration; i++){
+			double[] newPageRank = new double[corpusSize];
+			double sum = 0.0;
+			for(int j = 0; j<corpusSize ; j++){
+				sum = 0.0;
+				for(int k = 0; k<corpusSize; k++){
+					sum += lamda * matrix[j][k] * pageRank[k];
+				}
+				sum += ((double)1-lamda) * ((double)1/corpusSize);
+				newPageRank[j] = sum;
+			}
+			pageRank = newPageRank;
+		}
+    
+		//write pr value to file
+		File pr = new File(_options._indexPrefix + "/" + pageRankPath);
+		for(int i = 0; i<corpusSize; i++){
+			String prLine = i + "\t" + (float)pageRank[i];
+			FileOps.append(pr, prLine);
+		}
+		
     return;
   }
 
@@ -132,7 +193,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	try {
 		option = new Options("conf/engine.conf");
 		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
-		pagerank.prepare();
+		pagerank.compute();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
