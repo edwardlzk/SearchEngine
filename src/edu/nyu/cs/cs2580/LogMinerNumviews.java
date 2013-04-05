@@ -13,7 +13,9 @@ public class LogMinerNumviews extends LogMiner {
   
   protected HashMap<String, Integer> numviews=new HashMap<String, Integer>();
   // #views and its position according to decreasing order
-  protected HashMap<Integer, Integer> rank=new HashMap<Integer, Integer>();
+  //protected HashMap<Integer, Integer> rank=new HashMap<Integer, Integer>();
+  
+  protected Map<Integer,Integer> docNumviews=new HashMap<Integer,Integer>();
 	
   public LogMinerNumviews(){
 	  super();
@@ -21,7 +23,20 @@ public class LogMinerNumviews extends LogMiner {
   public LogMinerNumviews(Options options) {
     super(options);
   }
+  
 
+  private Map<String, Integer> getDocIds(File[] files){
+		 
+	  Map<String, Integer> ret = new HashMap<String, Integer>();
+	  //Sort the file in proper order
+	  Arrays.sort(files, new FileComparator());
+	  int id = 0;
+	  for(File f : files){
+		  ret.put(f.getName(), id++);
+	  }
+	  return ret;
+  }
+  
   /**
    * This function processes the logs within the log directory as specified by
    * the {@link _options}. The logs are obtained from Wikipedia dumps and have
@@ -38,18 +53,20 @@ public class LogMinerNumviews extends LogMiner {
   @Override
   public void compute() throws IOException {
 	  
-	  String dirpath="./data/wiki";
+	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
-	  Arrays.sort(listOfFiles);
+	 
+	  Map<String,Integer> map=getDocIds(listOfFiles);
+	  
 	  for (File file : listOfFiles) {
 	        if (file.isFile()) {
 	        	String name=file.getName();
 	        	numviews.put(name,0);
 	        }
-	  }
+	  }   
 	  
-	  String path="./data/log/20130301-160000.log";
+	  String path="/Users/banduo/Documents/workspace/HW3/data/log/20130301-160000.log";
 		BufferedReader reader=new BufferedReader(new FileReader(path));
 		String line;
 		while(((line=reader.readLine())!= null)){
@@ -61,7 +78,7 @@ public class LogMinerNumviews extends LogMiner {
 						try{
 						int num=Integer.parseInt(s.next());
 						numviews.put(doc,num);
-						rank.put(num,0);
+						//rank.put(num,0);
 						}catch(Exception e){
 						}
 					}
@@ -70,32 +87,52 @@ public class LogMinerNumviews extends LogMiner {
 			}
 		}
 		reader.close();
+		//docid --> #views
+		for(String s:map.keySet()){
+			docNumviews.put(map.get(s), numviews.get(s));
+		}
+		  
+//		 // sort #views 
+//		 Set<Integer> rkeys=rank.keySet();
+//		  ArrayList<Integer> srKey=new ArrayList<Integer>(rkeys);
+//		  Collections.sort(srKey);
+//	      int r=1;
+//		  for(int k=srKey.size()-1;k>=0;k--){
+//			  rank.put(srKey.get(k),r++);  
+//		  }
+//		 rank.put(0,r);	
+//		 for(int i:rank.keySet())
+//		 System.out.println(i+":"+rank.get(i));
 		
-		 // sort #views 
-		 Set<Integer> rkeys=rank.keySet();
-		  ArrayList<Integer> srKey=new ArrayList<Integer>(rkeys);
-		  Collections.sort(srKey);
-	      int r=1;
-		  for(int k=srKey.size()-1;k>=0;k--){
-			  rank.put(srKey.get(k),r++);  
-		  }
-		 rank.put(0,r);	
-		 for(int i:rank.keySet())
-		 System.out.println(i+":"+rank.get(i));
-		 
+	Mypair[] rank=new Mypair[docNumviews.size()];
+	int count=0;
+	for(int i:docNumviews.keySet()){
+		rank[count]=new Mypair();
+		rank[count].setKey(i);
+		rank[count++].setValue(docNumviews.get(i));
+	}
+	Arrays.sort(rank);
+	
+	HashMap<Integer,Integer> order=new HashMap<Integer,Integer>();
+	int pos=1;
+	for(int j=0;j<rank.length;j++){
+		order.put(rank[j].key, pos++);
+	}
+	
+	
 	// write to output file
-	String wpath="./data/temp/numviews.txt";
+	String wpath="/Users/banduo/Documents/workspace/HW3/data/temp/numviews.txt";
 	BufferedWriter writer=new BufferedWriter(new FileWriter(wpath));
 	
-	 Set<String> keys=numviews.keySet();
-	  ArrayList<String> sortedKey=new ArrayList<String>(keys);
+	 Set<Integer> keys=order.keySet();
+	  ArrayList<Integer> sortedKey=new ArrayList<Integer>(keys);
 	  Collections.sort(sortedKey);
 
-	  for(String k:sortedKey){
-		  String s=k+":"+rank.get(numviews.get(k))+"\n";
+	  for(int p:sortedKey){
+		  String s=p+":"+order.get(p)+"\n";
 		  writer.write(s);
 	  }
-		
+			  
 	 writer.close();
      return;
   }
@@ -108,10 +145,11 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public Object load() throws IOException {
-    //System.out.println("Loading using " + this.getClass().getName());
-    //return null;
-	  return new HashMap<String,Integer>();
+
+    System.out.println("Loading using " + this.getClass().getName());
+    return docNumviews;
   }
+  
   
   
   public static void main(String[] args) throws IOException{
