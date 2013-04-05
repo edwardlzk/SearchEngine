@@ -586,7 +586,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	   int id=0;
 	   for(int i=0;i<query._tokens.size();i++){
 		 id=next_pos(query._tokens.get(i),docid,pos);
-		 if(id!=-1)
+		 if(id==-1)
 			 return -1;
 		 poslist.add(id);
 	   }
