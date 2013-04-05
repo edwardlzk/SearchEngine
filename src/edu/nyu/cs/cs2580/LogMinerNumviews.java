@@ -13,7 +13,7 @@ public class LogMinerNumviews extends LogMiner {
   
   protected HashMap<String, Integer> numviews=new HashMap<String, Integer>();
   // #views and its position according to decreasing order
-  protected HashMap<Integer, Integer> rank=new HashMap<Integer, Integer>();
+  //protected HashMap<Integer, Integer> rank=new HashMap<Integer, Integer>();
   
   protected Map<Integer,Integer> docNumviews=new HashMap<Integer,Integer>();
 	
@@ -23,6 +23,7 @@ public class LogMinerNumviews extends LogMiner {
   public LogMinerNumviews(Options options) {
     super(options);
   }
+  
 
   private Map<String, Integer> getDocIds(File[] files){
 		 
@@ -77,7 +78,7 @@ public class LogMinerNumviews extends LogMiner {
 						try{
 						int num=Integer.parseInt(s.next());
 						numviews.put(doc,num);
-						rank.put(num,0);
+						//rank.put(num,0);
 						}catch(Exception e){
 						}
 					}
@@ -91,32 +92,47 @@ public class LogMinerNumviews extends LogMiner {
 			docNumviews.put(map.get(s), numviews.get(s));
 		}
 		  
-		 // sort #views 
-		 Set<Integer> rkeys=rank.keySet();
-		  ArrayList<Integer> srKey=new ArrayList<Integer>(rkeys);
-		  Collections.sort(srKey);
-	      int r=1;
-		  for(int k=srKey.size()-1;k>=0;k--){
-			  rank.put(srKey.get(k),r++);  
-		  }
-		 rank.put(0,r);	
-		 for(int i:rank.keySet())
-		 System.out.println(i+":"+rank.get(i));
-		 
+//		 // sort #views 
+//		 Set<Integer> rkeys=rank.keySet();
+//		  ArrayList<Integer> srKey=new ArrayList<Integer>(rkeys);
+//		  Collections.sort(srKey);
+//	      int r=1;
+//		  for(int k=srKey.size()-1;k>=0;k--){
+//			  rank.put(srKey.get(k),r++);  
+//		  }
+//		 rank.put(0,r);	
+//		 for(int i:rank.keySet())
+//		 System.out.println(i+":"+rank.get(i));
+		
+	Mypair[] rank=new Mypair[docNumviews.size()];
+	int count=0;
+	for(int i:docNumviews.keySet()){
+		rank[count]=new Mypair();
+		rank[count].setKey(i);
+		rank[count++].setValue(docNumviews.get(i));
+	}
+	Arrays.sort(rank);
+	
+	HashMap<Integer,Integer> order=new HashMap<Integer,Integer>();
+	int pos=1;
+	for(int j=0;j<rank.length;j++){
+		order.put(rank[j].key, pos++);
+	}
+	
+	
 	// write to output file
 	String wpath="/Users/banduo/Documents/workspace/HW3/data/temp/numviews.txt";
 	BufferedWriter writer=new BufferedWriter(new FileWriter(wpath));
 	
-	 Set<String> keys=numviews.keySet();
-	  ArrayList<String> sortedKey=new ArrayList<String>(keys);
+	 Set<Integer> keys=order.keySet();
+	  ArrayList<Integer> sortedKey=new ArrayList<Integer>(keys);
 	  Collections.sort(sortedKey);
 
-	  for(String k:sortedKey){
-		  String s=k+":"+rank.get(numviews.get(k))+"\n";
+	  for(int p:sortedKey){
+		  String s=p+":"+order.get(p)+"\n";
 		  writer.write(s);
 	  }
-		
-	  
+			  
 	 writer.close();
      return;
   }
