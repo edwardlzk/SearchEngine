@@ -52,6 +52,7 @@ public class RankerQueryLikelihood extends Ranker {
 //	      System.out.println(i);
 	    }
 	    Collections.sort(retrieval_results);
+	    Collections.reverse(retrieval_results);
 	    
 	    Vector < ScoredDocument > ret = new Vector < ScoredDocument > ();
 	    
@@ -89,17 +90,17 @@ public class RankerQueryLikelihood extends Ranker {
 	    	else{
 	    		//It is a term
 	    		double corpusTermFreq = (double)_indexer.corpusTermFrequency(currentTerm);
-//	    		System.out.println(corpusTermFreq);
+	    		System.out.println(corpusTermFreq);
 	    		double totalTermFreq = (double) _indexer.totalTermFrequency();
-//	    		System.out.println(totalTermFreq);
+	    		System.out.println(totalTermFreq);
 	    		double docTermFreq =  (double)_indexer.documentTermFrequency(currentTerm,String.valueOf(did));
-//	    		System.out.println(docTermFreq);
+	    		System.out.println(docTermFreq);
 	    		double docTotal = (double)d.getTermTotal();
-//	    		System.out.println(i);
+	    		System.out.println(i);
 		    	globleLikelihood = corpusTermFreq / totalTermFreq;
-//		    	System.out.println("term "+currentTerm+" global frequency is "+globleLikelihood);
+		    	System.out.println("term "+currentTerm+" global frequency is "+globleLikelihood);
 		    	documentLikelihood =  docTermFreq/ docTotal;
-//		    	System.out.println("term "+currentTerm+" local frequency is "+documentLikelihood);
+		    	System.out.println("term "+currentTerm+" local frequency is "+documentLikelihood);
 	    	}
 	    	
 	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);

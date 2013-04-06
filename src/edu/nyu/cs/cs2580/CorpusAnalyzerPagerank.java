@@ -20,7 +20,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	
 	private String graphPath = "graph";
 	private String pageRankPath = "pageRank";
-	private final double lamda = 0.9;
+	private final float lamda = 0.9f;
 	private final int iteration = 2;
 	
 	private Map<String, Integer> ids;
@@ -111,7 +111,6 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
    * you should store the whatever is needed inside the same directory as
    * specified by _indexPrefix inside {@link _options}.
    * 
-   * Note: the function should be called after prepare
    *
    * @throws IOException
    */
@@ -125,11 +124,11 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     
     
     //construct matrix
-    double[][] matrix = new double[corpusSize][corpusSize];
+    float[][] matrix = new float[corpusSize][corpusSize];
     //initiate the page rank vector as all 1
-    double[] pageRank = new double[corpusSize];
+    float[] pageRank = new float[corpusSize];
     for(int i = 0; i<pageRank.length; i++)
-    	pageRank[i] = 1.0;
+    	pageRank[i] = 1.0f;
     
     
     String line = null; // not declared within while loop
@@ -144,7 +143,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 			for(String c : connected){
 				int currentConnected = Integer.parseInt(c);
 				//Store the value as M^T
-				double value = (double)1 / (double)connected.length;
+				float value = (float)1 / (float)connected.length;
 				matrix[currentConnected][currentDoc] = value;
 			}
 		}
@@ -152,14 +151,14 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 		
     //Do Iterations
 		for(int i = 0;i<iteration; i++){
-			double[] newPageRank = new double[corpusSize];
-			double sum = 0.0;
+			float[] newPageRank = new float[corpusSize];
+			float sum = 0.0f;
 			for(int j = 0; j<corpusSize ; j++){
-				sum = 0.0;
+				sum = 0.0f;
 				for(int k = 0; k<corpusSize; k++){
 					sum += lamda * matrix[j][k] * pageRank[k];
 				}
-				sum += ((double)1-lamda) * ((double)1/corpusSize);
+				sum += ((float)1-lamda) * ((float)1/(float)corpusSize);
 				newPageRank[j] = sum;
 			}
 			pageRank = newPageRank;
@@ -168,7 +167,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 		//write pr value to file
 		File pr = new File(_options._indexPrefix + "/" + pageRankPath);
 		for(int i = 0; i<corpusSize; i++){
-			String prLine = i + "\t" + (float)pageRank[i];
+			String prLine = i + "\t" + pageRank[i];
 			FileOps.append(pr, prLine);
 		}
 		
@@ -185,7 +184,20 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
   public Object load() throws IOException {
     //System.out.println("Loading using " + this.getClass().getName());
     //return null;
-	  return new HashMap<String,Integer>();
+	  Map<Integer, Float> ret = new HashMap<Integer, Float>();
+	  File pageRankFile = new File(_options._indexPrefix + "/" + pageRankPath);
+	  BufferedReader input = new BufferedReader(new FileReader(pageRankFile));
+	  
+	  String line;
+	  while ((line = input.readLine()) != null) {
+			String[] prParem = line.split("\t");
+			int did = Integer.parseInt(prParem[0]);
+			float pr = Float.parseFloat(prParem[1]);
+			ret.put(did, pr);
+		}
+	  
+	  
+	  return ret;
   }
   
   
