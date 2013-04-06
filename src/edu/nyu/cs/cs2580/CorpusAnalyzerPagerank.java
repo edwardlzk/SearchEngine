@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.util.SparseMatrix;
 
 /**
  * @CS2580: Implement this class for HW3.
@@ -20,6 +23,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	
 	private String graphPath = "graph";
 	private String pageRankPath = "pageRank";
+	private String pageRankOrder = "pageRankOrder";
 	private final float lamda = 0.9f;
 	private final int iteration = 2;
 	
@@ -124,7 +128,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     
     
     //construct matrix
-    float[][] matrix = new float[corpusSize][corpusSize];
+    SparseMatrix matrix = new SparseMatrix(corpusSize);
     //initiate the page rank vector as all 1
     float[] pageRank = new float[corpusSize];
     for(int i = 0; i<pageRank.length; i++)
@@ -144,7 +148,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 				int currentConnected = Integer.parseInt(c);
 				//Store the value as M^T
 				float value = (float)1 / (float)connected.length;
-				matrix[currentConnected][currentDoc] = value;
+				matrix.put(currentConnected, currentDoc, value);
 			}
 		}
 		input.close();
@@ -156,7 +160,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 			for(int j = 0; j<corpusSize ; j++){
 				sum = 0.0f;
 				for(int k = 0; k<corpusSize; k++){
-					sum += lamda * matrix[j][k] * pageRank[k];
+					sum += lamda * matrix.get(j, k) * pageRank[k];
 				}
 				sum += ((float)1-lamda) * ((float)1/(float)corpusSize);
 				newPageRank[j] = sum;
@@ -166,10 +170,35 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     
 		//write pr value to file
 		File pr = new File(_options._indexPrefix + "/" + pageRankPath);
+		if(pr.exists()){
+			pr.delete();
+		}
 		for(int i = 0; i<corpusSize; i++){
 			String prLine = i + "\t" + pageRank[i];
 			FileOps.append(pr, prLine);
 		}
+		
+		//sort the pr
+		Map<Integer, Integer> sortedPr = new HashMap<Integer, Integer>();
+		File prOrderFile = new File(_options._indexPrefix + "/" + pageRankOrder);
+		if(prOrderFile.exists()){
+			prOrderFile.delete();
+		}
+		//first set a docid array, initially it is sorted in ascending order
+		Integer[] indexes = new Integer[corpusSize];
+		for(int i = 0; i<corpusSize; i++){
+			indexes[i] = i;
+		}
+		Arrays.sort(indexes, new IndexComparator(pageRank));
+		for(int i = 0; i<indexes.length; i++){
+			sortedPr.put(indexes[i], i+1);
+		}
+		//Output in ascending order
+		for(int i = 0; i<corpusSize ; i++){
+			line = i + "\t" + sortedPr.get(i);
+			FileOps.append(prOrderFile, line);
+		}
+		
 		
     return;
   }
@@ -196,7 +225,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 			ret.put(did, pr);
 		}
 	  
-	  
+	  input.close();
 	  return ret;
   }
   
@@ -212,6 +241,24 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 		e.printStackTrace();
 	}
 	  
-	  
+	
   }
+  
+  class IndexComparator implements Comparator<Integer>{
+
+		private float[] ranks;
+		
+		public IndexComparator(float[] ranks){
+			this.ranks = ranks;
+		}
+		
+		@Override
+		public int compare(Integer arg0, Integer arg1) {
+			if(ranks[arg0] == ranks[arg1]){
+				return 0;
+			}
+			return ranks[arg0] < ranks[arg1]?1:-1;
+		}
+		
+	}
 }
