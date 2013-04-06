@@ -316,11 +316,11 @@ public class IndexerInvertedOccurrence extends Indexer {
 		int id;
 		for (int i = 0; i < query._tokens.size(); i++) { // each term's position
 			id = next_pos(query._tokens.get(i), docid, pos);
+			if(id == -1)
+				return -1;
 			ids.add(id);
 		}
 
-		if (ids.contains(-1))
-			return -1;
 
 		int j = 0;
 		for (; j < ids.size() - 1; j++) {

@@ -624,14 +624,14 @@ public class IndexerInvertedCompressed extends Indexer{
 	  Vector<Integer> poslist = res.get(docid);
 	  if(poslist.get(0)>pos)
 		  return poslist.get(0);
-	  if(poslist.get(poslist.size())<pos)
+	  if(poslist.get(poslist.size()-1)<pos)
 		  return -1;
 //	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
 //	  Integer nextpos = posSet.higher(pos);
 	  int nextpos = binarySearch(res.get(docid),pos);
 	  return nextpos;
 }
-  public int binarySearch(Vector<Integer> ls, int pos){
+  public static int binarySearch(Vector<Integer> ls, int pos){
 	  int low = 0;
 	  int high = ls.size();
 		while(high-low>1){
@@ -642,7 +642,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	   			  high=mid;
 	   		  }
 	   	  }
-	   		  return ls.get(low)>pos ? low:high;
+	   		  return ls.get(low)>pos ? ls.get(low):ls.get(high);
   }
   
   @Override
@@ -928,13 +928,18 @@ public class IndexerInvertedCompressed extends Indexer{
   }
   public static void main(String[] args) throws Exception
   {
-	  Options option = new Options("conf/engine.conf");
-	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
-	  index.constructIndex();
-	  index.loadIndex();
-	  System.out.println(index.documentTermFrequency("another","0"));
-	  
-
+//	  Options option = new Options("conf/engine.conf");
+//	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
+//	  index.constructIndex();
+//	  index.loadIndex();
+//	  System.out.println(index.documentTermFrequency("another","0"));
+	  Vector<Integer> test= new Vector<Integer>();
+	  test.add(1);
+	  test.add(3);
+	  test.add(5);
+	  test.add(7);
+	  int res =IndexerInvertedCompressed.binarySearch(test, 5);
+	  System.out.println(res);
 	  
 //	  String[] corpus = {"test", "1","this","is","another","2","real","3"};
 //	  String tempFile = option._indexPrefix+"/"+"idToTitle";
