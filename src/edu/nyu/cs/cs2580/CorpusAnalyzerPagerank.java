@@ -5,13 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 import edu.nyu.cs.cs2580.util.SparseMatrix;
@@ -23,7 +20,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	
 	private String graphPath = "graph";
 	private String pageRankPath = "pageRank";
-	private String pageRankOrder = "pageRankOrder";
+	private String pageRankOrder = "pageRank.txt";
 	private final float lamda = 0.9f;
 	private final int iteration = 2;
 	
@@ -180,7 +177,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 		
 		//sort the pr
 		Map<Integer, Integer> sortedPr = new HashMap<Integer, Integer>();
-		File prOrderFile = new File(_options._indexPrefix + "/" + pageRankOrder);
+		File prOrderFile = new File(_options._tempFolder + "/" + pageRankOrder);
 		if(prOrderFile.exists()){
 			prOrderFile.delete();
 		}
@@ -195,7 +192,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 		}
 		//Output in ascending order
 		for(int i = 0; i<corpusSize ; i++){
-			line = i + "\t" + sortedPr.get(i);
+			line = i + ":" + sortedPr.get(i);
 			FileOps.append(prOrderFile, line);
 		}
 		
@@ -235,6 +232,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	try {
 		option = new Options("conf/engine.conf");
 		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
+		pagerank.prepare();
 		pagerank.compute();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block

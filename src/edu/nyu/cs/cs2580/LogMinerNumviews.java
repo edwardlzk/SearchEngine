@@ -53,7 +53,7 @@ public class LogMinerNumviews extends LogMiner {
   @Override
   public void compute() throws IOException {
 	  
-	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
+	  String dirpath=_options._corpusPrefix;
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
 	 
@@ -66,7 +66,7 @@ public class LogMinerNumviews extends LogMiner {
 	        }
 	  }   
 	  
-	  String path="/Users/banduo/Documents/workspace/HW3/data/log/20130301-160000.log";
+	  String path=_options._logPrefix + "/20130301-160000.log";
 		BufferedReader reader=new BufferedReader(new FileReader(path));
 		String line;
 		while(((line=reader.readLine())!= null)){
@@ -121,7 +121,7 @@ public class LogMinerNumviews extends LogMiner {
 	
 	
 	// write to output file
-	String wpath="/Users/banduo/Documents/workspace/HW3/data/temp/numviews.txt";
+	String wpath=_options._tempFolder + "/numviews.txt";
 	BufferedWriter writer=new BufferedWriter(new FileWriter(wpath));
 	
 	 Set<Integer> keys=order.keySet();
@@ -153,7 +153,8 @@ public class LogMinerNumviews extends LogMiner {
   
   
   public static void main(String[] args) throws IOException{
-	  LogMinerNumviews ln=new LogMinerNumviews();
+	  Options option = new Options("conf/engine.conf");
+	  LogMinerNumviews ln=new LogMinerNumviews(option);
 	  ln.compute();
 	  
   }
