@@ -1,5 +1,6 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +44,10 @@ public class RankerQueryLikelihood extends Ranker {
 		  if(queriesInTerm.length > 1){
 			  //If it is a phrase
 			  int[] phraseOccurrence = getPhrase(q);
+			  
 			  phraseCount.put(q, phraseOccurrence);
 		  }
+		  System.out.println(q);
 	  }
 	  
 	    for (int i = 0; i < _indexer.numDocs(); ++i){
@@ -84,23 +87,24 @@ public class RankerQueryLikelihood extends Ranker {
 	    	if(currentTerm.split(" ").length > 1){
 	    		//It is a phrase
 	    		int[] count = phraseCount.get(currentTerm);
+	    		
 	    		globleLikelihood = (double)count[count.length-1] / (double)_indexer.totalTermFrequency();
 		    	documentLikelihood = (double)count[did] / (double)d.getTermTotal();
 	    	}
 	    	else{
 	    		//It is a term
 	    		double corpusTermFreq = (double)_indexer.corpusTermFrequency(currentTerm);
-	    		System.out.println(corpusTermFreq);
+//	    		System.out.println(corpusTermFreq);
 	    		double totalTermFreq = (double) _indexer.totalTermFrequency();
-	    		System.out.println(totalTermFreq);
+//	    		System.out.println(totalTermFreq);
 	    		double docTermFreq =  (double)_indexer.documentTermFrequency(currentTerm,String.valueOf(did));
-	    		System.out.println(docTermFreq);
+//	    		System.out.println(docTermFreq);
 	    		double docTotal = (double)d.getTermTotal();
-	    		System.out.println(i);
+//	    		System.out.println(i);
 		    	globleLikelihood = corpusTermFreq / totalTermFreq;
-		    	System.out.println("term "+currentTerm+" global frequency is "+globleLikelihood);
+//		    	System.out.println("term "+currentTerm+" global frequency is "+globleLikelihood);
 		    	documentLikelihood =  docTermFreq/ docTotal;
-		    	System.out.println("term "+currentTerm+" local frequency is "+documentLikelihood);
+//		    	System.out.println("term "+currentTerm+" local frequency is "+documentLikelihood);
 	    	}
 	    	
 	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
@@ -155,6 +159,23 @@ public class RankerQueryLikelihood extends Ranker {
 	  
 	  return sum;
 	  
+  }
+  
+  public static void main(String[] args) throws IOException, ClassNotFoundException{
+	  Options options = new Options("conf/engine.conf");
+	  CgiArguments cgi = new CgiArguments("query=web&ranker=QL");
+	  Indexer indexer = Indexer.Factory.getIndexerByOption(options);
+	  
+	  indexer.loadIndex();
+	  
+	  Ranker ranker = new RankerQueryLikelihood(options, cgi, indexer);
+	  Query q = new QueryPhrase("\"web search\"");
+	  q.processQuery();
+	  
+	  Vector<ScoredDocument> result = ranker.runQuery(q, 10);
+	  for (ScoredDocument s : result){
+		  System.out.println(s.asTextResult());
+	  }
   }
   
   
