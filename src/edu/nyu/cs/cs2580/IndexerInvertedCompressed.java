@@ -633,7 +633,7 @@ public class IndexerInvertedCompressed extends Indexer{
 }
   public static int binarySearch(Vector<Integer> ls, int pos){
 	  int low = 0;
-	  int high = ls.size();
+	  int high = ls.size()-1;
 		while(high-low>1){
 	   		  int mid=(low+high) >>> 1;
 	   		  if(ls.get(mid)<=pos){
