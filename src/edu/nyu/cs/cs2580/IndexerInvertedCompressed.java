@@ -622,19 +622,21 @@ public class IndexerInvertedCompressed extends Indexer{
 	  if(res.size()==0|| !res.containsKey(docid) || res.get(docid).size()==0)
 		  return -1; 
 	  Vector<Integer> poslist = res.get(docid);
-	  System.out.print("Search pos is: " + pos);
-	  for(int x:poslist){ 
-		  System.out.print(x+" ");
-	  }
-	  System.out.println();
+//	  System.out.print("Search pos is: " + pos+" list ");
+//	  
+//	  for(int x:poslist){ 
+//		  System.out.print(x+" ");
+//	  }
+//	  System.out.println();
 	  if(poslist.get(0)>pos)
 		  return poslist.get(0);
-	  if(poslist.get(poslist.size()-1)<pos)
+	  if(poslist.get(poslist.size()-1)<=pos)
 		  return -1;
-	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
-	  Integer nextpos = posSet.higher(pos);
-//	  int nextpos = binarySearch(res.get(docid),pos);
-	  return nextpos==null? -1:nextpos;
+//	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
+//	  Integer nextpos = posSet.higher(pos);
+	  int nextpos = binarySearch(res.get(docid),pos);
+	  return nextpos;
+	  //return nextpos==null? -1:nextpos;
 }
   public static int binarySearch(Vector<Integer> ls, int pos){
 	  int low = 0;
