@@ -59,8 +59,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     if(graph.exists()){
     	graph.delete();
     }
-    
-    String corpusFile = _options._corpusPrefix + "/";
+    String corpusFile="/Users/banduo/Documents/workspace/HW3/wiki/";
+    //String corpusFile = _options._corpusPrefix + "/";
 	  File folder = new File(corpusFile);
 	  File[] files = folder.listFiles();
     //Get id definition of these documents

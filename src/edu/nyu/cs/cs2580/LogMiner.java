@@ -16,10 +16,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 public abstract class LogMiner {
   // Options to configure each concrete LogMiner.
   protected Options _options = null;
-  
-  public LogMiner(){
-	  
-  }
+ 
   public LogMiner(Options options) {
     _options = options;
   }

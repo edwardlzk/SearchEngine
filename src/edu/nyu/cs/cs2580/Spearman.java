@@ -28,13 +28,14 @@ public class Spearman {
 		int n=0;
 		int x,y;
 		while((line1=pr.readLine())!=null&&(line2=nv.readLine())!=null){
-			x=Integer.decode(line1.split(":")[1]);
-			y=Integer.decode(line2.split(":")[1]);
-			temp+=(x-y)*(x-y);
+			x=Integer.parseInt(line1.split(":")[1]);
+			y=Integer.parseInt(line2.split(":")[1]);
+			temp+=Math.pow((x-y), 2.0);
 			n++;
 		}
 		double re;
-		re=1-6*temp/(n*(n*n-1));
+		re=1-(6*temp)/(n*(n*n-1));
+		
 		pr.close();
 		nv.close();
 		return re;
