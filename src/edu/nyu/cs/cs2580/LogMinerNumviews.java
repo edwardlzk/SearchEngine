@@ -17,9 +17,7 @@ public class LogMinerNumviews extends LogMiner {
   
   protected Map<Integer,Integer> docNumviews=new HashMap<Integer,Integer>();
 	
-  public LogMinerNumviews(){
-	  super();
-  }
+
   public LogMinerNumviews(Options options) {
     super(options);
   }
@@ -52,8 +50,8 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public void compute() throws IOException {
-	  
-	  String dirpath=_options._corpusPrefix;
+	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
+	  //String dirpath=_options._corpusPrefix;
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
 	 
@@ -134,6 +132,14 @@ public class LogMinerNumviews extends LogMiner {
 	  }
 			  
 	 writer.close();
+	 
+	 String computePath=_options._indexPrefix + "/numviews.txt";
+	 BufferedWriter bw=new BufferedWriter(new FileWriter(computePath));
+	 for(int key:docNumviews.keySet()){
+		 String s=key+":"+docNumviews.get(key)+"\n";
+		 bw.write(s);
+	 }
+	 bw.close();
      return;
   }
 
@@ -147,7 +153,22 @@ public class LogMinerNumviews extends LogMiner {
   public Object load() throws IOException {
 
     System.out.println("Loading using " + this.getClass().getName());
-    return docNumviews;
+    Map<Integer,Integer> docNums=new HashMap<Integer,Integer>();
+    String path=_options._indexPrefix + "/numviews.txt";
+    try{
+    BufferedReader reader=new BufferedReader(new FileReader(path));
+    String line;
+    while((line=reader.readLine())!=null){
+    	int key=Integer.parseInt(line.split(":")[0]);
+    	int value=Integer.parseInt(line.split(":")[1]);
+    	docNums.put(key, value);
+    }
+    reader.close();
+    }catch(Exception e){
+    	
+    }
+    
+    return docNums;
   }
   
   
