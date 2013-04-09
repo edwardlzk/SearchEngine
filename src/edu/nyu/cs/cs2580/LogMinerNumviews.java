@@ -50,8 +50,8 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public void compute() throws IOException {
-	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
-	  //String dirpath=_options._corpusPrefix;
+//	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
+	  String dirpath=_options._corpusPrefix;
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
 	 

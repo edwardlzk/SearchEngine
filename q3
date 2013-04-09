@@ -1,4 +1,4 @@
-lamda = 0.1 & iteration = 1: -1100.1181141502789
-lamda = 0.1 & iteration = 2: -1133.812999446221
-lamda = 0.9 & iteration = 1: -1100.118098707159
-lamda = 0.9 & iteration = 2: -1134.0647732944303
+lamda = 0.1 & iteration = 1: 0.4602262832665721 
+lamda = 0.1 & iteration = 2: 0.44370887860546315
+lamda = 0.9 & iteration = 1: 0.46022629083686817 
+lamda = 0.9 & iteration = 2: 0.44358545778068725 

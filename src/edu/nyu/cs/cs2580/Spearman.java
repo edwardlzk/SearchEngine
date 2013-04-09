@@ -34,7 +34,7 @@ public class Spearman {
 			n++;
 		}
 		double re;
-		re=1-(6*temp)/(n*(n*n-1));
+		re=1-(6*temp)/(Math.pow(n, 3.0)-n);
 		
 		pr.close();
 		nv.close();
