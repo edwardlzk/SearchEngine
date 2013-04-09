@@ -235,6 +235,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	try {
 		option = new Options("conf/engine.conf");
 		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
+		pagerank.prepare();
 		pagerank.compute();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
