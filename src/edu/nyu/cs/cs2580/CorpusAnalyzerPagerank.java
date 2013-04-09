@@ -212,6 +212,9 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     //return null;
 	  Map<Integer, Float> ret = new HashMap<Integer, Float>();
 	  File pageRankFile = new File(_options._indexPrefix + "/" + pageRankPath);
+	  if(!pageRankFile.exists()){
+		  pageRankFile.createNewFile();
+	  }
 	  BufferedReader input = new BufferedReader(new FileReader(pageRankFile));
 	  
 	  String line;
