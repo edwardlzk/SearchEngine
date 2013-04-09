@@ -212,6 +212,9 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     //return null;
 	  Map<Integer, Float> ret = new HashMap<Integer, Float>();
 	  File pageRankFile = new File(_options._indexPrefix + "/" + pageRankPath);
+	  if(!pageRankFile.exists()){
+		  pageRankFile.createNewFile();
+	  }
 	  BufferedReader input = new BufferedReader(new FileReader(pageRankFile));
 	  
 	  String line;
@@ -232,7 +235,6 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
 	try {
 		option = new Options("conf/engine.conf");
 		CorpusAnalyzerPagerank pagerank = new CorpusAnalyzerPagerank(option);
-		pagerank.prepare();
 		pagerank.compute();
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
