@@ -1,6 +1,8 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Vector;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
@@ -18,6 +20,7 @@ public class chooseFiles {
 	    File folder = new File(corpusFile);
 	    File tempFolder = new File(_options._tempFolder);
 	    File[] listOfFiles = folder.listFiles();
+	    System.out.println("Folder size: "+listOfFiles.length);
 	    if (!tempFolder.exists()) {
 			if (tempFolder.mkdir()) {
 				System.out.println("Directory is created!");
