@@ -50,10 +50,7 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public void compute() throws IOException {
-<<<<<<< HEAD
-=======
 
->>>>>>> 72cfb3569c6a00cb20f3b34550726d45f4289c5f
 	  String dirpath=_options._corpusPrefix;
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
