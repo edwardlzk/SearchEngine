@@ -41,6 +41,8 @@ public class IndexerInvertedCompressed extends Indexer{
   private static String baseName;
   private Map<Integer,Float> pageranks = null;
   private Map<Integer,Integer> numviews = null;
+  private Map<String, Integer> fileToId = null;
+  private Map<Integer,Integer> idToIndex = new HashMap<Integer,Integer>();
   private Map<Long,Map<Integer,Vector<Integer>>> termtemp = new LRUMap<Long,Map<Integer,Vector<Integer>>>(1000,1000);
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
@@ -64,7 +66,12 @@ public class IndexerInvertedCompressed extends Indexer{
 	  	pageranks = (HashMap<Integer,Float>)ca.load();
 	  	LogMinerNumviews log = new LogMinerNumviews(_options);
 	  	numviews = (HashMap<Integer,Integer>)log.load();
-	    String corpusFile = _options._corpusPrefix+"/";
+
+	    String corpusFile = _options._corpusPrefix+"/";    
+	    File myfolder = new File(corpusFile);
+	    File[] listOfFiles = myfolder.listFiles();
+	    fileToId = getDocIds(listOfFiles);
+	    
 	    System.out.println("Construct index from: " + corpusFile);
 	    String path = _options._indexPrefix+"/"+"idToTitle";
 		  File idfile = new File(path);
@@ -73,15 +80,14 @@ public class IndexerInvertedCompressed extends Indexer{
 		  chooseFiles cf=new chooseFiles(_options);
 		  int times = cf.writeTimes();
 		  System.out.println(times);
-		  FileOutputStream fos = null;
 		  for(int i=0;i<times;i++){
-			  Vector<String> files=cf.loadFile(i);		 
+			  Vector<String> files=cf.loadFile(i);
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content,name);  
+		        	processDocument(content,name);
 			  }		  
 			  String name="temp"+i+".txt";
 			  Map<Long,Vector<Byte>> map = new HashMap<Long,Vector<Byte>>();
@@ -146,6 +152,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	    reconstructDocs();
   }
     private void reconstructDocs() throws NumberFormatException, IOException{
+    		
     		BufferedReader reader = new BufferedReader(new FileReader(_options._indexPrefix+"/"+"idToTitle"));
     		String line = null;
     		while((line = reader.readLine())!=null){
@@ -158,6 +165,7 @@ public class IndexerInvertedCompressed extends Indexer{
     	    	doc.setPageRank(Float.parseFloat(linecontents[4]));
     	    	doc.setNumViews(Integer.parseInt(linecontents[5]));
     	    	this._documents.add(doc);
+    	    	this.idToIndex.put(id, this._documents.size()-1);
     		}
     		reader.close();
     }
@@ -172,6 +180,18 @@ public class IndexerInvertedCompressed extends Indexer{
 		    ++_numDocs;
 		    generateIndex(title+body,title,docname);
 	}
+  	
+  	 private Map<String, Integer> getDocIds(File[] files){
+		 
+  		  Map<String, Integer> ret = new HashMap<String, Integer>();
+  		  //Sort the file in proper order
+  		  Arrays.sort(files, new FileComparator());
+  		  int id = 0;
+  		  for(File f : files){
+  			  ret.put(f.getName(), id++);
+  		  }
+  		  return ret;
+  	  }
 /*
  *  <In each doc we generated, the first term is the doc title in hashcode>
  *  the second term is the total term counts
@@ -181,7 +201,11 @@ public class IndexerInvertedCompressed extends Indexer{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
-		  int did=_documents.size()-1;
+		  int did = 0;
+		  if (this.fileToId.containsKey(docname))
+			  did =this.fileToId.get(docname);
+		  else
+			  throw new IOException("Doc id not found!");
 		  HashMap<String,Vector<Byte>> plist = new HashMap<String,Vector<Byte>>();
 		  // first convert doc_id to the Vector<Byte>
 		  Vector<Byte> v_did = vbyteConversion(did);
@@ -223,27 +247,27 @@ public class IndexerInvertedCompressed extends Indexer{
 		    	}	    		
 		    }
 		    try{
-			    // store the document in our index	        
-			    String filePath = _options._indexPrefix+"/"+did;
-			    FileOutputStream fos = new FileOutputStream(filePath);
-//			    int t_title = title.hashCode();
-//			    byte[] v_t_title = vbyteConversionToArray(t_title);
-//			    fos.write(v_t_title);
-			    // then write the total term in this document
-			    byte[] v_totcount = vbyteConversionToArray(totalcount);
-			    fos.write(v_totcount);
-			    for(String term:plist.keySet())
-			    {
-			    	// first write the term in hashcode to the file
-			    	long hash_term = (long)term.hashCode()+(long)con;
-			    	byte[] v_hash_term = vbyteConversionToArray(hash_term);
-			    	fos.write(v_hash_term);
-			    	// count how many times the term occurs in this document and write to the file
-			    	int termcounts = countVectorListNumber(plist.get(term))-1;
-			    	byte[] v_counts = vbyteConversionToArray(termcounts);
-			    	fos.write(v_counts);	    	
-			    }
-			    fos.close();
+//			    // store the document in our index	        
+//			    String filePath = _options._indexPrefix+"/"+did;
+//			    FileOutputStream fos = new FileOutputStream(filePath);
+////			    int t_title = title.hashCode();
+////			    byte[] v_t_title = vbyteConversionToArray(t_title);
+////			    fos.write(v_t_title);
+//			    // then write the total term in this document
+//			    byte[] v_totcount = vbyteConversionToArray(totalcount);
+//			    fos.write(v_totcount);
+//			    for(String term:plist.keySet())
+//			    {
+//			    	// first write the term in hashcode to the file
+//			    	long hash_term = (long)term.hashCode()+(long)con;
+//			    	byte[] v_hash_term = vbyteConversionToArray(hash_term);
+//			    	fos.write(v_hash_term);
+//			    	// count how many times the term occurs in this document and write to the file
+//			    	int termcounts = countVectorListNumber(plist.get(term))-1;
+//			    	byte[] v_counts = vbyteConversionToArray(termcounts);
+//			    	fos.write(v_counts);	    	
+//			    }
+//			    fos.close();
 			    // idToTitle is actually id to original FileName
 			    String path = _options._indexPrefix+"/"+"idToTitle";
 			    File file = new File(path);
@@ -509,9 +533,10 @@ public class IndexerInvertedCompressed extends Indexer{
  
   @Override
   public Document getDoc(int docid) {
-	if (docid<0 || docid > _documents.size()-1)
+	if(!this.idToIndex.containsKey(docid))
 		return null;
-    return _documents.get(docid);
+	int index = this.idToIndex.get(docid);
+    return _documents.get(index);
   }
 
   /**
@@ -622,18 +647,20 @@ public class IndexerInvertedCompressed extends Indexer{
 	  if(res.size()==0|| !res.containsKey(docid) || res.get(docid).size()==0)
 		  return -1; 
 	  Vector<Integer> poslist = res.get(docid);
-	  System.out.print("Search pos is: " + pos);
-	  for(int x:poslist){ 
-		  System.out.print(x+" ");
-	  }
-	  System.out.println();
+//	  System.out.print("Search pos is: " + pos+" list ");
+//	  
+//	  for(int x:poslist){ 
+//		  System.out.print(x+" ");
+//	  }
+//	  System.out.println();
 	  if(poslist.get(0)>pos)
 		  return poslist.get(0);
-	  if(poslist.get(poslist.size()-1)<pos)
+	  if(poslist.get(poslist.size()-1)<=pos)
 		  return -1;
 	  TreeSet<Integer> posSet = new TreeSet<Integer>(res.get(docid));
 	  Integer nextpos = posSet.higher(pos);
 //	  int nextpos = binarySearch(res.get(docid),pos);
+//	  return nextpos;
 	  return nextpos==null? -1:nextpos;
 }
   public static int binarySearch(Vector<Integer> ls, int pos){
@@ -915,9 +942,9 @@ public class IndexerInvertedCompressed extends Indexer{
   @Override
   public int documentTermFrequency(String term, String url) {
 	  int did = Integer.parseInt(url);
-	  if(did<0 || did > this._documents.size()-1){
-		  return -1;
-	  }
+//	  if(did<0 || did > this.fileToId.size()-1){
+//		  return -1;
+//	  }
 	  Map<Integer,Vector<Integer>> res = null;
 	  int freq = 0;
 	  long hashterm = (long)term.hashCode()+(long)con;

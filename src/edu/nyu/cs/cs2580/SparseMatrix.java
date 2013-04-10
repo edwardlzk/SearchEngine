@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580.util;
+package edu.nyu.cs.cs2580;
 
 public class SparseMatrix {
 

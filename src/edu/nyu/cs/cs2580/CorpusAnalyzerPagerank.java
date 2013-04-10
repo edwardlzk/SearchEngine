@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
-import edu.nyu.cs.cs2580.util.SparseMatrix;
 
 /**
  * @CS2580: Implement this class for HW3.
@@ -59,8 +58,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     if(graph.exists()){
     	graph.delete();
     }
-    String corpusFile="/Users/banduo/Documents/workspace/HW3/wiki/";
-    //String corpusFile = _options._corpusPrefix + "/";
+
+    String corpusFile = _options._corpusPrefix + "/";
 	  File folder = new File(corpusFile);
 	  File[] files = folder.listFiles();
     //Get id definition of these documents
