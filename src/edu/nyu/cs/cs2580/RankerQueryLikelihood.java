@@ -122,6 +122,7 @@ public class RankerQueryLikelihood extends Ranker {
 	    	
 	    	score += Math.log((1-_lambda)*documentLikelihood + _lambda*globleLikelihood);
 	    	
+	    	score += 0.0005 * (double)d.getPageRank() + 0.00000001 * (double)d.getNumViews();
 	    	
 	    }
 	    

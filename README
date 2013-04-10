@@ -1,6 +1,20 @@
 The ranker we use is QL
 4.3 The script used for 4.3 has to change, otherwise it couldn't be properly executed
 
+For the pagerank Algorithm, we tested the following four scenario:
+lamda = 0.1 & iteration = 1: 0.4602262832665721
+lamda = 0.1 & iteration = 2: 0.44370887860546315
+lamda = 0.9 & iteration = 1: 0.46022629083686817
+lamda = 0.9 & iteration = 2: 0.44358545778068725
+
+We will choose lamda = 0.9 and iteration = 2. Because lamda = 0.1 will introduce too much noise and is not taking too much advantage of the graph. For the number of iteration, we should make it larger because it will not be stable if we only do one iteration.
+
+
+The result file for pagerank and numviews is under temp/:
+Pagerank: temp/pageRank.txt
+numviews: temp/numviews.txt
+
+
 rm -f prf*.tsv
 i=0
 while read q ; do

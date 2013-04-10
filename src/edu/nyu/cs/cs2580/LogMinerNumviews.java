@@ -120,9 +120,9 @@ public class LogMinerNumviews extends LogMiner {
 	for(int j=0;j<rank.length;j++){
 		order.put(rank[j].key, pos++);
 	}
-	for(int i=0;i<rank.length;i++){
-//		System.out.println(rank[i].key+":"+rank[i].value);
-	}
+//	for(int i=0;i<rank.length;i++){
+////		System.out.println(rank[i].key+":"+rank[i].value);
+//	}
 	
 	// write to output file
 	String wpath=_options._tempFolder + "/numviews.txt";
