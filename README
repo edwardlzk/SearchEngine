@@ -1,2 +1,14 @@
-1. We assume the URL parameter in the function (public int documentTermFrequency(String term, String url)) to be our doc id. 
-2. We implement phrase ranker to be our favourite ranker.
+The ranker we use is QL
+4.3 The script used for 4.3 has to change, otherwise it couldn't be properly executed
+
+rm -f prf*.tsv
+i=0
+while read q ; do
+i=$((i + 1));
+prfout=prf-$i.tsv;
+Q=`echo $q| sed "s/ /%20/g"`;
+t="http://localhost:25815/prf?query=$Q&ranker=QL&numdocs=10&numterms=100"
+curl $t > $prfout;
+echo $q:$prfout >> prf.tsv
+done < queries.tsv
+java -cp src edu.nyu.cs.cs2580.Bhattacharyya prf.tsv qsim.tsv
