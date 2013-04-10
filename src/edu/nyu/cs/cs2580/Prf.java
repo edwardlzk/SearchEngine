@@ -27,7 +27,7 @@ public class Prf {
 	private String corpus_prefix = null;
 	private String index_prefix = null;
 	private int totaltermscount;
-	private Set<String> stopwords = new HashSet<String>();
+	
 	public Prf(Vector<ScoredDocument> scoredDocs,int numterms,Options op) {
 		// TODO Auto-generated constructor stub
 		this.scoredDocs = scoredDocs;
