@@ -52,7 +52,7 @@ public class Bhattacharyya {
 				double re=0.0;
 				for(String s:term){
 					if(h2.containsKey(s)){
-						re+=h1.get(s)*h2.get(s);
+						re+=Math.sqrt(h1.get(s)*h2.get(s));
 					}
 				}
 				results.add(re);
