@@ -69,6 +69,8 @@ public class SearchEngine {
     
  // Additional group specific configuration can be added below.
     public String _tempFolder = null;
+    
+    public String _stopword = null;
 
     /**
      * Constructor for options.
@@ -113,6 +115,9 @@ public class SearchEngine {
 				System.out.println("Failed to create directory!");
 			}
 		}
+      
+      _stopword = options.get("stopword_location");
+      Check(_stopword != null, "Missing option: stopword_location!");
 
       // Populate specific options.
       _indexerType = options.get("indexer_type");
