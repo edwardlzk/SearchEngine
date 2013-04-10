@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
-import edu.nyu.cs.cs2580.util.SparseMatrix;
 
 /**
  * @CS2580: Implement this class for HW3.

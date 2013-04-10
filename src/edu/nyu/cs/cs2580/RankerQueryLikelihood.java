@@ -1,5 +1,6 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,12 +22,17 @@ import edu.nyu.cs.cs2580.ScoredDocument;
 public class RankerQueryLikelihood extends Ranker {
 	
 	private double _lambda = 0.5;
+	private int numDocs;
 	Map<String, int[]> phraseCount = new HashMap<String, int[]>();
 	
 
   public RankerQueryLikelihood(Options options,
       CgiArguments arguments, Indexer indexer) {
     super(options, arguments, indexer);
+    String corpusFile = _options._corpusPrefix + "/";
+	  File folder = new File(corpusFile);
+	  File[] files = folder.listFiles();
+	  numDocs = files.length;
     System.out.println("Using Ranker: " + this.getClass().getSimpleName());
   }
 
@@ -50,8 +56,12 @@ public class RankerQueryLikelihood extends Ranker {
 		  System.out.println(q);
 	  }
 	  
-	    for (int i = 0; i < _indexer.numDocs(); ++i){
-	      retrieval_results.add(runquery(query._tokens, i));
+	    for (int i = 0; i < numDocs; ++i){
+	    	ScoredDocument current = runquery(query._tokens, i);
+	    	if (current != null){
+	    		retrieval_results.add(current);
+	    	}
+	      
 //	      System.out.println(i);
 	    }
 	    Collections.sort(retrieval_results);
@@ -72,6 +82,9 @@ public class RankerQueryLikelihood extends Ranker {
 	    
 	 // Get the document vector.
 	    DocumentIndexed d = (DocumentIndexed) _indexer.getDoc(did);
+	    if (d == null){
+	    	return null;
+	    }
 	    
 	    double score = 0.0;
 	    
@@ -124,12 +137,15 @@ public class RankerQueryLikelihood extends Ranker {
    * @return	a double array that indexed by doc id, where corpus.size() -> total phrase number.
    */
   private int[] getPhrase(String phrase){
-	  int n = _indexer.numDocs();
+	  int n = numDocs;
 	  int[] ret = new int[n+1];
 	  int total = 0;
 	  Query query = new Query(phrase);
 	  query.processQuery();
 	  for(int i = 0; i<n; i++){
+		  if( _indexer.getDoc(i) == null){
+			  continue;
+		  }
 		  ret[i] = getPhraseByDoc(query, i);
 		  total += ret[i];
 //		  System.out.println("getPhrase:"+i);
