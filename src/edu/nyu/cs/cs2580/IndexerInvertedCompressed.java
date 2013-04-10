@@ -85,10 +85,11 @@ public class IndexerInvertedCompressed extends Indexer{
 			  for(String name:files){
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
-		        String content = ProcessHtml.process(file);
-		        content = ProcessHtml.removeStopword(_options, content);
+		        String content = ProcessHtml.process(file, _options);
 		        if (content != null)
+		        	
 		        	processDocument(content,name);
+		        
 			  }		  
 			  String name="temp"+i+".txt";
 			  Map<Long,Vector<Byte>> map = new HashMap<Long,Vector<Byte>>();
@@ -961,18 +962,18 @@ public class IndexerInvertedCompressed extends Indexer{
   }
   public static void main(String[] args) throws Exception
   {
-//	  Options option = new Options("conf/engine.conf");
-//	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
-//	  index.constructIndex();
+	  Options option = new Options("conf/engine.conf");
+	  IndexerInvertedCompressed index = new IndexerInvertedCompressed(option);
+	  index.constructIndex();
 //	  index.loadIndex();
 //	  System.out.println(index.documentTermFrequency("another","0"));
-	  Vector<Integer> test= new Vector<Integer>();
-	  test.add(1);
-	  test.add(3);
-	  test.add(5);
-	  test.add(7);
-	  int res =IndexerInvertedCompressed.binarySearch(test, 5);
-	  System.out.println(res);
+//	  Vector<Integer> test= new Vector<Integer>();
+//	  test.add(1);
+//	  test.add(3);
+//	  test.add(5);
+//	  test.add(7);
+//	  int res =IndexerInvertedCompressed.binarySearch(test, 5);
+//	  System.out.println(res);
 	  
 //	  String[] corpus = {"test", "1","this","is","another","2","real","3"};
 //	  String tempFile = option._indexPrefix+"/"+"idToTitle";

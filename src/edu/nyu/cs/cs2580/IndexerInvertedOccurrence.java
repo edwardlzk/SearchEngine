@@ -49,7 +49,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 			for (String name : files) {
 				String filepath = corpusFile + name;
 				File file = new File(filepath);
-				String content = ProcessHtml.process(file);
+				String content = ProcessHtml.process(file, _options);
 				if (content != null)
 					processDocument(content);
 			}

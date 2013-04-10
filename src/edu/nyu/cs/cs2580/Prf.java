@@ -57,8 +57,7 @@ public class Prf {
 		}
 		for(String filename:fileNames.values()){
 			// read the original file
-			String content = ProcessHtml.process(new File(this.corpus_prefix+filename));
-			content = ProcessHtml.removeStopword(op, content);
+			String content = ProcessHtml.process(new File(this.corpus_prefix+filename), op);
 			Scanner s;
 			s = new Scanner(content).useDelimiter("\t");
 			String title = s.next();

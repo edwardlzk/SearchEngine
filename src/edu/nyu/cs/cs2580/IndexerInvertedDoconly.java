@@ -51,7 +51,7 @@ public class IndexerInvertedDoconly extends Indexer {
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        time = new Date().getTime();
-		        String content = ProcessHtml.process(file);
+		        String content = ProcessHtml.process(file, _options);
 		        totalTime += new Date().getTime() - time;
 		        if (content != null)
 		        	processDocument(content,name);

@@ -19,7 +19,7 @@ public class ProcessHtml {
 	
 	static List<String> stopwords;
 	
-	public static String process(File file) throws IOException
+	public static String process(File file, Options options) throws IOException
 	{
 		StringBuilder builder = new StringBuilder();
 		String html = FileOps.readFile(file);
@@ -50,6 +50,7 @@ public class ProcessHtml {
 		// replace duplicate white spaces to one space
 		resultTitle = resultTitle.replaceAll("\\s+"," ");
 		
+		resultTitle = removeStopword(options, resultTitle);
 //		System.out.println(resultTitle);
 
 		builder.append(resultTitle);
@@ -64,9 +65,10 @@ public class ProcessHtml {
 		//replace all labels
 		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
-		
+		resultBody = removeStopword(options, resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
+		
 		if(resultBody.equals("")){
 			return null;
 		}
@@ -85,6 +87,11 @@ public class ProcessHtml {
 	}
 	
 	public static String removeStopword(Options options, String content){
+		if(content == null){
+			return null;
+		}
+		
+		
 		if (stopwords == null) {
 			stopwords = new ArrayList<String>();
 			//First time load the stop word
