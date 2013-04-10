@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
 
 import edu.nyu.cs.cs2580.ScoredDocument;
@@ -25,6 +27,7 @@ public class Prf {
 	private String corpus_prefix = null;
 	private String index_prefix = null;
 	private int totaltermscount;
+	private Set<String> stopwords = new HashSet<String>();
 	public Prf(Vector<ScoredDocument> scoredDocs,int numterms,Options op) {
 		// TODO Auto-generated constructor stub
 		this.scoredDocs = scoredDocs;
@@ -84,11 +87,11 @@ public class Prf {
 			s2.close();
 		}
 		term_count = sortMap();
-		Iterator<String> x = term_count.keySet().iterator();
-		for(int i=0;i<10;i++){
-			String term = x.next();
-			System.out.println(term+"\t"+term_count.get(term));
-		}
+//		Iterator<String> x = term_count.keySet().iterator();
+//		for(int i=0;i<10;i++){
+//			String term = x.next();
+//			System.out.println(term+"\t"+term_count.get(term));
+//		}
 		printResult(term_count,this.totaltermscount,builder);
 		
 	}
