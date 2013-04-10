@@ -121,7 +121,7 @@ public class LogMinerNumviews extends LogMiner {
 		order.put(rank[j].key, pos++);
 	}
 	for(int i=0;i<rank.length;i++){
-		System.out.println(rank[i].key+":"+rank[i].value);
+//		System.out.println(rank[i].key+":"+rank[i].value);
 	}
 	
 	// write to output file
