@@ -1,6 +1,9 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,8 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 
 public class ProcessHtml {
+	
+	static List<String> stopwords;
 	
 	public static String process(File file) throws IOException
 	{
@@ -79,6 +84,43 @@ public class ProcessHtml {
 
 	}
 	
+	public static String removeStopword(Options options, String content){
+		if (stopwords == null) {
+			stopwords = new ArrayList<String>();
+			//First time load the stop word
+			File stopwordLocation = new File(options._stopword);
+			try {
+				BufferedReader input = new BufferedReader(new FileReader(
+						stopwordLocation));
+				String line = null; // not declared within while loop
+				while ((line = input.readLine()) != null) {
+					stopwords.add(line);
+				}
+				input.close();
+
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		StringBuilder stopConcat = new StringBuilder();
+		for(String s : stopwords){
+			stopConcat.append(s + "|");
+		}
+		if(stopConcat.length() >=1){
+			stopConcat.deleteCharAt(stopConcat.length()-1);
+		}
+		String regex = "(?i)\\b("+ stopConcat.toString() +")\\b";
+		content = content.replaceAll(regex, " ");
+		// replace duplicate white spaces to one space
+		content = content.replaceAll("\\s+"," ");
+		
+		return content;
+	}
+	
 	public static List<String> parseLink(File file) throws IOException{
 		String html = FileOps.readFile(file);
 		
@@ -103,15 +145,10 @@ public class ProcessHtml {
 
 		Options option = new Options("conf/engine.conf");
 
-		File file = new File("data/wiki/Junior_Reid");
-//		File file = new File("data/hw2/wiki/'03_Bonnie_&_Clyde");	
-		List<String> links = ProcessHtml.parseLink(file);
 
+		String test = "A the an have boy an";
 		
-		for(String s : links){
-			System.out.println(s);
-		}
-		
+		System.out.println(ProcessHtml.removeStopword(option, test));
 		
 	}
 

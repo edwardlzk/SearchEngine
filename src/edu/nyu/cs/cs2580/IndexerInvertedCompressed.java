@@ -86,6 +86,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		        String filepath=corpusFile+name;
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
+		        content = ProcessHtml.removeStopword(_options, content);
 		        if (content != null)
 		        	processDocument(content,name);
 			  }		  
