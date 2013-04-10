@@ -35,7 +35,8 @@ public class Spearman {
 		}
 		double re;
 		re=1-(6*temp)/(n*(n*n-1));
-		
+		System.out.println(temp);
+		System.out.println((n*(n*n-1)));
 		pr.close();
 		nv.close();
 		return re;

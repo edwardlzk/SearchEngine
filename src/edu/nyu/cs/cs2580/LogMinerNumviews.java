@@ -50,12 +50,15 @@ public class LogMinerNumviews extends LogMiner {
    */
   @Override
   public void compute() throws IOException {
-	  String dirpath="/Users/banduo/Documents/workspace/HW3/wiki/";
-	  //String dirpath=_options._corpusPrefix;
+	  String dirpath=_options._corpusPrefix;
 	  File folder = new File(dirpath);
 	  File[] listOfFiles = folder.listFiles();
 	 
 	  Map<String,Integer> map=getDocIds(listOfFiles);
+	  BufferedWriter w=new BufferedWriter(new FileWriter("./name.txt"));
+	  for(String s:map.keySet()){
+		  w.write(s+":"+map.get(s)+"\n");
+	  }
 	  
 	  for (File file : listOfFiles) {
 	        if (file.isFile()) {
@@ -116,7 +119,9 @@ public class LogMinerNumviews extends LogMiner {
 	for(int j=0;j<rank.length;j++){
 		order.put(rank[j].key, pos++);
 	}
-	
+	for(int i=0;i<rank.length;i++){
+		System.out.println(rank[i].key+":"+rank[i].value);
+	}
 	
 	// write to output file
 	String wpath=_options._tempFolder + "/numviews.txt";
