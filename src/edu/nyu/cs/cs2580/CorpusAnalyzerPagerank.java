@@ -59,7 +59,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer {
     if(graph.exists()){
     	graph.delete();
     }
-   
+
     String corpusFile = _options._corpusPrefix + "/";
 	  File folder = new File(corpusFile);
 	  File[] files = folder.listFiles();

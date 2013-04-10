@@ -42,6 +42,7 @@ public class IndexerInvertedCompressed extends Indexer{
   private Map<Integer,Float> pageranks = null;
   private Map<Integer,Integer> numviews = null;
   private Map<String, Integer> fileToId = null;
+  private Map<Integer,Integer> idToIndex = new HashMap<Integer,Integer>();
   private Map<Long,Map<Integer,Vector<Integer>>> termtemp = new LRUMap<Long,Map<Integer,Vector<Integer>>>(1000,1000);
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
@@ -86,7 +87,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		        File file=new File(filepath);
 		        String content = ProcessHtml.process(file);
 		        if (content != null)
-		        	processDocument(content,name);  
+		        	processDocument(content,name);
 			  }		  
 			  String name="temp"+i+".txt";
 			  Map<Long,Vector<Byte>> map = new HashMap<Long,Vector<Byte>>();
@@ -151,6 +152,7 @@ public class IndexerInvertedCompressed extends Indexer{
 	    reconstructDocs();
   }
     private void reconstructDocs() throws NumberFormatException, IOException{
+    		
     		BufferedReader reader = new BufferedReader(new FileReader(_options._indexPrefix+"/"+"idToTitle"));
     		String line = null;
     		while((line = reader.readLine())!=null){
@@ -163,6 +165,7 @@ public class IndexerInvertedCompressed extends Indexer{
     	    	doc.setPageRank(Float.parseFloat(linecontents[4]));
     	    	doc.setNumViews(Integer.parseInt(linecontents[5]));
     	    	this._documents.add(doc);
+    	    	this.idToIndex.put(id, this._documents.size()-1);
     		}
     		reader.close();
     }
@@ -530,9 +533,10 @@ public class IndexerInvertedCompressed extends Indexer{
  
   @Override
   public Document getDoc(int docid) {
-	if (docid<0 || docid > _documents.size()-1)
+	if(!this.idToIndex.containsKey(docid))
 		return null;
-    return _documents.get(docid);
+	int index = this.idToIndex.get(docid);
+    return _documents.get(index);
   }
 
   /**
@@ -938,9 +942,9 @@ public class IndexerInvertedCompressed extends Indexer{
   @Override
   public int documentTermFrequency(String term, String url) {
 	  int did = Integer.parseInt(url);
-	  if(did<0 || did > this._documents.size()-1){
-		  return -1;
-	  }
+//	  if(did<0 || did > this.fileToId.size()-1){
+//		  return -1;
+//	  }
 	  Map<Integer,Vector<Integer>> res = null;
 	  int freq = 0;
 	  long hashterm = (long)term.hashCode()+(long)con;

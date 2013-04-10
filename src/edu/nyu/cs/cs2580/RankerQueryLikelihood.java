@@ -169,7 +169,7 @@ public class RankerQueryLikelihood extends Ranker {
 	  indexer.loadIndex();
 	  
 	  Ranker ranker = new RankerQueryLikelihood(options, cgi, indexer);
-	  Query q = new QueryPhrase("\"data mining\"");
+	  Query q = new QueryPhrase("\"web\"");
 	  q.processQuery();
 	  
 	  Vector<ScoredDocument> result = ranker.runQuery(q, 10);
