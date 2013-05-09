@@ -1,0 +1,17 @@
+9,10d8
+< import edu.nyu.cs.cs2580.DocumentIndexed;
+< import edu.nyu.cs.cs2580.ScoredDocument;
+12a11,12
+> import edu.nyu.cs.cs2580.DocumentIndexed;
+> import edu.nyu.cs.cs2580.ScoredDocument;
+49,53c49,52
+< 
+< 	  Document d = _indexer.getDoc(1);
+< 	  while((d = _indexer.nextDoc(query, d._docid)) != null && d._docid != -1){
+< 	      retrieval_results.add(runquery(query._tokens, d._docid));
+< //	      System.out.println(d._docid);
+---
+> 	  
+> 	    for (int i = 0; i < _indexer.numDocs(); ++i){
+> 	      retrieval_results.add(runquery(query._tokens, i));
+> //	      System.out.println(i);

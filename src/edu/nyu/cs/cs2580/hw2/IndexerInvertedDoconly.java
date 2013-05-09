@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * @CS2580: Implement this class for HW2.

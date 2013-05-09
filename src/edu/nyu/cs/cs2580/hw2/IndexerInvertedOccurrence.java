@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * 
@@ -22,7 +22,6 @@ public class IndexerInvertedOccurrence extends Indexer {
 	// private Vector<String> _terms = new Vector<String>();
 	// Stores all Document in memory.
 	private Vector<DocumentIndexed> _documents = new Vector<DocumentIndexed>();
-
 	
 
 	public IndexerInvertedOccurrence() {

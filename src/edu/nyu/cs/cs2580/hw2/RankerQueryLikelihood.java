@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.QueryHandler.CgiArguments;
-import edu.nyu.cs.cs2580.SearchEngine.Options;
-import edu.nyu.cs.cs2580.DocumentIndexed;
-import edu.nyu.cs.cs2580.ScoredDocument;
+import edu.nyu.cs.cs2580.hw2.DocumentIndexed;
+import edu.nyu.cs.cs2580.hw2.ScoredDocument;
+import edu.nyu.cs.cs2580.hw2.QueryHandler.CgiArguments;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * @CS2580: Implement this class for HW2 based on a refactoring of your favorite
@@ -46,10 +46,11 @@ public class RankerQueryLikelihood extends Ranker {
 			  phraseCount.put(q, phraseOccurrence);
 		  }
 	  }
-	  
-	    for (int i = 0; i < _indexer.numDocs(); ++i){
-	      retrieval_results.add(runquery(query._tokens, i));
-//	      System.out.println(i);
+
+	  Document d = _indexer.getDoc(1);
+	  while((d = _indexer.nextDoc(query, d._docid)) != null && d._docid != -1){
+	      retrieval_results.add(runquery(query._tokens, d._docid));
+//	      System.out.println(d._docid);
 	    }
 	    Collections.sort(retrieval_results);
 	    

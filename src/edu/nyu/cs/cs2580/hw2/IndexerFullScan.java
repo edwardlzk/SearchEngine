@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * Instructor's implementation of a simple full scan Indexer, used in HW1.

@@ -1,9 +1,9 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.QueryHandler.CgiArguments;
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.QueryHandler.CgiArguments;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 public class RankerPhrase extends Ranker{
 

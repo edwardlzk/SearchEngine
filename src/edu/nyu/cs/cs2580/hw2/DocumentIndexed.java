@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 /**
  * @CS2580: implement this class for HW2 to incorporate any additional
