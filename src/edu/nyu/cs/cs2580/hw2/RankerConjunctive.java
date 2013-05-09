@@ -1,12 +1,12 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.QueryHandler.CgiArguments;
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.QueryHandler.CgiArguments;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * Instructors' code for illustration purpose. Non-tested code.

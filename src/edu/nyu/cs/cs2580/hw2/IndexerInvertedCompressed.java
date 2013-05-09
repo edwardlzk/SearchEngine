@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * @CS2580: Implement this class for HW2.
@@ -96,7 +96,7 @@ public class IndexerInvertedCompressed extends Indexer{
 			  write(name,baseName, map);
 			  map.clear();
 			  _index.clear();  
-			  fos.close();
+//			  fos.close();
 			  System.out.println(i);
 		  }
 		 

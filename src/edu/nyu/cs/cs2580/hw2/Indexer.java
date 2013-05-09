@@ -1,8 +1,7 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.IOException;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 /**
  * This is the abstract Indexer class for all concrete Indexer implementations.
