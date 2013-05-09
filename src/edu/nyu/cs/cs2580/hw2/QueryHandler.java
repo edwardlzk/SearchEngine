@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hw2;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,7 +8,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import edu.nyu.cs.cs2580.SearchEngine.Options;
+import edu.nyu.cs.cs2580.hw2.SearchEngine.Options;
 
 /**
  * Handles each incoming query, students do not need to change this class except

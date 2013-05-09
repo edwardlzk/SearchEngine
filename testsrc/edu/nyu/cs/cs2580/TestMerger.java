@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.nyu.cs.cs2580.hw3.FileOps;
+
 public class TestMerger {
 
 	/**
