@@ -8,6 +8,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.*;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -29,7 +30,7 @@ public class Hadoop extends Configured implements Tool {
                 job.setJobName("wordcount");
                 
                 job.setOutputKeyClass(Text.class);
-                job.setOutputValueClass(IntWritable.class);
+                job.setOutputValueClass(SortedMapWritable.class);
                 
                 job.setMapperClass(IndexerMapper.class);
 //                job.setCombinerClass(WordCountReducer.class);
@@ -40,8 +41,8 @@ public class Hadoop extends Configured implements Tool {
                 job.setOutputFormatClass(TextOutputFormat.class);
                 
                 
-                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/wiki/NOTICE.txt"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out1"));
+                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/Wen/input"));
+                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/Wen/out"));
                 
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
