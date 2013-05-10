@@ -1,7 +1,7 @@
 *.class
 /bin
 *.tsv
-/data/wiki
+/data
 /data/index
 /tempindex
 /testdata
