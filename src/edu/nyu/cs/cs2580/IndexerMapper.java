@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 
 import org.apache.hadoop.io.SortedMapWritable;
@@ -14,13 +15,13 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 
 public class IndexerMapper extends
-		Mapper<NullWritable, Text, Text, SortedMapWritable> {
+		Mapper<LongWritable, Text, Text, SortedMapWritable> {
 
 	private Text term = new Text();
 	private SortedMapWritable smw = new SortedMapWritable();
 	
 	@Override
-	public void map(NullWritable key, Text value, Context context)
+	public void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 
 		String delimiter = ",";
@@ -28,17 +29,12 @@ public class IndexerMapper extends
 		Map<String, ArrayList<String>> positions = new HashMap<String, ArrayList<String>>();
 		int currentPos = 0;
 		
-		String[] fileContent = value.toString().split(System.getProperty("line.separator"), 2);
+		String[] fileContent = value.toString().split("\t", 2);
 		
 		int id = Integer.parseInt(fileContent[0]);
 		String content = fileContent[1];
 		
-		//extract content
-		content = ProcessHtmlHadoop.process(content);
-		
-		if(content == null){
-			return;
-		}
+
 		StringTokenizer tokenizer = new StringTokenizer(content);
 		
 		while(tokenizer.hasMoreTokens()){
