@@ -1,25 +1,28 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
-
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class OccurrenceReducer extends Reducer<Text, IntWritable, Text, IntWritable>
+
+public class OccurrenceReducer extends Reducer<Text, SortedMapWritable, Text, Text>
 {
-        public void reduce(Text key, Iterable<Map.Entry<K, V>> values, Context context) throws IOException, InterruptedException
+
+        public void reduce(Text key, Iterable<SortedMapWritable> values, Context context) throws IOException, InterruptedException
         {
-                int sum = 0;
-                Iterator<Map> it=values.iterator();
-                while(it.hasNext())
+        		SortedMapWritable val = new SortedMapWritable();
+                for(SortedMapWritable value: values)
                 {
-                        sum = it.next().size();
+                        val.putAll(value);
                 }
-                context.write(key, new IntWritable(sum));
+                StringBuilder builder = new StringBuilder();
+                for(Object x:val.keySet()) {
+                	builder.append(x);
+                	builder.append(val.get(x));
+
+                }
+                Text out = new Text(builder.toString());
+                context.write(key, out);
         }
-        
 }
