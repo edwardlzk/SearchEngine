@@ -14,6 +14,7 @@ import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
@@ -28,7 +29,7 @@ public class Hadoop extends Configured implements Tool {
                 // TODO Auto-generated method stub
                 Job job = new Job(getConf());
                 job.setJarByClass(Hadoop.class);
-                job.setJobName("wordcount");
+                job.setJobName("Inverted Index");
                 
 
                 job.setMapOutputKeyClass(Text.class);
@@ -43,12 +44,16 @@ public class Hadoop extends Configured implements Tool {
                 job.setReducerClass(OccurrenceReducer.class);
                 
                 
-                job.setInputFormatClass(CorpusInputFormat.class);
+//                job.setInputFormatClass(CorpusInputFormat.class);
+                job.setInputFormatClass(TextInputFormat.class);
                 job.setOutputFormatClass(TextOutputFormat.class);
                 
                 
-                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/wiki"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out5"));
+//                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/merge"));
+//                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out1"));
+                
+                FileInputFormat.setInputPaths(job, new Path(args[0]));
+                FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
