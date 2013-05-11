@@ -2,10 +2,13 @@ package edu.nyu.cs.cs2580;
 
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.*;
+
+
 
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
@@ -27,13 +30,14 @@ public class Hadoop extends Configured implements Tool {
                 job.setJarByClass(Hadoop.class);
                 job.setJobName("wordcount");
                 
+
                 job.setMapOutputKeyClass(Text.class);
                 job.setMapOutputValueClass(SortedMapWritable.class);
                 
                 
                 job.setOutputKeyClass(Text.class);
-
                 job.setOutputValueClass(Text.class);
+                
                 job.setMapperClass(IndexerMapper.class);
 //                job.setCombinerClass(WordCountReducer.class);
                 job.setReducerClass(OccurrenceReducer.class);
@@ -43,8 +47,14 @@ public class Hadoop extends Configured implements Tool {
                 job.setOutputFormatClass(TextOutputFormat.class);
                 
                 
+<<<<<<< HEAD
                 FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/Wen/input"));
                 FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/Wen/out2"));
+=======
+                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/wiki"));
+                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out5"));
+
+>>>>>>> 64ac004d20f97e64eeae2202513ee5eca8b1eb5b
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
         }
