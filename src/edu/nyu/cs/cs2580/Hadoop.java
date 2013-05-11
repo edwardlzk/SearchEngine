@@ -32,8 +32,8 @@ public class Hadoop extends Configured implements Tool {
                 
                 
                 job.setOutputKeyClass(Text.class);
-
                 job.setOutputValueClass(Text.class);
+                
                 job.setMapperClass(IndexerMapper.class);
 //                job.setCombinerClass(WordCountReducer.class);
                 job.setReducerClass(OccurrenceReducer.class);
@@ -43,8 +43,8 @@ public class Hadoop extends Configured implements Tool {
                 job.setOutputFormatClass(TextOutputFormat.class);
                 
                 
-                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/Wen/input"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/Wen/out"));
+                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/wiki"));
+                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out3"));
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
         }
