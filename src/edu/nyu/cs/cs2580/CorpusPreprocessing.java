@@ -34,7 +34,7 @@ public class CorpusPreprocessing {
 			String[] fileContent = html.split(System.getProperty("line.separator"), 2);
 			
 			sb.append(fileContent[0]).append("\t");
-			String content = ProcessHtml.process(fileContent[1]);
+			String content = ProcessHtmlHadoop.process(fileContent[1]);
 			if(content == null){
 				continue;
 			}

@@ -49,6 +49,7 @@ public class Hadoop extends Configured implements Tool {
                 job.setOutputFormatClass(TextOutputFormat.class);
                 
                 
+
 //                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/merge"));
 //                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out1"));
                 

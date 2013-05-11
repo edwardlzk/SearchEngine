@@ -34,6 +34,7 @@ public class IndexerMapper extends
 		int id = Integer.parseInt(fileContent[0]);
 		String content = fileContent[1];
 		
+
 		StringTokenizer tokenizer = new StringTokenizer(content);
 		
 		while(tokenizer.hasMoreTokens()){
