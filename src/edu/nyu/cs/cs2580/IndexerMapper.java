@@ -1,19 +1,17 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
+
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+
 
 public class IndexerMapper extends
 		Mapper<NullWritable, Text, Text, SortedMapWritable> {
@@ -80,4 +78,5 @@ public class IndexerMapper extends
 		}
 		
 	}
+
 }

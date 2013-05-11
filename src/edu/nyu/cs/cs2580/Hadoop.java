@@ -2,10 +2,13 @@ package edu.nyu.cs.cs2580;
 
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.*;
+
+
 
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
@@ -27,6 +30,7 @@ public class Hadoop extends Configured implements Tool {
                 job.setJarByClass(Hadoop.class);
                 job.setJobName("wordcount");
                 
+
                 job.setMapOutputKeyClass(Text.class);
                 job.setMapOutputValueClass(SortedMapWritable.class);
                 
@@ -44,7 +48,8 @@ public class Hadoop extends Configured implements Tool {
                 
                 
                 FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/wiki"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out3"));
+                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out5"));
+
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
         }

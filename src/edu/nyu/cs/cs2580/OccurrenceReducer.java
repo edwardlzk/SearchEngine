@@ -1,8 +1,6 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.IOException;
-
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -23,8 +21,9 @@ public class OccurrenceReducer extends
 			builder.append("|");
 		}
 
-		builder.deleteCharAt(builder.length()-1);
-                Text out = new Text(builder.toString());
-                context.write(key, out);
+				builder.deleteCharAt(builder.length()-1);
+
+				Text out = new Text(builder.toString());
+            context.write(key, out);
         }
 }
