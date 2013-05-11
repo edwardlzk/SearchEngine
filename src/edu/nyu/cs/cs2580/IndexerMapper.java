@@ -3,7 +3,7 @@ package edu.nyu.cs.cs2580;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.hadoop.io.ArrayWritable;
+
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 
@@ -48,7 +48,7 @@ public class IndexerMapper extends
 		}
 		
 		//output the map to SortMapWritable
-		Iterator<Entry<String, ArrayList<String>>> it = positions.entrySet().iterator();
+		Iterator<Map.Entry<String, ArrayList<String>>> it = positions.entrySet().iterator();
 		SortedMapWritable smw = new SortedMapWritable();
 		while(it.hasNext()){
 			Map.Entry<String, ArrayList<String>> entry = it.next();
