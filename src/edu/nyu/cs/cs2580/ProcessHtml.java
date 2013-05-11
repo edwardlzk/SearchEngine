@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.nyu.cs.cs2580.SearchEngine.Options;
+
 
 
 
@@ -17,19 +19,17 @@ public class ProcessHtml {
 	
 	static List<String> stopwords;
 	
-	static String stopwordPath = "data/stopword/stopword";
-	
-	public static String process(File file) throws IOException{
-		String html = FileOps.readFile(file);
-		
-		return process(html);
-	}
-	
-	public static String process(String html) 
+	public static String[] process(File file, Options options) throws IOException
 	{
-		
 		StringBuilder builder = new StringBuilder();
+		String html = FileOps.readFile(file);
 
+
+		String[] fileContent = html.split(System.getProperty("line.separator"), 2);
+		
+		String id = fileContent[0];
+		html = fileContent[1];
+		
 		String titlePattern = "<title>(.*)</title>";
 		String bodyPattern = "<body.*>.+</body>";
 		
@@ -55,7 +55,7 @@ public class ProcessHtml {
 		// replace duplicate white spaces to one space
 		resultTitle = resultTitle.replaceAll("\\s+"," ");
 		
-		resultTitle = removeStopword(resultTitle);
+		resultTitle = removeStopword(options, resultTitle);
 //		System.out.println(resultTitle);
 
 		builder.append(resultTitle);
@@ -70,7 +70,7 @@ public class ProcessHtml {
 		//replace all labels
 		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
-		resultBody = removeStopword(resultBody);
+		resultBody = removeStopword(options, resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
 		
@@ -87,11 +87,17 @@ public class ProcessHtml {
 		stemmer.stem();
 		
 //		System.out.println("after stem:"+stemmer.toString());
-		return stemmer.toString();
+		html = stemmer.toString();
 
+		String[] ret = new String[2];
+		ret[0] = id;
+		ret[1] = html;
+		
+		return ret;
+		
 	}
 	
-	public static String removeStopword(String content){
+	public static String removeStopword(Options options, String content){
 		if(content == null){
 			return null;
 		}
@@ -100,7 +106,7 @@ public class ProcessHtml {
 		if (stopwords == null) {
 			stopwords = new ArrayList<String>();
 			//First time load the stop word
-			File stopwordLocation = new File(stopwordPath);
+			File stopwordLocation = new File(options._stopword);
 			try {
 				BufferedReader input = new BufferedReader(new FileReader(
 						stopwordLocation));
@@ -155,12 +161,12 @@ public class ProcessHtml {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
-//		Options option = new Options("conf/engine.conf");
+		Options option = new Options("conf/engine.conf");
 
 
 		String test = "A the an have boy an";
 		
-		System.out.println(ProcessHtml.removeStopword(test));
+		System.out.println(ProcessHtml.removeStopword(option, test));
 		
 	}
 

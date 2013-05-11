@@ -33,7 +33,7 @@ public class IndexerMapper extends
 		String content = fileContent[1];
 		
 		//extract content
-		content = ProcessHtml.process(content);
+		content = ProcessHtmlHadoop.process(content);
 		
 		StringTokenizer tokenizer = new StringTokenizer(content);
 		

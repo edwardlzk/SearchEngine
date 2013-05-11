@@ -44,7 +44,7 @@ public class Hadoop extends Configured implements Tool {
                 
                 
                 FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/Wen/input"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/Wen/out"));
+                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/Wen/out2"));
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
         }
