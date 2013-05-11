@@ -70,6 +70,7 @@ public class ProcessHtml {
 		//replace all labels
 		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
+		resultBody = resultBody.replaceAll("\\b(\\d+)\\b", " ");
 		resultBody = removeStopword(resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
@@ -158,7 +159,9 @@ public class ProcessHtml {
 //		Options option = new Options("conf/engine.conf");
 
 
-		String test = "A the an have boy an";
+		String test = "A the an have boy an 123";
+		
+//		test = test.replaceAll("\\b(\\d+)\\b", " ");
 		
 		System.out.println(ProcessHtml.removeStopword(test));
 		

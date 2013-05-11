@@ -331,7 +331,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 		if (j == (ids.size() - 1)) {
 			return ids.get(0);
 		} else
-			return nextPhrase(query, docid, ids.get(ids.size() - 1));
+			return nextPhrase(query, docid, (max(ids) - 1));
 	}
 
 	private int next_pos(String word, int docid, int pos) {
@@ -488,13 +488,13 @@ public class IndexerInvertedOccurrence extends Indexer {
 		Query query = new Query("web");
 		query.processQuery();
 
-		// Document nextdoc = index.nextDoc(query, 4122);
-//		System.out.println(index.corpusTermFrequency("web"));
+		Document nextdoc = index.nextDoc(query, 4122);
+		System.out.println(index.corpusTermFrequency("web"));
 
-		// if(nextdoc!=null)
-		// System.out.println(nextdoc._docid);
-		// else
-		// System.out.println("Null");
+		if(nextdoc!=null)
+		System.out.println(nextdoc._docid);
+		else
+		System.out.println("Null");
 
 	}
 }

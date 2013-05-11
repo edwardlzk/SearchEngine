@@ -2,6 +2,7 @@ package edu.nyu.cs.cs2580;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Map.Entry;
 
 
 import org.apache.hadoop.io.IntWritable;
@@ -15,6 +16,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 public class IndexerMapper extends
 		Mapper<NullWritable, Text, Text, SortedMapWritable> {
 
+	private Text term = new Text();
+	private SortedMapWritable smw = new SortedMapWritable();
+	
 	@Override
 	public void map(NullWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
@@ -32,6 +36,9 @@ public class IndexerMapper extends
 		//extract content
 		content = ProcessHtml.process(content);
 		
+		if(content == null){
+			return;
+		}
 		StringTokenizer tokenizer = new StringTokenizer(content);
 		
 		while(tokenizer.hasMoreTokens()){
@@ -48,8 +55,10 @@ public class IndexerMapper extends
 		}
 		
 		//output the map to SortMapWritable
+
 		Iterator<Map.Entry<String, ArrayList<String>>> it = positions.entrySet().iterator();
 		SortedMapWritable smw = new SortedMapWritable();
+
 		while(it.hasNext()){
 			Map.Entry<String, ArrayList<String>> entry = it.next();
 			String currentTerm = entry.getKey();
@@ -62,11 +71,12 @@ public class IndexerMapper extends
 			}
 			sb.deleteCharAt(sb.length()-1);
 			
-			
 			smw.clear();
 			smw.put(new IntWritable(id), new Text(sb.toString()));
 			
-			context.write(new Text(currentTerm), smw);
+			term.set(currentTerm);
+			
+			context.write(term, smw);
 		}
 		
 	}

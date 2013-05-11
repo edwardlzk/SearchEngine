@@ -25,16 +25,18 @@ public class Hadoop extends Configured implements Tool {
                 job.setJarByClass(Hadoop.class);
                 job.setJobName("indexing");
                 
+
                 job.setMapOutputKeyClass(Text.class);
                 job.setMapOutputValueClass(SortedMapWritable.class);
                 
 
                 
                 job.setOutputKeyClass(Text.class);
-
                 job.setOutputValueClass(Text.class);
+               
+                
                 job.setMapperClass(IndexerMapper.class);
-//                job.setCombinerClass(WordCountReducer.class);
+                job.setCombinerClass(OccurrenceCombiner.class);
                 job.setReducerClass(OccurrenceReducer.class);
                 
                 
@@ -43,9 +45,11 @@ public class Hadoop extends Configured implements Tool {
                 
                 
 
-                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/banduo/input/A_Certain_Ratio"));
+
+                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/banduo/input"));
                 FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/banduo/indexer"));
                 
+
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
         }
