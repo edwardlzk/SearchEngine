@@ -10,6 +10,8 @@ import org.apache.hadoop.util.*;
 
 
 
+import org.apache.hadoop.io.BytesWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
@@ -36,25 +38,37 @@ public class Hadoop extends Configured implements Tool {
                 job.setMapOutputValueClass(SortedMapWritable.class);
                 
                 
-                job.setOutputKeyClass(Text.class);
-                job.setOutputValueClass(Text.class);
+                
+                
                 
                 job.setMapperClass(IndexerMapper.class);
 //                job.setCombinerClass(WordCountReducer.class);
-                job.setReducerClass(OccurrenceReducer.class);
+                
                 
                 
 //                job.setInputFormatClass(CorpusInputFormat.class);
                 job.setInputFormatClass(TextInputFormat.class);
-                job.setOutputFormatClass(TextOutputFormat.class);
                 
+                
+                if(args[0].equals("occurrence")){
+                job.setReducerClass(OccurrenceReducer.class);
+                job.setOutputKeyClass(Text.class);
+                job.setOutputValueClass(Text.class);
+                job.setOutputFormatClass(TextOutputFormat.class);
+                }
+                else if (args[0].equals("compress")){
+                	job.setReducerClass(CompressReducer.class);
+                	job.setOutputKeyClass(NullWritable.class);
+                	job.setOutputValueClass(BytesWritable.class);
+                  job.setOutputFormatClass(CompressOutputFormat.class);
+                }
                 
 
 //                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/edwardlzk/merge"));
 //                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/edwardlzk/out1"));
                 
-                FileInputFormat.setInputPaths(job, new Path(args[0]));
-                FileOutputFormat.setOutputPath(job, new Path(args[1]));
+                FileInputFormat.setInputPaths(job, new Path(args[1]));
+                FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
                 boolean success = job.waitForCompletion(true);
                 return success ? 0: 1;
