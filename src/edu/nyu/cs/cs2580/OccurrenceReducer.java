@@ -7,6 +7,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class OccurrenceReducer extends
 		Reducer<Text, SortedMapWritable, Text, Text> {
+	
 	public void reduce(Text key, Iterable<SortedMapWritable> values,
 			Context context) throws IOException, InterruptedException {
 		SortedMapWritable val = new SortedMapWritable();
