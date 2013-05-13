@@ -57,6 +57,7 @@ public class ProcessHtml {
 		
 		resultTitle = removeStopword(options, resultTitle);
 //		System.out.println(resultTitle);
+		resultTitle = resultTitle.toLowerCase();
 
 		builder.append(resultTitle);
 		// the title and body are seperated by tab
@@ -75,6 +76,7 @@ public class ProcessHtml {
 		resultBody = removeStopword(options,resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
+		resultBody = resultBody.toLowerCase();
 		
 		if(resultBody.equals("")){
 			return null;

@@ -282,6 +282,8 @@ public class IndexerInvertedOccurrence extends Indexer {
 			else{
 				res = getTerm(word);
 				termtemp.put(word, res);
+				System.out.print(word+":");
+				System.out.println(res.size());
 			}
 			if(res.size()==0)
 				return -1;
@@ -289,6 +291,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 			Integer nextdoc = keySet.higher(docid);
 		    return nextdoc==null? -1:nextdoc;
 		} 
+	  
 	private boolean find(Vector<Integer> ids) {
 		int first = ids.get(0);
 		for (int i = 1; i < ids.size(); i++) {
@@ -414,19 +417,28 @@ public class IndexerInvertedOccurrence extends Indexer {
 			ClassNotFoundException {
 		Options option = new Options("conf/engine.conf");
 		IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
-		index.constructIndex();
+		//index.constructIndex();
 		index.loadIndex();
 		//
-		Query query = new Query("web");
+		Query query = new Query("web search");
 		query.processQuery();
-
-		// Document nextdoc = index.nextDoc(query, 4122);
+		Document nextdoc=index.nextDoc(query, 0);;
+		int id=nextdoc._docid;
+		int count=1;
+    while(nextdoc!=null){
+		 nextdoc= index.nextDoc(query, id);
+		 if(nextdoc!=null){
+		 id=nextdoc._docid;
+		 count++;
+		 }
+    }
+    System.out.print(count);
 //		System.out.println(index.corpusTermFrequency("web"));
 
-		// if(nextdoc!=null)
-		// System.out.println(nextdoc._docid);
-		// else
-		// System.out.println("Null");
+		if(nextdoc!=null)
+		System.out.println(nextdoc._docid);
+		else
+		System.out.println("Null");
 
 	}
 }
