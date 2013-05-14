@@ -480,7 +480,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 			ClassNotFoundException {
 		Options option = new Options("conf/engine.conf");
 		IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
-<<<<<<< HEAD
+
 		//index.constructIndex();
 		index.loadIndex();
 		//
@@ -498,32 +498,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 		 }
     }
     System.out.print(count);
-//		System.out.println(index.corpusTermFrequency("web"));
 
-=======
-		index.constructIndex();
-//		index.loadIndex();
-//		//
-//		Query query = new Query("web search");
-//		query.processQuery();
-//		Document nextdoc=index.nextDoc(query, 0);;
-//		int id=nextdoc._docid;
-//		int count=1;
-//    while(nextdoc!=null){
-//		 nextdoc= index.nextDoc(query, id);
-//		 if(nextdoc!=null){
-//		 id=nextdoc._docid;
-//		 count++;
-//		 }
-//    }
-//    System.out.print(count);
-////		System.out.println(index.corpusTermFrequency("web"));
-//
->>>>>>> 6b74348a5c704754c410311938b97f2350c92924
-//		if(nextdoc!=null)
-//		System.out.println(nextdoc._docid);
-//		else
-//		System.out.println("Null");
 
 	}
 }
