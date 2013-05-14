@@ -86,11 +86,10 @@ public class ProcessHtml {
 		
 //		System.out.println("before stem:"+output);
 		
-		Stemmer stemmer = new Stemmer();
 		String[] tokens=output.split(" ");
 		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<tokens.length;i++){
-		tokens[i]=stemmer.stem(tokens[i]);
+		Stemmer.stem(tokens[i]);
 		sb.append(tokens[i]+" ");
 		}
 		//stemmer.stem();
