@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hadoop;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import edu.nyu.cs.cs2580.FileComparator;
+import edu.nyu.cs.cs2580.FileOps;
 
 public class CorpusPreprocessing {
 
