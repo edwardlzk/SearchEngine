@@ -1,6 +1,7 @@
 package edu.nyu.cs.cs2580;
 
-
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.englishStemmer;
 
 public class Stemmer {
 	
@@ -17,10 +18,6 @@ public class Stemmer {
 		_stemmer.setCurrent(term);
 		_stemmer.stem();
 		return _stemmer.getCurrent();
-	}
-	public static void main(String[] args){
-		String s="web searching";
-		System.out.println(Stemmer.stem(s));
 	}
 
 }

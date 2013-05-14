@@ -22,17 +22,28 @@ public class QueryPhrase extends Query {
 	  String phrase = "\"(.*?)\"";
 	  Pattern phrasePattern = Pattern.compile(phrase);
 	  Matcher phraseMatcher = phrasePattern.matcher(_query);
-	  
+	  _query=_query.toLowerCase();
+	   Stemmer stemmer=new Stemmer();
+	    
 	  
 	  while(phraseMatcher.find()){
-		  _tokens.add(phraseMatcher.group(1));
+		  String s=phraseMatcher.group(1);
+		  String[] temp=s.split(" ");
+		  StringBuilder sb=new StringBuilder();
+		  for(int i=0;i<temp.length;i++){
+			  temp[i]=stemmer.stem(temp[i]);
+			  sb.append(temp[i]+" ");
+		  }
+		  
+		  _tokens.add(sb.toString());
 	  }
 	  _query = _query.replaceAll(phrase, " ");
+	  
 	  
 	  //add the rest terms to the query vector
 	  Scanner s = new Scanner(_query);
 	  while (s.hasNext()) {
-	      _tokens.add(s.next());
+	      _tokens.add(stemmer.stem(s.next()));
 	   }
 	  s.close();
   }

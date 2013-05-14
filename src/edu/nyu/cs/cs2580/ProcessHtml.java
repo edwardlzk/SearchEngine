@@ -87,12 +87,17 @@ public class ProcessHtml {
 //		System.out.println("before stem:"+output);
 		
 		Stemmer stemmer = new Stemmer();
-		stemmer.add(output);
-		stemmer.stem();
+		String[] tokens=output.split(" ");
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<tokens.length;i++){
+		tokens[i]=stemmer.stem(tokens[i]);
+		sb.append(tokens[i]+" ");
+		}
+		//stemmer.stem();
 		
 //		System.out.println("after stem:"+stemmer.toString());
-		html = stemmer.toString();
-
+		html = sb.toString();
+        
 		String[] ret = new String[2];
 		ret[0] = id;
 		ret[1] = html;
