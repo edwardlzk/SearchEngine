@@ -186,7 +186,7 @@ public class RankerQueryLikelihood extends Ranker {
   
   public static void main(String[] args) throws IOException, ClassNotFoundException{
 	  Options options = new Options("conf/engine.conf");
-	  CgiArguments cgi = new CgiArguments("query=web&ranker=QL");
+	  CgiArguments cgi = new CgiArguments("query=\"web+search\"&ranker=QL");
 	  Indexer indexer = Indexer.Factory.getIndexerByOption(options);
 	  
 	  indexer.loadIndex();

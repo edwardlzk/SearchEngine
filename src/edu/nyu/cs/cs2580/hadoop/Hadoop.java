@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hadoop;
 
 
 
@@ -44,7 +44,7 @@ public class Hadoop extends Configured implements Tool {
                 
                 job.setMapperClass(IndexerMapper.class);
                 job.setCombinerClass(OccurrenceCombiner.class);
-//               job.setReducerClass(OccurrenceReducer.class);
+//                job.setReducerClass(OccurrenceReducer.class);
 
                 
                 

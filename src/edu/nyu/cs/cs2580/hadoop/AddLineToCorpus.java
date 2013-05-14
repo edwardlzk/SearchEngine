@@ -1,7 +1,10 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hadoop;
 
 import java.io.File;
 import java.util.Arrays;
+
+import edu.nyu.cs.cs2580.FileComparator;
+import edu.nyu.cs.cs2580.FileOps;
 
 public class AddLineToCorpus {
 

@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+package edu.nyu.cs.cs2580.hadoop;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import edu.nyu.cs.cs2580.FileOps;
+import edu.nyu.cs.cs2580.Stemmer;
 
 
 
@@ -82,25 +85,26 @@ public class ProcessHtmlHadoop {
 		if(resultBody.equals("")){
 			return null;
 		}
-		builder.append(resultBody);
+		//builder.append(resultBody);
 	
 //		System.out.println("before stem:"+output);
 		
 		
-		String output = builder.toString();
+		//String output = builder.toString();
 		
 //		System.out.println("before stem:"+output);
 		
-		String[] tokens=output.split(" ");
+
+		String[] tokens=resultBody.split(" ");
 		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<tokens.length;i++){
 		tokens[i]=Stemmer.stem(tokens[i]);
 		sb.append(tokens[i]+" ");
 		}
-		//stemmer.stem();
-		
+
+		builder.append(sb.toString());
 //		System.out.println("after stem:"+stemmer.toString());
-		return sb.toString();
+		return builder.toString();
 
 	}
 	
