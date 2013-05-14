@@ -41,13 +41,11 @@ public class IndexerInvertedCompressed extends Indexer{
   private static String baseName;
   private Map<Integer,Float> pageranks = null;
   private Map<Integer,Integer> numviews = null;
-  private Map<String, Integer> fileToId = null;
   private Map<Integer,Integer> idToIndex = new HashMap<Integer,Integer>();
   private Map<Long,Map<Integer,Vector<Integer>>> termtemp = new LRUMap<Long,Map<Integer,Vector<Integer>>>(1000,1000);
 //  private final byte[] newline = "\n".getBytes("UTF-8");
   
-  // the first number in the vector<Byte> is the doc id, the second number is the number of word occurrence, 
-  // then follows the specific position number
+  // the first number in the vector<Byte> is the doc id then follows the specific position number
   private HashMap<String, Vector<Vector<Byte>>> _index=new HashMap<String,Vector<Vector<Byte>>>();
 	  //Stores all Document in memory.
   private Vector<DocumentIndexed> _documents = new Vector<DocumentIndexed>();
@@ -63,14 +61,11 @@ public class IndexerInvertedCompressed extends Indexer{
   public void constructIndex() throws IOException {
 	  	// load the page Rank value
 	  	CorpusAnalyzer ca = new CorpusAnalyzerPagerank(_options);
-	  	pageranks = (HashMap<Integer,Float>)ca.load();
+	  	this.pageranks = (HashMap<Integer,Float>)ca.load();
 	  	LogMinerNumviews log = new LogMinerNumviews(_options);
-	  	numviews = (HashMap<Integer,Integer>)log.load();
+	  	this.numviews = (HashMap<Integer,Integer>)log.load();
 
 	    String corpusFile = _options._corpusPrefix+"/";    
-	    File myfolder = new File(corpusFile);
-	    File[] listOfFiles = myfolder.listFiles();
-	    fileToId = getDocIds(listOfFiles);
 	    
 	    System.out.println("Construct index from: " + corpusFile);
 	    String path = _options._indexPrefix+"/"+"idToTitle";
@@ -88,7 +83,7 @@ public class IndexerInvertedCompressed extends Indexer{
 		        String[] content = ProcessHtml.process(file, _options);
 		        if (content != null)
 		        	
-		        	processDocument(content[1],name);
+		        	processDocument(content,name);
 		        
 			  }		  
 			  String name="temp"+i+".txt";
@@ -171,43 +166,25 @@ public class IndexerInvertedCompressed extends Indexer{
     		}
     		reader.close();
     }
-  	private void processDocument(String content,String docname) throws IOException{
-		    Scanner s = new Scanner(content).useDelimiter("\t");
+  	private void processDocument(String content[],String docname) throws IOException{
+		    Scanner s = new Scanner(content[1]).useDelimiter("\t");
 		    String title = s.next();
 		    String body = s.next();
 		    s.close();
-		    DocumentIndexed doc = new DocumentIndexed(_documents.size());
-		    doc.setTitle(title);
-		    _documents.add(doc);
 		    ++_numDocs;
-		    generateIndex(title+body,title,docname);
+		    int did = Integer.parseInt(content[0]);
+		    generateIndex(did,title+body,title,docname);
 	}
-  	
-  	 private Map<String, Integer> getDocIds(File[] files){
-		 
-  		  Map<String, Integer> ret = new HashMap<String, Integer>();
-  		  //Sort the file in proper order
-  		  Arrays.sort(files, new FileComparator());
-  		  int id = 0;
-  		  for(File f : files){
-  			  ret.put(f.getName(), id++);
-  		  }
-  		  return ret;
-  	  }
+
 /*
  *  <In each doc we generated, the first term is the doc title in hashcode>
  *  the second term is the total term counts
  *  then term, count .....	  
  */
-	 private void generateIndex(String content,String title,String docname) throws IOException{
+	 private void generateIndex(int did,String content,String title,String docname) throws IOException{
 		  Scanner s = new Scanner(content);  // Uses white space by default.
 		  int pos=1;
 		  int totalcount = 0;
-		  int did = 0;
-		  if (this.fileToId.containsKey(docname))
-			  did =this.fileToId.get(docname);
-		  else
-			  throw new IOException("Doc id not found!");
 		  HashMap<String,Vector<Byte>> plist = new HashMap<String,Vector<Byte>>();
 		  // first convert doc_id to the Vector<Byte>
 		  Vector<Byte> v_did = vbyteConversion(did);

@@ -57,6 +57,8 @@ public class ProcessHtmlHadoop {
 		
 		resultTitle = removeStopword(resultTitle);
 //		System.out.println(resultTitle);
+		resultTitle = resultTitle.toLowerCase();
+
 
 		builder.append(resultTitle);
 		// the title and body are seperated by tab
@@ -73,6 +75,7 @@ public class ProcessHtmlHadoop {
 		resultBody = removeStopword(resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
+		resultBody = resultBody.toLowerCase();
 		
 		if(resultBody.equals("")){
 			return null;

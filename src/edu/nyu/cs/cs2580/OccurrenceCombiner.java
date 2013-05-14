@@ -15,19 +15,18 @@ import org.apache.hadoop.mapreduce.Reducer;
 				val.putAll(value);
 				value.clear();
 			}
-//			StringBuilder builder = new StringBuilder();
-//			for (Object x : val.keySet()) {
-//				builder.append(x).append(",");
-//				builder.append(val.get(x));
-//				builder.append("|");
-//			}
-
-					//builder.deleteCharAt(builder.length()-1);
-
-					//Text out = new Text(builder.toString());
 	            context.write(key, val);
 	        }
-	
-
-
 }
+
+	
+	//	StringBuilder builder = new StringBuilder();
+//	for (Object x : val.keySet()) {
+//		builder.append(x).append(",");
+//		builder.append(val.get(x));
+//		builder.append("|");
+//	}
+
+			//builder.deleteCharAt(builder.length()-1);
+
+			//Text out = new Text(builder.toString());
