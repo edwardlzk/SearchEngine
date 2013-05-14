@@ -86,8 +86,12 @@ public class ProcessHtmlHadoop {
 //		System.out.println("before stem:"+output);
 		
 		Stemmer stemmer = new Stemmer();
-		stemmer.add(output);
-		stemmer.stem();
+		String[] tokens=output.split(" ");
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<tokens.length;i++){
+		tokens[i]=stemmer.stem(tokens[i]);
+		sb.append(tokens[i]+" ");
+		}
 		
 //		System.out.println("after stem:"+stemmer.toString());
 		return stemmer.toString();
