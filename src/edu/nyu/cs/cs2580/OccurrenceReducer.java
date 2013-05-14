@@ -21,10 +21,8 @@ public class OccurrenceReducer extends
 			builder.append(val.get(x));
 			builder.append("|");
 		}
-
-				builder.deleteCharAt(builder.length()-1);
-
-				Text out = new Text(builder.toString());
-            context.write(key, out);
+		builder.deleteCharAt(builder.length()-1);
+		Text out = new Text(builder.toString());
+        context.write(key, out);
         }
 }

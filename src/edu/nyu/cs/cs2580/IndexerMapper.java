@@ -27,7 +27,8 @@ public class IndexerMapper extends
 		String delimiter = ",";
 		
 		Map<String, ArrayList<String>> positions = new HashMap<String, ArrayList<String>>();
-		int currentPos = 0;
+		// change the start position to 1
+		int currentPos = 1;
 		
 		String[] fileContent = value.toString().split("\t", 2);
 		

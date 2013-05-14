@@ -7,12 +7,9 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.*;
 
 
-<<<<<<< HEAD
-=======
 
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.NullWritable;
->>>>>>> 5b38a10ba7af32befa572d30630ab7dc974e5ad3
 import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.*;
@@ -40,22 +37,15 @@ public class Hadoop extends Configured implements Tool {
                 
 
                 
-<<<<<<< HEAD
+
                 job.setOutputKeyClass(Text.class);
                 job.setOutputValueClass(Text.class);
                
                 
                 job.setMapperClass(IndexerMapper.class);
                 job.setCombinerClass(OccurrenceCombiner.class);
-                job.setReducerClass(OccurrenceReducer.class);
-=======
-                
-                
-                
-                job.setMapperClass(IndexerMapper.class);
-//                job.setCombinerClass(WordCountReducer.class);
-                
->>>>>>> 5b38a10ba7af32befa572d30630ab7dc974e5ad3
+//               job.setReducerClass(OccurrenceReducer.class);
+
                 
                 
 //                job.setInputFormatClass(CorpusInputFormat.class);
@@ -63,8 +53,8 @@ public class Hadoop extends Configured implements Tool {
                 
 
 
-                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/banduo/input"));
-                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/banduo/indexer"));
+//                FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/banduo/input"));
+//                FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/banduo/indexer"));
                 
                 if(args[0].equals("occurrence")){
                 job.setReducerClass(OccurrenceReducer.class);

@@ -1,8 +1,11 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class CorpusPreprocessing {
 
@@ -12,6 +15,15 @@ public class CorpusPreprocessing {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
+
+		File file = new File("data/merge");
+		if (!file.exists()) {
+			if (file.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
 
 		File newFile = new File("data/merge/corpus");
 		if(!newFile.exists()){
@@ -26,8 +38,25 @@ public class CorpusPreprocessing {
 		Arrays.sort(files, new FileComparator());
 		
 		int i = 0;
+		int corpusTotalTerms = 0;
+		int corpusDocCount = 0;
+		
+		String idToTitle = "data/index/idToTitle";
+		File idSta = new File(idToTitle);
+		if(!idSta.exists()) {
+			idSta.createNewFile();
+		}
+		BufferedWriter idout = new BufferedWriter(new FileWriter(idSta,true));
+		
+		String statistics = "data/index/statistics";
+		File sta = new File(statistics);
+		if(!sta.exists()) {
+			sta.createNewFile();
+		}
+		BufferedWriter staout = new BufferedWriter(new FileWriter(sta,true));
 		
 		for(File f : files){
+			int docterms = 0;
 			StringBuilder sb = new StringBuilder();
 			String html = FileOps.readFile(f);
 			
@@ -38,11 +67,31 @@ public class CorpusPreprocessing {
 			if(content == null){
 				continue;
 			}
+			++corpusDocCount;
 			sb.append(content);
-			System.out.println(i++);
+//			System.out.println(i++);
 			FileOps.append(newFile, sb.toString());
+			// generate idToTitle file
+			String[] contents = content.split("\t");
+//			String[] terms = content.split("\\s+");
+			Scanner s = new Scanner(contents[0]);
+			while(s.hasNext()){
+				docterms++;
+				s.next();
+			}
+			s = new Scanner(contents[1]);
+			while(s.hasNext()){
+				docterms++;
+				s.next();
+			}
+			corpusTotalTerms += docterms;
+		    idout.append(fileContent[0]+"\t"+contents[0]+"\t"+f.getName()+"\t"+docterms+"\t"+0+"\t"+0+"\n");		
 		}
-		
+		idout.close();
+		//generate statistic file
+		staout.append(corpusDocCount+"\n");
+		staout.append(corpusTotalTerms+"\n");
+		staout.close();
 	}
 
 }

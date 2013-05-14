@@ -103,7 +103,9 @@ public class IndexerInvertedOccurrence extends Indexer {
 		outsta.write(_numDocs + "\n");
 		outsta.write(_totalTermFrequency + "\n");
 		outsta.close();
-		filewriter.merge(tempFiles, "merge.txt", "|");
+//***		filewriter.merge(tempFiles, "merge.txt", "|");
+		filewriter.merge(tempFiles, "index.idx", "|");
+
 
 	}
 
@@ -221,7 +223,8 @@ public class IndexerInvertedOccurrence extends Indexer {
 		  if(termtemp.containsKey(term))
 			  return termtemp.get(term);
 		  Map<Integer,Vector<Integer>> res = new HashMap<Integer,Vector<Integer>>();// each doc and its positions
-		  String indexFile = _options._indexPrefix + "/merge.txt";
+//***		  String indexFile = _options._indexPrefix + "/merge.txt";
+			  String indexFile = _options._indexPrefix + "/index.idx";
 			try {
 				BufferedReader reader = new BufferedReader(
 						new FileReader(indexFile));
@@ -477,6 +480,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 			ClassNotFoundException {
 		Options option = new Options("conf/engine.conf");
 		IndexerInvertedOccurrence index = new IndexerInvertedOccurrence(option);
+<<<<<<< HEAD
 		//index.constructIndex();
 		index.loadIndex();
 		//
@@ -496,6 +500,26 @@ public class IndexerInvertedOccurrence extends Indexer {
     System.out.print(count);
 //		System.out.println(index.corpusTermFrequency("web"));
 
+=======
+		index.constructIndex();
+//		index.loadIndex();
+//		//
+//		Query query = new Query("web search");
+//		query.processQuery();
+//		Document nextdoc=index.nextDoc(query, 0);;
+//		int id=nextdoc._docid;
+//		int count=1;
+//    while(nextdoc!=null){
+//		 nextdoc= index.nextDoc(query, id);
+//		 if(nextdoc!=null){
+//		 id=nextdoc._docid;
+//		 count++;
+//		 }
+//    }
+//    System.out.print(count);
+////		System.out.println(index.corpusTermFrequency("web"));
+//
+>>>>>>> 6b74348a5c704754c410311938b97f2350c92924
 //		if(nextdoc!=null)
 //		System.out.println(nextdoc._docid);
 //		else
