@@ -26,8 +26,8 @@ public class Query {
       return;
     }
     _query=_query.toLowerCase();
-    Stemmer stemmer=new Stemmer();
-    _query=stemmer.stem(_query);
+   
+    //_query=Stemmer.stem(_query);
     Scanner s = new Scanner(_query);
     while (s.hasNext()) {
       _tokens.add(s.next());
