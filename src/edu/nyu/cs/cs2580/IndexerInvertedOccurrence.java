@@ -484,7 +484,7 @@ public class IndexerInvertedOccurrence extends Indexer {
 		//index.constructIndex();
 		index.loadIndex();
 		//
-		Query query = new QueryPhrase("\"web searching\" google");
+		Query query = new QueryPhrase("google");
 		query.processQuery();
 		Document nextdoc=index.nextDoc(query, 0);;
 		int id=nextdoc._docid;

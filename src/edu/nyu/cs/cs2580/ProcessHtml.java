@@ -89,7 +89,7 @@ public class ProcessHtml {
 		String[] tokens=output.split(" ");
 		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<tokens.length;i++){
-		Stemmer.stem(tokens[i]);
+		tokens[i]=Stemmer.stem(tokens[i]);
 		sb.append(tokens[i]+" ");
 		}
 		//stemmer.stem();

@@ -23,7 +23,6 @@ public class QueryPhrase extends Query {
 	  Pattern phrasePattern = Pattern.compile(phrase);
 	  Matcher phraseMatcher = phrasePattern.matcher(_query);
 	  _query=_query.toLowerCase();
-	   Stemmer stemmer=new Stemmer();
 	    
 	  
 	  while(phraseMatcher.find()){
@@ -31,7 +30,7 @@ public class QueryPhrase extends Query {
 		  String[] temp=s.split(" ");
 		  StringBuilder sb=new StringBuilder();
 		  for(int i=0;i<temp.length;i++){
-			  temp[i]=stemmer.stem(temp[i]);
+			  temp[i]=Stemmer.stem(temp[i]);
 			  sb.append(temp[i]+" ");
 		  }
 		  
@@ -43,7 +42,7 @@ public class QueryPhrase extends Query {
 	  //add the rest terms to the query vector
 	  Scanner s = new Scanner(_query);
 	  while (s.hasNext()) {
-	      _tokens.add(stemmer.stem(s.next()));
+	      _tokens.add(Stemmer.stem(s.next()));
 	   }
 	  s.close();
   }
