@@ -11,16 +11,6 @@ import org.apache.hadoop.io.SortedMapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-
-
-/**
- * Bytes format (not verified): 
- *  <Hashed term> + <Number of bytes in the following position list> 
- *  + (<number of bytes in this doc position list> + <doc id> + <position 1> + <position 2>) * k
- *  
- * @author edwardlzk
- *
- */
 public class CompressReducer extends
 		Reducer<Text, SortedMapWritable, NullWritable, BytesWritable> {
 	

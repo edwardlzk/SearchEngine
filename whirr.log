@@ -1,0 +1,67 @@
+2013-05-14 16:19:04,961 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=23.20.163.216, privateIp=10.144.76.51, id=us-east-1/i-3b76d05b, nodeMetadata=null} with IP public 23.20.163.216, private 10.144.76.51, and DNS resolver org.apache.whirr.net.FastDnsResolver@21424be8
+2013-05-14 16:19:04,961 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=54.242.74.75, privateIp=10.144.65.177, id=us-east-1/i-2576d045, nodeMetadata=null} with IP public 54.242.74.75, private 10.144.65.177, and DNS resolver org.apache.whirr.net.FastDnsResolver@21d6b569
+2013-05-14 16:19:04,962 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=50.16.146.9, privateIp=10.144.153.238, id=us-east-1/i-dd6bcdbd, nodeMetadata=null} with IP public 50.16.146.9, private 10.144.153.238, and DNS resolver org.apache.whirr.net.FastDnsResolver@3a740b12
+2013-05-14 16:19:04,962 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=54.224.192.62, privateIp=10.165.13.219, id=us-east-1/i-c56bcda5, nodeMetadata=null} with IP public 54.224.192.62, private 10.165.13.219, and DNS resolver org.apache.whirr.net.FastDnsResolver@3a7cd641
+2013-05-14 16:19:04,962 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=107.21.143.84, privateIp=10.165.36.101, id=us-east-1/i-2776d047, nodeMetadata=null} with IP public 107.21.143.84, private 10.165.36.101, and DNS resolver org.apache.whirr.net.FastDnsResolver@a17eb9e
+2013-05-14 16:19:04,963 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=23.22.100.203, privateIp=10.152.150.235, id=us-east-1/i-c16bcda1, nodeMetadata=null} with IP public 23.22.100.203, private 10.152.150.235, and DNS resolver org.apache.whirr.net.FastDnsResolver@434e7dd5
+2013-05-14 16:19:04,963 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=54.224.235.254, privateIp=10.152.151.130, id=us-east-1/i-c36bcda3, nodeMetadata=null} with IP public 54.224.235.254, private 10.152.151.130, and DNS resolver org.apache.whirr.net.FastDnsResolver@2e4f2d78
+2013-05-14 16:19:04,963 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-datanode, hadoop-tasktracker], publicIp=23.20.243.107, privateIp=10.152.185.68, id=us-east-1/i-df6bcdbf, nodeMetadata=null} with IP public 23.20.243.107, private 10.152.185.68, and DNS resolver org.apache.whirr.net.FastDnsResolver@113e655a
+2013-05-14 16:19:04,963 DEBUG [org.apache.whirr.Cluster] (main) constructed instance Instance{roles=[hadoop-namenode, hadoop-jobtracker], publicIp=184.73.130.86, privateIp=10.147.190.223, id=us-east-1/i-755fb818, nodeMetadata=null} with IP public 184.73.130.86, private 10.147.190.223, and DNS resolver org.apache.whirr.net.FastDnsResolver@3a3476a7
+2013-05-14 16:19:05,014 DEBUG [org.apache.whirr.service.ComputeCache] (main) creating new ComputeServiceContext Key{provider=aws-ec2, identity=AKIAJPZYVAZ3GN6VFJJA, overrides={jclouds.region=us-east-1, jclouds.ec2.cc-ami-query=, jclouds.ec2.ami-query=}, clusterName=hadoop-ec2}
+2013-05-14 16:19:07,047 DEBUG [org.apache.whirr.service.ComputeCache] (main) created new ComputeServiceContext {backend={providerMetadata={id=aws-ec2, name=Amazon Elastic Compute Cloud (EC2), api={id=aws-ec2, name=Amazon-specific EC2 API, views=[org.jclouds.aws.ec2.compute.AWSEC2ComputeServiceContext], endpointName=https endpoint, identityName=Access Key ID, credentialName=Optional.of(Secret Access Key), documentation=http://docs.amazonwebservices.com/AWSEC2/latest/APIReference, api=interface org.jclouds.aws.ec2.AWSEC2Client, asyncApi=interface org.jclouds.aws.ec2.AWSEC2AsyncClient}, endpoint=https://ec2.us-east-1.amazonaws.com, console=Optional.of(https://console.aws.amazon.com/ec2/home), homepage=Optional.of(http://aws.amazon.com/ec2), linkedServices=[aws-ec2, aws-elb, aws-cloudwatch, aws-s3, aws-simpledb], iso3166Codes=[US-VA, US-CA, US-OR, BR-SP, IE, SG, AU-NSW, JP-13]}, identity=AKIAJPZYVAZ3GN6VFJJA}, backendType=org.jclouds.rest.RestContext<org.jclouds.aws.ec2.AWSEC2Client, org.jclouds.aws.ec2.AWSEC2AsyncClient>}
+2013-05-14 16:19:07,073 DEBUG [org.apache.whirr.HandlerMapFactory] (main) role hadoop-namenode didn't start with any of the configured prefixes [puppet:, chef]
+2013-05-14 16:19:07,074 DEBUG [org.apache.whirr.HandlerMapFactory] (main) role hadoop-jobtracker didn't start with any of the configured prefixes [puppet:, chef]
+2013-05-14 16:19:07,075 DEBUG [org.apache.whirr.HandlerMapFactory] (main) role hadoop-datanode didn't start with any of the configured prefixes [puppet:, chef]
+2013-05-14 16:19:07,075 DEBUG [org.apache.whirr.HandlerMapFactory] (main) role hadoop-tasktracker didn't start with any of the configured prefixes [puppet:, chef]
+2013-05-14 16:19:07,077 INFO  [org.apache.whirr.actions.ScriptBasedClusterAction] (main) Finished running destroy phase scripts on all cluster instances
+2013-05-14 16:19:07,077 INFO  [org.apache.whirr.actions.DestroyClusterAction] (main) Destroying hadoop-ec2 cluster
+2013-05-14 16:19:07,081 DEBUG [jclouds.compute] (main) >> destroying nodes matching(inGroup(hadoop-ec2))
+2013-05-14 16:19:21,357 DEBUG [jclouds.compute] (user thread 8) >> destroying node(us-east-1/i-755fb818)
+2013-05-14 16:19:21,357 DEBUG [jclouds.compute] (user thread 6) >> destroying node(us-east-1/i-c36bcda3)
+2013-05-14 16:19:21,357 DEBUG [jclouds.compute] (user thread 3) >> destroying node(us-east-1/i-c16bcda1)
+2013-05-14 16:19:21,358 DEBUG [jclouds.compute] (user thread 5) >> destroying node(us-east-1/i-c56bcda5)
+2013-05-14 16:19:21,359 DEBUG [jclouds.compute] (user thread 0) >> destroying node(us-east-1/i-dd6bcdbd)
+2013-05-14 16:19:21,360 DEBUG [jclouds.compute] (user thread 9) >> destroying node(us-east-1/i-df6bcdbf)
+2013-05-14 16:19:21,372 DEBUG [jclouds.compute] (user thread 11) >> destroying node(us-east-1/i-2576d045)
+2013-05-14 16:19:21,375 DEBUG [jclouds.compute] (user thread 12) >> destroying node(us-east-1/i-2776d047)
+2013-05-14 16:19:21,382 DEBUG [jclouds.compute] (user thread 15) >> destroying node(us-east-1/i-3b76d05b)
+2013-05-14 16:19:54,463 DEBUG [jclouds.compute] (user thread 15) << destroyed node(us-east-1/i-3b76d05b) success(true)
+2013-05-14 16:19:54,464 DEBUG [jclouds.compute] (user thread 9) << destroyed node(us-east-1/i-df6bcdbf) success(false)
+2013-05-14 16:19:54,839 DEBUG [jclouds.compute] (user thread 12) << destroyed node(us-east-1/i-2776d047) success(false)
+2013-05-14 16:19:54,839 DEBUG [jclouds.compute] (user thread 11) << destroyed node(us-east-1/i-2576d045) success(true)
+2013-05-14 16:19:54,978 DEBUG [jclouds.compute] (user thread 0) << destroyed node(us-east-1/i-dd6bcdbd) success(true)
+2013-05-14 16:19:55,176 DEBUG [jclouds.compute] (user thread 5) << destroyed node(us-east-1/i-c56bcda5) success(false)
+2013-05-14 16:19:55,212 DEBUG [jclouds.compute] (user thread 6) << destroyed node(us-east-1/i-c36bcda3) success(false)
+2013-05-14 16:19:55,827 DEBUG [jclouds.compute] (user thread 3) << destroyed node(us-east-1/i-c16bcda1) success(false)
+2013-05-14 16:19:55,870 DEBUG [jclouds.compute] (user thread 8) << destroyed node(us-east-1/i-755fb818) success(false)
+2013-05-14 16:19:55,870 DEBUG [jclouds.compute] (main) << destroyed(9)
+2013-05-14 16:19:55,874 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:19:56,513 DEBUG [jclouds.compute] (main) >> deleting securityGroup(jclouds#hadoop-ec2)
+2013-05-14 16:19:57,073 DEBUG [jclouds.compute] (main) << inUse incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:19:57,124 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:19:57,731 DEBUG [jclouds.compute] (main) >> deleting securityGroup(jclouds#hadoop-ec2)
+2013-05-14 16:19:58,143 DEBUG [jclouds.compute] (main) << inUse incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:19:58,218 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:19:58,666 DEBUG [jclouds.compute] (main) >> deleting securityGroup(jclouds#hadoop-ec2)
+2013-05-14 16:19:59,170 DEBUG [jclouds.compute] (main) << deleted securityGroup(jclouds#hadoop-ec2)
+2013-05-14 16:20:00,403 DEBUG [jclouds.compute] (main) >> deleting keyPair(jclouds#hadoop-ec2#2a0)
+2013-05-14 16:20:00,826 DEBUG [jclouds.compute] (main) << deleted keyPair(jclouds#hadoop-ec2#2a0)
+2013-05-14 16:20:00,826 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:01,208 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:01,814 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:02,156 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:02,745 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:03,016 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:04,140 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:04,471 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:04,976 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:05,270 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:05,913 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:06,251 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:06,830 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:07,417 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:08,171 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:08,483 DEBUG [jclouds.compute] (main) >> deleting incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:09,383 DEBUG [jclouds.compute] (main) << deleted incidentalResources(us-east-1 @ hadoop-ec2)
+2013-05-14 16:20:09,760 INFO  [org.apache.whirr.actions.DestroyClusterAction] (main) Cluster hadoop-ec2 destroyed
+2013-05-14 16:20:09,770 DEBUG [org.apache.whirr.service.ComputeCache] (Thread-1) closing ComputeServiceContext {backend={providerMetadata={id=aws-ec2, name=Amazon Elastic Compute Cloud (EC2), api={id=aws-ec2, name=Amazon-specific EC2 API, views=[org.jclouds.aws.ec2.compute.AWSEC2ComputeServiceContext], endpointName=https endpoint, identityName=Access Key ID, credentialName=Optional.of(Secret Access Key), documentation=http://docs.amazonwebservices.com/AWSEC2/latest/APIReference, api=interface org.jclouds.aws.ec2.AWSEC2Client, asyncApi=interface org.jclouds.aws.ec2.AWSEC2AsyncClient}, endpoint=https://ec2.us-east-1.amazonaws.com, console=Optional.of(https://console.aws.amazon.com/ec2/home), homepage=Optional.of(http://aws.amazon.com/ec2), linkedServices=[aws-ec2, aws-elb, aws-cloudwatch, aws-s3, aws-simpledb], iso3166Codes=[US-VA, US-CA, US-OR, BR-SP, IE, SG, AU-NSW, JP-13]}, identity=AKIAJPZYVAZ3GN6VFJJA}, backendType=org.jclouds.rest.RestContext<org.jclouds.aws.ec2.AWSEC2Client, org.jclouds.aws.ec2.AWSEC2AsyncClient>}
