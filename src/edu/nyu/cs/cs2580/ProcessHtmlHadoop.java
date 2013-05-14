@@ -72,6 +72,8 @@ public class ProcessHtmlHadoop {
 		//replace all labels
 		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
+		resultBody = resultBody.replaceAll("\\b(\\d+)\\b", " ");
+		
 		resultBody = removeStopword(resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");
@@ -81,16 +83,24 @@ public class ProcessHtmlHadoop {
 			return null;
 		}
 		builder.append(resultBody);
+	
+//		System.out.println("before stem:"+output);
+		
+		
 		String output = builder.toString();
 		
 //		System.out.println("before stem:"+output);
 		
-		Stemmer stemmer = new Stemmer();
-		//stemmer.add(output);
-		output=stemmer.stem(output);
+		String[] tokens=output.split(" ");
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<tokens.length;i++){
+		tokens[i]=Stemmer.stem(tokens[i]);
+		sb.append(tokens[i]+" ");
+		}
+		//stemmer.stem();
 		
 //		System.out.println("after stem:"+stemmer.toString());
-		return output;
+		return sb.toString();
 
 	}
 	
