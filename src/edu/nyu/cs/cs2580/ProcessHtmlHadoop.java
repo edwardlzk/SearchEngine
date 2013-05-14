@@ -72,6 +72,8 @@ public class ProcessHtmlHadoop {
 		//replace all labels
 		resultBody = resultBody.replaceAll("</?.*?/?>", " ");
 		resultBody = resultBody.replaceAll("[^\\w]", " ");
+		resultBody = resultBody.replaceAll("\\b(\\d+)\\b", " ");
+		
 		resultBody = removeStopword(resultBody);
 		// replace duplicate white spaces to one space
 		resultBody = resultBody.replaceAll("\\s+"," ");

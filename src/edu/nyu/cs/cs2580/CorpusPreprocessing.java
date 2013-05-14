@@ -46,14 +46,14 @@ public class CorpusPreprocessing {
 		if(!idSta.exists()) {
 			idSta.createNewFile();
 		}
-		BufferedWriter idout = new BufferedWriter(new FileWriter(idSta,true));
+		BufferedWriter idout = new BufferedWriter(new FileWriter(idSta,false));
 		
 		String statistics = "data/index/statistics";
 		File sta = new File(statistics);
 		if(!sta.exists()) {
 			sta.createNewFile();
 		}
-		BufferedWriter staout = new BufferedWriter(new FileWriter(sta,true));
+		BufferedWriter staout = new BufferedWriter(new FileWriter(sta,false));
 		
 		for(File f : files){
 			int docterms = 0;
@@ -73,19 +73,9 @@ public class CorpusPreprocessing {
 			FileOps.append(newFile, sb.toString());
 			// generate idToTitle file
 			String[] contents = content.split("\t");
-//			String[] terms = content.split("\\s+");
-			Scanner s = new Scanner(contents[0]);
-			while(s.hasNext()){
-				docterms++;
-				s.next();
-			}
-			s = new Scanner(contents[1]);
-			while(s.hasNext()){
-				docterms++;
-				s.next();
-			}
-			corpusTotalTerms += docterms;
-		    idout.append(fileContent[0]+"\t"+contents[0]+"\t"+f.getName()+"\t"+docterms+"\t"+0+"\t"+0+"\n");		
+			String[] terms = content.split("\\s+");
+			corpusTotalTerms += terms.length;
+		    idout.append(fileContent[0]+"\t"+contents[0]+"\t"+f.getName()+"\t"+terms.length+"\t"+0+"\t"+0+"\n");		
 		}
 		idout.close();
 		//generate statistic file
