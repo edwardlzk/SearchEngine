@@ -86,11 +86,11 @@ public class ProcessHtmlHadoop {
 //		System.out.println("before stem:"+output);
 		
 		Stemmer stemmer = new Stemmer();
-		stemmer.add(output);
-		stemmer.stem();
+		//stemmer.add(output);
+		output=stemmer.stem(output);
 		
 //		System.out.println("after stem:"+stemmer.toString());
-		return stemmer.toString();
+		return output;
 
 	}
 	
