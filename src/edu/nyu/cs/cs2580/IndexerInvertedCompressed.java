@@ -493,26 +493,84 @@ public class IndexerInvertedCompressed extends Indexer{
    * In HW2, you should be using {@link DocumentIndexed}
    */
   @Override
-  public Document nextDoc(Query query, int docid) {
+//  public Document nextDoc(Query query, int docid) {
+//	  Vector<Integer> ids=new Vector<Integer>();
+//	   int id;
+//	   for(int i=0;i<query._tokens.size();i++){
+//		 id=next(query._tokens.get(i),docid);
+//		 // only add the id that exists
+//		 if(id != -1 )
+//			 ids.add(id);  
+//	   }
+//	   // return null if no document contains any term of the query or when couldn't find any document that contains that term
+//	   if(ids.size()==0 || ids.size()!=query._tokens.size()){
+//		   return null;
+//	   }
+//	   else if(find(ids))
+//	   { 
+//		   return getDoc(ids.get(0));
+//	   }
+//	   else{
+//		  return nextDoc(query, max(ids)-1); 
+//	   }
+//  }
+  
+  public DocumentIndexed nextDoc(Query query, int docid) {
 	  Vector<Integer> ids=new Vector<Integer>();
-	   int id;
+	   int id=-1;
+	   int add=0;
+	   Query qtemp = null;
 	   for(int i=0;i<query._tokens.size();i++){
-		 id=next(query._tokens.get(i),docid);
+		   //System.out.println(query._tokens.size());
+		   if(query._tokens.get(i).contains(" ")){
+			   String[] tokens=query._tokens.get(i).split(" ");
+			   add+=tokens.length-1;
+			   StringBuilder qt=new StringBuilder("");
+			   for(int c=0;c<tokens.length;c++){
+				   qt.append(tokens[c]+" ");
+				   id=next(tokens[c],docid);
+				   if(id != -1 )
+						 ids.add(id); 
+			   }
+			   qtemp=new Query(qt.toString());
+			   qtemp.processQuery();
+			   //System.out.println(qtemp._tokens.size());
+		   }
+		   else{ 
+		       id=next(query._tokens.get(i),docid);
+		       if(id != -1 )
+					 ids.add(id);
+		       }
 		 // only add the id that exists
-		 if(id != -1 )
-			 ids.add(id);  
+		   
 	   }
 	   // return null if no document contains any term of the query or when couldn't find any document that contains that term
-	   if(ids.size()==0 || ids.size()!=query._tokens.size()){
+	   if(ids.size()==0 || ids.size()!=(query._tokens.size()+add)){
 		   return null;
 	   }
+	   // find a document inlcudes all the terms
 	   else if(find(ids))
 	   { 
-		   return getDoc(ids.get(0));
+		   //not phrase
+		   if(add==0){
+		   return (DocumentIndexed) getDoc(ids.get(0));
+		   }
+		   //phrase
+		   else{
+			   int pos=nextPhrase(qtemp,ids.get(0),0);
+			   // find position
+			   if(pos!=-1){
+				   return (DocumentIndexed) getDoc(ids.get(0));
+			   } 
+			   //not find, continue with next Document
+			   else
+				   return nextDoc(query, ids.get(0));
+		   }
 	   }
 	   else{
 		  return nextDoc(query, max(ids)-1); 
 	   }
+	
   }
   
   private int next(String word, int docid){

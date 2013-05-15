@@ -81,12 +81,13 @@ public class ProcessHtml {
 		if(resultBody.equals("")){
 			return null;
 		}
-		builder.append(resultBody);
-		String output = builder.toString();
+		
+		//builder.append(resultBody);
+		//String output = builder.toString();
 		
 //		System.out.println("before stem:"+output);
 		
-		String[] tokens=output.split(" ");
+		String[] tokens=resultBody.split(" ");
 		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<tokens.length;i++){
 		tokens[i]=Stemmer.stem(tokens[i]);
@@ -95,7 +96,8 @@ public class ProcessHtml {
 		//stemmer.stem();
 		
 //		System.out.println("after stem:"+stemmer.toString());
-		html = sb.toString();
+		builder.append(sb.toString());
+		html = builder.toString();
         
 		String[] ret = new String[2];
 		ret[0] = id;
