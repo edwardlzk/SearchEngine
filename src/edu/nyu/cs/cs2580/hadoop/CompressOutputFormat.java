@@ -17,9 +17,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 
-/**
- * Refer to http://wittykeegan.blogspot.com/2013/04/hadoop-writing-bytes.html
- */
 public class CompressOutputFormat extends FileOutputFormat<NullWritable, BytesWritable> {
 	 
     @Override
