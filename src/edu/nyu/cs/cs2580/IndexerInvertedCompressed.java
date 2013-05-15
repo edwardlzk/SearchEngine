@@ -109,17 +109,12 @@ public class IndexerInvertedCompressed extends Indexer{
 		  }
 		 
 		  String corpus_statistics = _options._indexPrefix+"/" + "statistics";
-		  FileOutputStream fos_corpus = new FileOutputStream(corpus_statistics);
-		  // first write the num of Docs to the file
-		  byte[] v_num_ar = vbyteConversionToArray(this._numDocs);
-		  fos_corpus.write(v_num_ar);
-		  // write the total term frequency to the file
-		  Vector<Byte> tot_arr = this.vbyteConversion(this._totalTermFrequency);
-		  byte[] v_tot_arr = new byte[tot_arr.size()];
-		  for(int j=0;j<tot_arr.size();++j)
-			  v_tot_arr[j] = tot_arr.get(j);
-		  fos_corpus.write(v_tot_arr);
-		  fos_corpus.close();
+		  
+		  StringBuilder sb = new StringBuilder();
+		  sb.append(this._numDocs).append("\r\n")
+		  .append(this._totalTermFrequency);
+		  
+		 FileOps.write(new File(corpus_statistics), sb.toString());
 		  String[] files=new String[times];
 		  for(int count=0;count<times;count++){
 		  files[count]="temp"+count+".txt";
@@ -132,17 +127,14 @@ public class IndexerInvertedCompressed extends Indexer{
   public void loadIndex() throws IOException, ClassNotFoundException {
 	  String indexFile = _options._indexPrefix+"/" + "statistics";
 	    System.out.println("Load index from: " + indexFile);
-	    FileInputStream s = new FileInputStream(indexFile);
-	    Vector<Byte> sta = new Vector<Byte>();
-	    int cur = 0;
-	    while((cur=s.read())!=-1)
-	    	{	
-	    		 sta.add((byte)cur);   	 
-	    	}
-	    s.close();
-	    Vector<Integer> sta_num = extractNumbers(sta);
-	    this._numDocs = sta_num.get(0);
-	    this._totalTermFrequency = sta_num.get(1);
+	    
+//	    Vector<Integer> sta_num = extractNumbers(sta);
+	    BufferedReader input = new BufferedReader(new FileReader(indexFile));
+	    
+	    
+	    
+	    this._numDocs = Integer.parseInt(input.readLine());
+	    this._totalTermFrequency = Integer.parseInt(input.readLine());
 	    System.out.println("Number of docs: "+this._numDocs);
 	    System.out.println("TotalTermFrequency: "+this._totalTermFrequency);
 	    System.out.println(Integer.toString(_numDocs) + " documents loaded ");
